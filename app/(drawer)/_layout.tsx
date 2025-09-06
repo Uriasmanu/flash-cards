@@ -7,10 +7,20 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
+
         <Drawer.Screen
           name="index"
           options={{
-            drawerLabel: 'Inicio',
+            drawerLabel: 'index',
+            title: '',
+            drawerItemStyle: { display: 'none'}
+          }}
+        />
+
+        <Drawer.Screen
+          name="inicio"
+          options={{
+            drawerLabel: 'inicio',
             title: '',
             drawerLabelStyle: {
               fontSize: 18
