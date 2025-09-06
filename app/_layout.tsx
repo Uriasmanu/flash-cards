@@ -10,8 +10,22 @@ export default function RootLayout() {
         <Drawer.Screen
           name="index"
           options={{
-            drawerLabel: 'Home',
-            title: ''
+            drawerLabel: 'Inicio',
+            title: '',
+            drawerLabelStyle: {
+              fontSize: 18
+            }
+          }}
+        />
+
+        <Drawer.Screen
+          name='adicionar'
+          options={{
+            drawerLabel: 'adicionar',
+            title: '',
+            drawerLabelStyle: {
+              fontSize: 18
+            }
           }}
         />
       </Drawer>
