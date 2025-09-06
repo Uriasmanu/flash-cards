@@ -1,14 +1,31 @@
-import { Stack } from "expo-router";
+import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { Drawer } from 'expo-router/drawer';
+import { Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          title: '', 
-        }}
-      />
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: 'Home',
+            title: ''
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
+  );
+}
+
+function CustomDrawerContent(props: DrawerContentComponentProps) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={{ padding: 20 }}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Menu</Text>
+      </View>
+      <DrawerItemList {...props} />
+    </DrawerContentScrollView>
   );
 }
