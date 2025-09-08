@@ -13,7 +13,7 @@ export default function RootLayout() {
           options={{
             drawerLabel: 'index',
             title: '',
-            drawerItemStyle: { display: 'none'}
+            drawerItemStyle: { display: 'none' }
           }}
         />
 
@@ -32,6 +32,17 @@ export default function RootLayout() {
           name='adicionar'
           options={{
             drawerLabel: 'adicionar',
+            title: '',
+            drawerLabelStyle: {
+              fontSize: 18
+            }
+          }}
+        />
+        
+        <Drawer.Screen
+          name='listaDePalavras'
+          options={{
+            drawerLabel: 'lista de palavras',
             title: '',
             drawerLabelStyle: {
               fontSize: 18
