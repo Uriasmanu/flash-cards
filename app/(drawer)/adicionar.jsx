@@ -27,7 +27,7 @@ export default function Cards() {
 
                 </View>
             )}
-            {showForm && <Form/>}
+            {showForm && <Form onClose={() => setShowForm(false)} />}
         </View>
     );
 }

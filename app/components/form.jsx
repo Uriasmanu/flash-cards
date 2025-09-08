@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function Form() {
+export default function Form({onClose}) {
     const [palavra, setPalavra] = useState("");
     const [traducao, setTraducao] = useState("");
 
@@ -12,7 +12,7 @@ export default function Form() {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.buttonFechar}>
+            <TouchableOpacity style={styles.buttonFechar} onPress={onClose}>
                 <Text style={styles.buttonFecharText}>X</Text>
             </TouchableOpacity>
 
