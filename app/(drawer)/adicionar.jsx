@@ -14,7 +14,7 @@ export default function Cards() {
                         onPress={() => setShowForm(!showForm)}
                         style={({ pressed }) => [
                             {
-                                backgroundColor: pressed ? "#f5f5f5" : "#fff",
+                                backgroundColor: pressed ? "#f5f5f5" : "#ccc",
                                 padding: 12,
                                 borderRadius: 8,
                             },
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#ccc",
     },
 });
