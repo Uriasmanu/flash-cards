@@ -1,12 +1,54 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { loadWordsData } from "../services/storage";
 
 export default function Inicio() {
+    const [words, setWords] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchWords = async () => {
+            const data = await loadWordsData();
+            setWords(data);
+            setLoading(false)
+        };
+
+        fetchWords();
+    }, [])
+
+    if (loading) {
+        return (
+            <View>
+                <Text>...Carregando</Text>
+            </View>
+        )
+    }
+
+    if (words.length === 0) {
+
+        return (
+            <View style={styles.container}>
+                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>Você ainda não tem nenhum card</Text>
+            </View>
+        );
+    }
 
     return (
-        <View style={styles.container}>
-            <Text style={{fontSize: 24, textAlign: 'center', width: 250}}>Você ainda não tem nenhum card</Text>
+        <View>
+            <FlatList
+                data={words}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Text style={styles.text}>{item.id}</Text>
+                        <Text style={styles.text}>{item.titulo}</Text>
+                        <Text style={styles.text}>{item.traducao}</Text>
+                    </View>
+                )}
+            />
+
         </View>
-    );
+    )
 }
 
 
@@ -15,5 +57,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+
+    text: {
+        fontSize: 25
     }
 })

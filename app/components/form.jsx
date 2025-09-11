@@ -1,13 +1,32 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { loadWordsData, saveWordsData } from "../services/storage";
 
-export default function Form({onClose}) {
+export default function Form({ onClose }) {
     const [palavra, setPalavra] = useState("");
     const [traducao, setTraducao] = useState("");
 
-    const handleAdd = () => {
-        console.log("Palavra:", palavra);
-        console.log("Tradução:", traducao);
+    const handleAdd = async () => {
+        if (!palavra || !traducao) {
+            alert('Necessario preencher todos os campos');
+            return;
+        }
+
+        const existeWords = await loadWordsData();
+
+        const nextId = existeWords.length > 0 ? Math.max(...existeWords.map(m => m.id)) +1 : 1;
+
+        const newWord = {
+            id: nextId,
+            title: palavra,
+            traducao: traducao,
+            favoritar: false
+        };
+
+        console.log('Palavra salva: ', newWord);
+
+        await saveWordsData([...existeWords, newWord]);
+        onClose();
     };
 
     return (
