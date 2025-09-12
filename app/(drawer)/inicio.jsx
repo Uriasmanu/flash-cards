@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import CardWords from "../components/CardWords";
-import { loadWordsData } from "../services/storage";
+import storage from "../services/storage";
 
 export default function Inicio() {
+    
     const [words, setWords] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchWords = async () => {
-            const data = await loadWordsData();
+            const data = await storage.loadWordsData();
             setWords(data);
             setLoading(false)
         };

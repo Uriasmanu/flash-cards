@@ -9,6 +9,7 @@ export default function CardWords({ id, favoritar, titulo, traducao }) {
     return (
         <View style={styles.container}>
             <View style={styles.favoritar}>
+                <Text style={{display: none}}>{id}</Text>
                 <Favoritar style={styles.text}>{favoritar ? 'sim' : 'nao'}</Favoritar>
             </View>
 

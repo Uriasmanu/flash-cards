@@ -2,12 +2,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 export default function BotaoTraduzir() {
-return (
+    return (
         <View style={styles.container}>
-            <TouchableOpacity 
-                style={[
-                    styles.buttonWithIcon,
-                ]}
+            <TouchableOpacity
+                style={
+                    styles.buttonWithIcon
+                }
                 activeOpacity={0.7}
             >
                 <View style={styles.iconContainer}>

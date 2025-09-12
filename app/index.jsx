@@ -42,7 +42,7 @@ export default function Index() {
                     style={styles.logo}
                 />
             </Animated.View>
-            <div style={styles.sombra}></div>
+            <View style={styles.sombra}></View>
             <Text style={styles.slogan}>Aprenda Inglês de uma forma Divertida</Text>
         </View>
     );
