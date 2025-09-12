@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import CardWords from "../components/CardWords";
 import { loadWordsData } from "../services/storage";
 
 export default function Inicio() {
@@ -36,15 +37,24 @@ export default function Inicio() {
     return (
         <View>
             <FlatList
+                horizontal
                 data={words}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={styles.text}>{item.id}</Text>
-                        <Text style={styles.text}>{item.titulo}</Text>
-                        <Text style={styles.text}>{item.traducao}</Text>
-                    </View>
+                    <CardWords
+                        id={item.id}
+                        favoritar={item.favoritar}
+                        titulo={item.title}
+                        traducao={item.traducao}
+                    />
                 )}
+                pagingEnabled
+                showsHorizontalScrollIndicator={true}
+                snapToAlignment="start"
+                contentContainerStyle={{
+                    paddingHorizontal: 10,
+                }}
+                ItemSeparatorComponent={() => <View style={{ width: 28 }} />}
             />
 
         </View>
@@ -57,9 +67,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-    },
-
-    text: {
-        fontSize: 25
     }
 })
