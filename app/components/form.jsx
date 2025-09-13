@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { loadWordsData, saveWordsData } from "../services/storage";
+import storage from "../services/storage";
+
 
 export default function Form({ onClose }) {
     const [palavra, setPalavra] = useState("");
@@ -12,7 +13,7 @@ export default function Form({ onClose }) {
             return;
         }
 
-        const existeWords = await loadWordsData();
+        const existeWords = await storage.loadWordsData();
 
         const nextId = existeWords.length > 0 ? Math.max(...existeWords.map(m => m.id)) +1 : 1;
 
@@ -25,7 +26,7 @@ export default function Form({ onClose }) {
 
         console.log('Palavra salva: ', newWord);
 
-        await saveWordsData([...existeWords, newWord]);
+        await storage.saveWordsData([...existeWords, newWord]);
         onClose();
     };
 
