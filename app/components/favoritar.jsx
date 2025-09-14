@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function Favoritar({ initialChecked = false, onChange }) {
+export default function Favoritar({ initialChecked, onChange }) {
     const [isChecked, setIsChecked] = useState(initialChecked);
 
+    useEffect(() => {
+        setIsChecked(initialChecked);
+    }, [initialChecked]);
+    
     const toggleCheckbox = () => {
         const newValue = !isChecked;
         setIsChecked(newValue);

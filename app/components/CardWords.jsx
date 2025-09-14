@@ -4,19 +4,22 @@ import BotaoTraduzir from "./botaoTraduzir";
 import Favoritar from "./favoritar";
 
 
-export default function CardWords({ id, favoritar, titulo, traducao }) {
+export default function CardWords({ id, favoritar, titulo, traducao, onToggleFavorite }) {
 
     return (
         <View style={styles.container}>
             <View style={styles.favoritar}>
-                <Favoritar>{favoritar ? 'sim' : 'nao'}</Favoritar>
+                <Favoritar
+                    onChange={() => onToggleFavorite(id)}
+                    initialChecked={favoritar}
+                />
             </View>
 
             <Languages style={{ width: 90, height: 90 }} />
 
             <View style={{ gap: 25, marginTop: 25 }}>
                 <Text style={styles.text}>{titulo}</Text>
-                <BotaoTraduzir/>
+                <BotaoTraduzir />
             </View>
         </View>
     );

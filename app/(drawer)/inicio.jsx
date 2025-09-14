@@ -18,6 +18,16 @@ export default function Inicio() {
         fetchWords();
     }, [])
 
+    const handleToggleFavorite = async (id) => {
+    const updatedWords = words.map(word =>
+        word.id === id ? { ...word, favoritar: !word.favoritar } : word
+    );
+
+    setWords(updatedWords);
+    await storage.saveWordsData(updatedWords);
+};
+
+
     if (loading) {
         return (
             <View>
@@ -47,6 +57,7 @@ export default function Inicio() {
                         favoritar={item.favoritar}
                         titulo={item.title}
                         traducao={item.traducao}
+                        onToggleFavorite={handleToggleFavorite}
                     />
                 )}
                 pagingEnabled
