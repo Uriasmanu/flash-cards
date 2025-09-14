@@ -18,6 +18,15 @@ export default function ListaDePalavras() {
         fetchWords();
     }, [])
 
+    const handleToggleFavorite = async (id) => {
+        const updatedWords = words.map(word =>
+            word.id === id ? { ...word, favoritar: !word.favoritar } : word
+        );
+
+        setWords(updatedWords);
+        await storage.saveWordsData(updatedWords);
+    };
+
     if (loading) {
         return (
             <View>
@@ -47,8 +56,10 @@ export default function ListaDePalavras() {
                             <Text style={{ fontSize: 22 }}>{item.title}</Text>
                             <Text style={{ fontSize: 16, color: '#757575ff' }}>{item.traducao}</Text>
                         </View>
-                        <Favoritar>{item.favoritar ? 'sim' : 'nao'}</Favoritar>
-
+                        <Favoritar
+                            initialChecked={item.favoritar}
+                            onChange={() => handleToggleFavorite(item.id)}
+                        />
                     </View>
 
                 )}

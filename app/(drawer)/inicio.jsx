@@ -4,7 +4,7 @@ import CardWords from "../components/CardWords";
 import storage from "../services/storage";
 
 export default function Inicio() {
-    
+
     const [words, setWords] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -19,13 +19,13 @@ export default function Inicio() {
     }, [])
 
     const handleToggleFavorite = async (id) => {
-    const updatedWords = words.map(word =>
-        word.id === id ? { ...word, favoritar: !word.favoritar } : word
-    );
+        const updatedWords = words.map(word =>
+            word.id === id ? { ...word, favoritar: !word.favoritar } : word
+        );
 
-    setWords(updatedWords);
-    await storage.saveWordsData(updatedWords);
-};
+        setWords(updatedWords);
+        await storage.saveWordsData(updatedWords);
+    };
 
 
     if (loading) {
