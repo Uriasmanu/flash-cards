@@ -1,31 +1,10 @@
-import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import Favoritar from "../components/favoritar";
-import storage from "../services/storage";
+import useWords from "../hooks/useWords";
 
 export default function ListaDePalavras() {
 
-    const [words, setWords] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchWords = async () => {
-            const data = await storage.loadWordsData();
-            setWords(data);
-            setLoading(false)
-        };
-
-        fetchWords();
-    }, [])
-
-    const handleToggleFavorite = async (id) => {
-        const updatedWords = words.map(word =>
-            word.id === id ? { ...word, favoritar: !word.favoritar } : word
-        );
-
-        setWords(updatedWords);
-        await storage.saveWordsData(updatedWords);
-    };
+    const { words, loading, handleToggleFavorite } = useWords();
 
     if (loading) {
         return (
