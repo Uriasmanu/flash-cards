@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import Favoritar from "../components/favoritar";
-import useWords from "../hooks/useWords";
+import { useWords } from "../context/WordsContext";
+
 
 export default function ListaDePalavras() {
 

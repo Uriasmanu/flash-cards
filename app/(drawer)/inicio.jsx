@@ -1,6 +1,8 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import CardWords from "../components/CardWords";
-import useWords from './../hooks/useWords';
+import { useWords } from './../context/WordsContext';
+
+
 
 export default function Inicio() {
 
