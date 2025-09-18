@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function Favoritar({ initialChecked, onChange }) {
     const [isChecked, setIsChecked] = useState(initialChecked);
@@ -7,7 +7,7 @@ export default function Favoritar({ initialChecked, onChange }) {
     useEffect(() => {
         setIsChecked(initialChecked);
     }, [initialChecked]);
-    
+
     const toggleCheckbox = () => {
         const newValue = !isChecked;
         setIsChecked(newValue);
@@ -20,21 +20,32 @@ export default function Favoritar({ initialChecked, onChange }) {
         <View style={styles.checkboxCon}>
             <TouchableOpacity 
                 style={[
-                    styles.checkbox,
-                    isChecked && styles.checkboxChecked
+                    styles.container,
+                    isChecked && styles.containerChecked
                 ]}
                 onPress={toggleCheckbox}
+                activeOpacity={0.7}
             >
-                <View style={[
-                    styles.checkboxIndicator,
-                    isChecked && styles.checkboxIndicatorChecked
-                ]}>
-                    {isChecked ? (
-                        <Text style={styles.checkIcon}>✓</Text>
-                    ) : (
-                        <Text style={styles.xIcon}>✕</Text>
-                    )}
-                </View>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill={isChecked ? "#ffee02ff" : "none"}
+                    viewBox="0 0 75 100"
+                    style={styles.pin}
+                >
+                    <line
+                        strokeWidth="12"
+                        stroke={isChecked ? "#000000ff" : "black"}
+                        y2="100"
+                        x2="37"
+                        y1="64"
+                        x1="37"
+                    />
+                    <path
+                        strokeWidth="10"
+                        stroke={isChecked ? "#000000ff" : "black"}
+                        d="M16.5 36V4.5H58.5V36V53.75V54.9752L59.1862 55.9903L66.9674 67.5H8.03256L15.8138 55.9903L16.5 54.9752V53.75V36Z"
+                    />
+                </svg>
             </TouchableOpacity>
         </View>
     );
@@ -42,53 +53,23 @@ export default function Favoritar({ initialChecked, onChange }) {
 
 const styles = StyleSheet.create({
     checkboxCon: {
-        flexDirection: 'row',
         alignItems: 'center',
-        margin: 10,
-    },
-    checkbox: {
-        width: 48,
-        height: 27,
-        borderWidth: 2,
-        borderColor: '#ff0000',
-        borderRadius: 20,
-        backgroundColor: '#f1e1e1',
         justifyContent: 'center',
-        padding: 2,
     },
-    checkboxChecked: {
-        borderColor: '#02c202',
-        backgroundColor: '#e2f1e1',
-    },
-    checkboxIndicator: {
-        width: 18,
-        height: 18,
-        borderRadius: 15,
-        backgroundColor: 'rgba(234, 7, 7, 0.5)',
-        borderWidth: 2,
-        borderColor: '#ea0707',
-        justifyContent: 'center',
+    container: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'transparent',
         alignItems: 'center',
-        alignSelf: 'flex-start',
+        justifyContent: 'center',
+        borderRadius: 10,
     },
-    checkboxIndicatorChecked: {
-        backgroundColor: 'rgba(2, 194, 2, 0.5)',
-        borderColor: '#02c202',
-        alignSelf: 'flex-end',
+    containerChecked: {
+        backgroundColor: '#fff',
     },
-    checkIcon: {
-        color: '#02c202',
-        fontSize: 12,
-        fontWeight: 'bold',
-    },
-    xIcon: {
-        color: '#ea0707',
-        fontSize: 12,
-        fontWeight: 'bold',
-    },
-    label: {
-        marginLeft: 10,
-        color: 'white',
-        fontSize: 14,
+    pin: {
+        width: 15,
+        height: 'auto',
+        transform: [{ rotate: '35deg' }],
     },
 });
