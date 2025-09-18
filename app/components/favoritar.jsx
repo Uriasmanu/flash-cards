@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     pin: {
-        width: 15,
+        width: 20,
         height: 'auto',
         transform: [{ rotate: '35deg' }],
     },
