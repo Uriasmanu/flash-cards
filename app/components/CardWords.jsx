@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     text: {
-        fontSize: 32
+        fontSize: 32,
+        textAlign: 'center'
     },
 
     favoritar: {

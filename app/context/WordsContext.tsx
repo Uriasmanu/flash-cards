@@ -4,7 +4,12 @@ import storage from "../services/storage";
 interface WordsContextType {
     words: WordsItem[];
     loading: boolean;
+    palavra: string;
+    traducao: string;
+    setPalavra: React.Dispatch<React.SetStateAction<string>>;
+    setTraducao: React.Dispatch<React.SetStateAction<string>>;
     handleToggleFavorite: (id: number) => Promise<void>;
+    handleAdd: () => Promise<void>;
 };
 
 export interface WordsItem {
@@ -20,6 +25,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const [words, setWords] = useState<WordsItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [palavra, setPalavra] = useState("");
+    const [traducao, setTraducao] = useState("");
 
     useEffect(() => {
         const fetchWords = async () => {
@@ -40,8 +47,30 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         await storage.saveWordsData(updatedWords);
     };
 
+    const handleAdd = async () => {
+        if (!palavra || !traducao) {
+            alert('Necessario preencher todos os campos');
+            return;
+        }
+
+        const existeWords = await storage.loadWordsData();
+
+        const nextId = existeWords.length > 0 ? Math.max(...existeWords.map((m: { id: any; }) => m.id)) + 1 : 1;
+
+        const newWord = {
+            id: nextId,
+            title: palavra,
+            traducao: traducao,
+            favoritar: false
+        };
+
+        console.log('Palavra salva: ', newWord);
+
+        await storage.saveWordsData([...existeWords, newWord]);
+    };
+
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite }}>
+        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, palavra, traducao, setPalavra, setTraducao }}>
             {children}
         </WordsContext.Provider>
     )
