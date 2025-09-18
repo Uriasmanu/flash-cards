@@ -7,7 +7,7 @@ import { useWords } from './../context/WordsContext';
 export default function Inicio() {
 
     const { words, loading, handleToggleFavorite } = useWords();
-
+    const filteredWords = words.filter(word => !word.favoritar)
 
     if (loading) {
         return (
@@ -17,20 +17,28 @@ export default function Inicio() {
         )
     }
 
-    if (words.length === 0) {
+    if (filteredWords.length === 0) {
 
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>Você ainda não tem nenhum card</Text>
+                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>
+                    {words.length === 0
+                        ? 'Você ainda não tem nenhum card'
+                        : 'Todas as palavras foram favoritadas'
+                    }
+                </Text>
             </View>
         );
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{
+            marginHorizontal: 20,
+            marginVertical: 100
+        }}>
             <FlatList
                 horizontal
-                data={words}
+                data={filteredWords}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <CardWords
@@ -58,7 +66,7 @@ export default function Inicio() {
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
-        marginHorizontal: 20,
-        marginVertical: 100
+        alignItems: 'center',
+        height: '90%'
     }
 })
