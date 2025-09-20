@@ -39,4 +39,21 @@ async function deleteWordData(id: number): Promise<void> {
     }
 }
 
-export default { saveWordsData, loadWordsData, deleteWordData };
+async function updateWordsData(id: number, title: string, traducao: string): Promise<WordsItem[]> {
+    try {
+        const words = await loadWordsData();
+        const updateWords = words.map((word: WordsItem) => 
+            word.id === id
+            ? {...word, title: title, traducao: traducao}
+            : word
+        )
+
+        await saveWordsData(updateWords);
+        return(updateWords)
+    } catch (error) {
+        console.error('Erro ao deletar palavra', error)
+        return []
+    }
+}
+
+export default { saveWordsData, loadWordsData, deleteWordData, updateWordsData };

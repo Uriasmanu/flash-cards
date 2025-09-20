@@ -11,7 +11,8 @@ import Form from "../components/form";
 export default function ListaDePalavras() {
 
     const { words, loading, handleToggleFavorite, handleDelete } = useWords();
-    const [showForm, setShowForm] = useState(false)
+    const [showForm, setShowForm] = useState(false);
+    const [editingWords, setEditingWords] = useState(null)
 
 
     const swipeableRefs = useRef({});
@@ -51,7 +52,7 @@ export default function ListaDePalavras() {
         }
     }
 
-    const renderRightActions = (progress, dragX, itemId) => {
+    const renderRightActions = (progress, dragX, item) => {
         const scale = dragX.interpolate({
             inputRange: [-100, 0],
             outputRange: [1, 0],
@@ -61,7 +62,10 @@ export default function ListaDePalavras() {
         return (
             <TouchableOpacity
                 style={styles.editar}
-                onPress={() => setShowForm(!showForm)}
+                onPress={() => {
+                    setEditingWords(item)
+                    setShowForm(true)
+                }}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <SquarePen size={30} />
@@ -103,7 +107,7 @@ export default function ListaDePalavras() {
                             <Swipeable
                                 ref={(ref) => (swipeableRefs.current[item.id] = ref)}
                                 renderRightActions={(progress, dragX) =>
-                                    renderRightActions(progress, dragX, item.id)
+                                    renderRightActions(progress, dragX, item)
                                 }
 
                                 renderLeftActions={(progress, dragX) =>
@@ -135,7 +139,16 @@ export default function ListaDePalavras() {
                     />
                 </View>
             )}
-            {showForm && <Form onClose={() => setShowForm(false)} tituloForm={'Editar Palavra'} />}
+            {showForm &&
+                <Form
+                    onClose={() => {
+                        setShowForm(false);
+                        setEditingWords(null);
+                    }}
+
+                    tituloForm={'Editar Palavra'}
+                    editingWords={editingWords}
+                />}
 
         </View>
     )

@@ -11,6 +11,7 @@ interface WordsContextType {
     handleToggleFavorite: (id: number) => Promise<void>;
     handleAdd: () => Promise<boolean>;
     handleDelete: (id: number) => Promise<void>;
+    handleUpdate: (id: number, title: string, traducao: string) => Promise<boolean>;
 };
 
 export interface WordsItem {
@@ -103,8 +104,22 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     }
 
+    const handleUpdate = async (id: number, title: string, traducao: string): Promise<boolean> => {
+        try {
+            const updateWords = await storage.updateWordsData(id, title, traducao)
+            setWords(updateWords);
+
+            setPalavra("");
+            setTraducao("");
+            return true;
+        } catch (error) {
+            console.error('Erro ao atualiza palavra')
+            return false;
+        }
+    }
+
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, palavra, traducao, setPalavra, setTraducao }}>
+        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate ,palavra, traducao, setPalavra, setTraducao }}>
             {children}
         </WordsContext.Provider>
     )

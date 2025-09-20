@@ -1,14 +1,31 @@
+import { useEffect } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useWords } from "../../context/WordsContext";
 
 
-export default function Form({ onClose, tituloForm }) {
-    const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
+export default function Form({ onClose, tituloForm, editingWords }) {
+    const { handleAdd, handleUpdate, palavra, traducao, setPalavra, setTraducao } = useWords();
+
+    useEffect(() => {
+        if (editingWords) {
+            setPalavra(editingWords.title)
+            setTraducao(editingWords.traducao)
+        } else {
+            setPalavra("")
+            setTraducao("")
+        }
+    }, [editingWords]);
 
     const handleSubmit = async () => {
         try {
-            const success = await handleAdd();
-            if(success){
+            let success;
+            if (editingWords) {
+                success = await handleUpdate(editingWords.id, palavra, traducao)
+            } else {
+                success = await handleAdd();
+            }
+
+            if (success) {
                 onClose();
             }
 
@@ -40,7 +57,9 @@ export default function Form({ onClose, tituloForm }) {
             />
 
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Adicionar</Text>
+                <Text style={styles.buttonText}>
+                    {editingWords ? "Salvar" : "Adicionar"}
+                </Text>
             </TouchableOpacity>
         </View>
     );
