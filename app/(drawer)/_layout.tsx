@@ -2,7 +2,7 @@ import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItemList } 
 import { Drawer } from 'expo-router/drawer';
 import { Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { WordsProvider } from '../context/WordsContext';
+import { WordsProvider } from '../../context/WordsContext';
 
 
 export default function RootLayout() {

@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useWords } from "../context/WordsContext";
+import { useWords } from "../../context/WordsContext";
 
 
-export default function Form({ onClose }) {
+export default function Form({ onClose, tituloForm }) {
     const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
 
     const handleSubmit = async () => {
@@ -23,7 +23,7 @@ export default function Form({ onClose }) {
                 <Text style={styles.buttonFecharText}>X</Text>
             </TouchableOpacity>
 
-            <Text style={styles.title}>Insira uma nova palavra</Text>
+            <Text style={styles.title}>{tituloForm}</Text>
 
             <TextInput
                 style={styles.input}

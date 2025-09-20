@@ -1,15 +1,18 @@
 import { SquarePen, Trash2 } from "lucide-react-native";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
+import { useWords } from "../../context/WordsContext";
 import Favoritar from "../components/favoritar";
-import { useWords } from "../context/WordsContext";
+import Form from "../components/form";
 
 
 export default function ListaDePalavras() {
 
     const { words, loading, handleToggleFavorite, handleDelete } = useWords();
+    const [showForm, setShowForm] = useState(false)
+
 
     const swipeableRefs = useRef({});
 
@@ -58,6 +61,7 @@ export default function ListaDePalavras() {
         return (
             <TouchableOpacity
                 style={styles.editar}
+                onPress={() => setShowForm(!showForm)}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <SquarePen size={30} />
@@ -88,44 +92,50 @@ export default function ListaDePalavras() {
 
     return (
         <View style={styles.container}>
-            <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>Lista de Palavras</Text>
-            <FlatList
-                data={words}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <Swipeable
-                        ref={(ref) => (swipeableRefs.current[item.id] = ref)}
-                        renderRightActions={(progress, dragX) =>
-                            renderRightActions(progress, dragX, item.id)
-                        }
+            {!showForm && (
+                <View style={styles.container}>
+                    <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>Lista de Palavras</Text>
 
-                        renderLeftActions={(progress, dragX) =>
-                            renderLeftActions(progress, dragX, item.id)
-                        }
-                        onSwipeableWillOpen={() => closeOuthers(item.id)}
-                        rightThreshold={40}
-                        leftThreshold={40}
-                        friction={2}
-                    >
-                        <View style={styles.ItemsList}>
-                            <View style={styles.containerLeft}>
-                                <View>
-                                    <Text style={{ fontSize: 24, textAlign: 'left', width: 300, fontWeight: 'semibold', marginLeft: 10 }}>{item.title}</Text>
-                                    <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10, marginVertical: 5 }}>{item.traducao}</Text>
+                    <FlatList
+                        data={words}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <Swipeable
+                                ref={(ref) => (swipeableRefs.current[item.id] = ref)}
+                                renderRightActions={(progress, dragX) =>
+                                    renderRightActions(progress, dragX, item.id)
+                                }
+
+                                renderLeftActions={(progress, dragX) =>
+                                    renderLeftActions(progress, dragX, item.id)
+                                }
+                                onSwipeableWillOpen={() => closeOuthers(item.id)}
+                                rightThreshold={40}
+                                leftThreshold={40}
+                                friction={2}
+                            >
+                                <View style={styles.ItemsList}>
+                                    <View style={styles.containerLeft}>
+                                        <View>
+                                            <Text style={{ fontSize: 24, textAlign: 'left', width: 300, fontWeight: 'semibold', marginLeft: 10 }}>{item.title}</Text>
+                                            <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10, marginVertical: 5 }}>{item.traducao}</Text>
+                                        </View>
+                                    </View>
+                                    <Favoritar
+                                        initialChecked={item.favoritar}
+                                        onChange={() => handleToggleFavorite(item.id)}
+                                        style={{ alignItems: 'center' }}
+                                    />
+
                                 </View>
-                            </View>
-                            <Favoritar
-                                initialChecked={item.favoritar}
-                                onChange={() => handleToggleFavorite(item.id)}
-                                style={{ alignItems: 'center' }}
-                            />
+                            </Swipeable>
+                        )}
 
-                        </View>
-                    </Swipeable>
-                )}
-
-                ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
-            />
+                        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+                    />
+                </View>
+            )}
+            {showForm && <Form onClose={() => setShowForm(false)} tituloForm={'Editar Palavra'} />}
 
         </View>
     )

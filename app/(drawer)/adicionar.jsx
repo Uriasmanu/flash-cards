@@ -27,7 +27,7 @@ export default function Cards() {
 
                 </View>
             )}
-            {showForm && <Form onClose={() => setShowForm(false)} />}
+            {showForm && <Form onClose={() => setShowForm(false)} tituloForm={'Insira Uma Nova Palavra'} />}
         </View>
     );
 }
