@@ -95,8 +95,8 @@ export default function ListaDePalavras() {
                         <View style={styles.ItemsList}>
                             <View style={styles.containerLeft}>
                                 <View>
-                                    <Text style={{ fontSize: 24, textAlign: 'left', width: '100%', fontWeight: 'bold', marginLeft: 10 }}>{item.title}</Text>
-                                    <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10 }}>{item.traducao}</Text>
+                                    <Text style={{ fontSize: 24, textAlign: 'left', width: 300, fontWeight: 'semibold', marginLeft: 10 }}>{item.title}</Text>
+                                    <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10, marginVertical:5 }}>{item.traducao}</Text>
                                 </View>
                             </View>
                             <Favoritar
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         gap: 20,
-        paddingHorizontal: 10,
+        padding: 10,
+        height: '90vh',
 
     },
 
@@ -154,9 +155,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         gap: 10,
-        height: 70,
+        height: 'auto',
         borderRadius: 10,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingVertical: 10
     }
 })
