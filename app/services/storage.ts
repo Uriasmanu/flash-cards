@@ -28,4 +28,15 @@ async function loadWordsData() {
     }
 }
 
-export default { saveWordsData, loadWordsData };
+async function deleteWordData(id: number): Promise<void> {
+    try {
+        const words = await loadWordsData();
+        const filtereWords = words.filter((words: WordsItem) => words.id !== id);
+        await saveWordsData(filtereWords);
+
+    } catch (error) {
+        console.error('Erro ao deletar palavra', error)
+    }
+}
+
+export default { saveWordsData, loadWordsData, deleteWordData };

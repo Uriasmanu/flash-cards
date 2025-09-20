@@ -1,4 +1,5 @@
 import { SquarePen, Trash2 } from "lucide-react-native";
+import { useRef } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
@@ -8,7 +9,17 @@ import { useWords } from "../context/WordsContext";
 
 export default function ListaDePalavras() {
 
-    const { words, loading, handleToggleFavorite } = useWords();
+    const { words, loading, handleToggleFavorite, handleDelete } = useWords();
+
+    const swipeableRefs = useRef({});
+
+    const closeOuthers = (id) => {
+        Object.keys(swipeableRefs.current).forEach((key) => {
+            if (Number(key) !== id && swipeableRefs.current[key]) {
+                swipeableRefs.current[key].close();
+            }
+        })
+    }
 
     if (loading) {
         return (
@@ -26,6 +37,16 @@ export default function ListaDePalavras() {
             </View>
         );
     };
+
+    const onDelete = async (id) => {
+        try {
+            await handleDelete(id);
+            console.log('Palavra deletada com sucesso')
+
+        } catch (error) {
+            console.error('Erro ao deletar palavra', error)
+        }
+    }
 
     const renderRightActions = (progress, dragX, itemId) => {
         const scale = dragX.interpolate({
@@ -55,6 +76,7 @@ export default function ListaDePalavras() {
         return (
             <TouchableOpacity
                 style={styles.apagar}
+                onPress={() => onDelete(itemId)}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <Trash2 size={30} />
@@ -63,13 +85,6 @@ export default function ListaDePalavras() {
         )
     };
 
-    let swipeableRef = null;
-
-    const closeSwipeable = () => {
-        if (swipeableRef) {
-            swipeableRef.close();
-        }
-    };
 
     return (
         <View style={styles.container}>
@@ -79,7 +94,7 @@ export default function ListaDePalavras() {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <Swipeable
-                        ref={(ref) => swipeableRef = ref}
+                        ref={(ref) => (swipeableRefs.current[item.id] = ref)}
                         renderRightActions={(progress, dragX) =>
                             renderRightActions(progress, dragX, item.id)
                         }
@@ -87,7 +102,7 @@ export default function ListaDePalavras() {
                         renderLeftActions={(progress, dragX) =>
                             renderLeftActions(progress, dragX, item.id)
                         }
-                        onSwipeableWillOpen={closeSwipeable}
+                        onSwipeableWillOpen={() => closeOuthers(item.id)}
                         rightThreshold={40}
                         leftThreshold={40}
                         friction={2}
@@ -96,7 +111,7 @@ export default function ListaDePalavras() {
                             <View style={styles.containerLeft}>
                                 <View>
                                     <Text style={{ fontSize: 24, textAlign: 'left', width: 300, fontWeight: 'semibold', marginLeft: 10 }}>{item.title}</Text>
-                                    <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10, marginVertical:5 }}>{item.traducao}</Text>
+                                    <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10, marginVertical: 5 }}>{item.traducao}</Text>
                                 </View>
                             </View>
                             <Favoritar
@@ -123,7 +138,6 @@ const styles = StyleSheet.create({
         gap: 20,
         padding: 10,
         height: '90vh',
-
     },
 
     containerLeft: {
@@ -135,16 +149,17 @@ const styles = StyleSheet.create({
 
     apagar: {
         backgroundColor: '#F81111',
-        height: 70,
+        height: '100%',
         width: 60,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
+        height: '100%'
     },
 
     editar: {
         backgroundColor: '#FFD501',
-        height: 70,
+        height: '100%',
         width: 60,
         justifyContent: 'center',
         alignItems: 'center',

@@ -10,6 +10,7 @@ interface WordsContextType {
     setTraducao: React.Dispatch<React.SetStateAction<string>>;
     handleToggleFavorite: (id: number) => Promise<void>;
     handleAdd: () => Promise<boolean>;
+    handleDelete: (id: number) => Promise<void>;
 };
 
 export interface WordsItem {
@@ -87,8 +88,23 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     };
 
+    const handleDelete = async (id: number): Promise<void> => {
+        try {
+            const currentWords = await storage.loadWordsData();
+
+            const updatedWords = currentWords.filter((word: WordsItem) => word.id !== id);
+
+            await storage.saveWordsData(updatedWords);
+
+            setWords(updatedWords)
+        } catch (error) {
+            console.error('Erro ao deletar palavra', error);
+
+        }
+    }
+
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, palavra, traducao, setPalavra, setTraducao }}>
+        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, palavra, traducao, setPalavra, setTraducao }}>
             {children}
         </WordsContext.Provider>
     )
