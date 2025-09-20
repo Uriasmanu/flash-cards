@@ -5,6 +5,18 @@ import { useWords } from "../context/WordsContext";
 export default function Form({ onClose }) {
     const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
 
+    const handleSubmit = async () => {
+        try {
+            const success = await handleAdd();
+            if(success){
+                onClose();
+            }
+
+        } catch (error) {
+            console.error('Erro no formulario:', error)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.buttonFechar} onPress={onClose}>
@@ -27,7 +39,7 @@ export default function Form({ onClose }) {
                 onChangeText={setTraducao}
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleAdd}>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.buttonText}>Adicionar</Text>
             </TouchableOpacity>
         </View>

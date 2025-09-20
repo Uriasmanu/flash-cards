@@ -9,7 +9,7 @@ interface WordsContextType {
     setPalavra: React.Dispatch<React.SetStateAction<string>>;
     setTraducao: React.Dispatch<React.SetStateAction<string>>;
     handleToggleFavorite: (id: number) => Promise<void>;
-    handleAdd: () => Promise<void>;
+    handleAdd: () => Promise<boolean>;
 };
 
 export interface WordsItem {
@@ -47,26 +47,44 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         await storage.saveWordsData(updatedWords);
     };
 
-    const handleAdd = async () => {
+    const handleAdd = async (): Promise<boolean> => {
         if (!palavra || !traducao) {
             alert('Necessario preencher todos os campos');
-            return;
+            return false;
         }
 
-        const existeWords = await storage.loadWordsData();
+        try {
+            const existeWords = await storage.loadWordsData();
 
-        const nextId = existeWords.length > 0 ? Math.max(...existeWords.map((m: { id: any; }) => m.id)) + 1 : 1;
+            const nextId =
+                existeWords.length > 0
+                    ? Math.max(...existeWords.map((m: { id: any; }) => m.id)) + 1
+                    : 1;
 
-        const newWord = {
-            id: nextId,
-            title: palavra,
-            traducao: traducao,
-            favoritar: false
-        };
+            const newWord = {
+                id: nextId,
+                title: palavra,
+                traducao: traducao,
+                favoritar: false
+            };
 
-        console.log('Palavra salva: ', newWord);
+            console.log('Palavra salva: ', newWord);
 
-        await storage.saveWordsData([...existeWords, newWord]);
+            const updatedWords = [...existeWords, newWord];
+
+            await storage.saveWordsData(updatedWords);
+            setWords(updatedWords);
+
+            setPalavra("");
+            setTraducao("");
+
+            return true;
+
+        } catch (error) {
+            console.error('Erro ao adicionar palavra: ', error);
+            return false;
+        }
+
     };
 
     return (
