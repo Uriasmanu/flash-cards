@@ -1,4 +1,5 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import Swiper from "react-native-deck-swiper";
 import { useWords } from "../../context/WordsContext";
 import CardWords from "../components/CardWords";
 
@@ -30,16 +31,13 @@ export default function Inicio() {
         );
     }
 
+
+
     return (
-        <View style={{
-            marginHorizontal: 20,
-            marginVertical: 100
-        }}>
-            <FlatList
-                horizontal
-                data={filteredWords}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
+        <View style={styles.wrapper}>
+            <Swiper
+                cards={filteredWords}
+                renderCard={({ item }) => (
                     <CardWords
                         id={item.id}
                         favoritar={item.favoritar}
@@ -48,13 +46,11 @@ export default function Inicio() {
                         onToggleFavorite={handleToggleFavorite}
                     />
                 )}
-                pagingEnabled
-                showsHorizontalScrollIndicator={true}
-                snapToAlignment="start"
-                contentContainerStyle={{
-                    paddingHorizontal: 10,
-                }}
-                ItemSeparatorComponent={() => <View style={{ width: 28 }} />}
+                cardIndex={0}
+                backgroundColor="transparent"
+                stackSize={2}
+                stackSeparation={15}
+                verticalSwipe={false}
             />
 
         </View>
@@ -67,5 +63,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: 'center',
         height: '90%'
+    },
+
+    wrapper:{
+        flex: 1,
+        padding: 20,
+        marginVertical: 50
     }
 })
