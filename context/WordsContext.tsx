@@ -13,6 +13,7 @@ interface WordsContextType {
     handleAdd: () => Promise<boolean>;
     handleDelete: (id: number) => Promise<void>;
     handleUpdate: (id: number, title: string, traducao: string) => Promise<boolean>;
+    handlePontuacao: (id: number, delta: number) => Promise<void>;
 };
 
 
@@ -98,7 +99,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             console.error('Erro ao deletar palavra', error);
 
         }
-    }
+    };
 
     const handleUpdate = async (id: number, title: string, traducao: string): Promise<boolean> => {
         try {
@@ -109,13 +110,26 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             setTraducao("");
             return true;
         } catch (error) {
-            console.error('Erro ao atualiza palavra')
+            console.error('Erro ao atualiza palavra', error)
             return false;
         }
-    }
+    };
+
+    const handlePontuacao = async (id: number, delta: number) => {
+        try {
+            const updatedWords = words.map((word) =>
+                word.id === id ? { ...word, pontuacao: word.pontuacao + delta } : word
+            );
+
+            setWords(updatedWords);
+            await storage.saveWordsData(updatedWords);
+        } catch (error) {
+            console.error('Erro ao atualiza pontuação', error)
+        }
+    };
 
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate ,palavra, traducao, setPalavra, setTraducao }}>
+        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, palavra, traducao, setPalavra, setTraducao }}>
             {children}
         </WordsContext.Provider>
     )

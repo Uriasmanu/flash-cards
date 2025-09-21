@@ -6,7 +6,7 @@ import CardWords from "../components/CardWords";
 
 export default function Inicio() {
 
-    const { words, loading, handleToggleFavorite } = useWords();
+    const { words, loading, handleToggleFavorite, handlePontuacao } = useWords();
     const filteredWords = words.filter((word) => !word.favoritar)
 
     if (loading) {
@@ -37,7 +37,7 @@ export default function Inicio() {
         <View style={styles.wrapper}>
             <Swiper
                 cards={filteredWords}
-                renderCard={( item ) => (
+                renderCard={(item) => (
                     <CardWords
                         id={item.id}
                         favoritar={item.favoritar}
@@ -52,6 +52,18 @@ export default function Inicio() {
                 stackSize={3}
                 stackSeparation={15}
                 verticalSwipe={false}
+                onSwipedRight={(index) => {
+                    const card = filteredWords[index];
+                    if (card) {
+                        handlePontuacao(card.id, +1)
+                    }
+                }}
+                onSwipedLeft={(index) => {
+                    const card = filteredWords[index];
+                    if (card) {
+                        handlePontuacao(card.id, -1)
+                    }
+                }}
             />
 
         </View>
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
         height: '90%'
     },
 
-    wrapper:{
+    wrapper: {
         flex: 1,
         padding: 20,
         marginVertical: 50
