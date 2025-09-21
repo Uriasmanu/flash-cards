@@ -31,7 +31,6 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
     return (
         <Pressable onPress={flipCard}>
             <View style={styles.flipCard}>
-                <View>{pontuacao}</View>
                 <View style={styles.favoritar}>
                     <Favoritar
                         onChange={() => onToggleFavorite(id)}
@@ -60,6 +59,7 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
                         <Text style={styles.title}>{traducao}</Text>
                     </View>
                 </Animated.View>
+                <View style={{zIndex: 300}}>pontuacao: {pontuacao}</View>
             </View>
         </Pressable>
     );

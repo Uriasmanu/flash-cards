@@ -44,6 +44,7 @@ export default function Inicio() {
                         titulo={item.title}
                         traducao={item.traducao}
                         onToggleFavorite={handleToggleFavorite}
+                        pontuacao={item.pontuacao}
                     />
                 )}
                 cardIndex={0}

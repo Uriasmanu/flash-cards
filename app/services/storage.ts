@@ -1,14 +1,8 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { WordsItem } from "../types/wordsTypes";
 
 const STORAGE_KEY = 'words'
-
-export interface WordsItem {
-    id: number,
-    title: string,
-    traducao: string,
-    favoritar: boolean
-}
 
 async function saveWordsData(data: WordsItem[]): Promise<void> {
     try {

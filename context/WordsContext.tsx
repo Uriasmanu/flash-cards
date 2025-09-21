@@ -1,3 +1,4 @@
+import { WordsItem } from "@/app/types/wordsTypes";
 import { createContext, useContext, useEffect, useState } from "react";
 import storage from "../app/services/storage";
 
@@ -14,12 +15,6 @@ interface WordsContextType {
     handleUpdate: (id: number, title: string, traducao: string) => Promise<boolean>;
 };
 
-export interface WordsItem {
-    id: number,
-    title: string,
-    traducao: string,
-    favoritar: boolean
-};
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
@@ -67,7 +62,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 id: nextId,
                 title: palavra,
                 traducao: traducao,
-                favoritar: false
+                favoritar: false,
+                pontuacao: 0
             };
 
             console.log('Palavra salva: ', newWord);
