@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
+import { RotateCw } from "lucide-react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import { useWords } from "../../context/WordsContext";
 import CardWords from "../components/CardWords";
 
-
 export default function Inicio() {
 
-    const { words, loading, handleToggleFavorite, handlePontuacao } = useWords();
+    const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao } = useWords();
     const filteredWords = words.filter((word) => !word.favoritar)
 
     if (loading) {
@@ -31,10 +31,9 @@ export default function Inicio() {
         );
     }
 
-
-
     return (
         <View style={styles.wrapper}>
+
             <Swiper
                 cards={filteredWords}
                 renderCard={(item) => (
@@ -65,11 +64,15 @@ export default function Inicio() {
                     }
                 }}
             />
-
+            <TouchableOpacity
+                style={styles.buttonReset}
+                onPress={handleResetPontuacao}
+            >
+                <RotateCw size={30}/>
+            </TouchableOpacity>
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -81,6 +84,22 @@ const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
         padding: 20,
-        marginVertical: 50
+        justifyContent: 'center',
+        alignItems: 'center', 
+        marginHorizontal: 10
+    },
+
+    buttonReset: {
+        backgroundColor: '#1acf69ff',
+        padding: 10,
+        borderRadius: 50,
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignContent: 'center',
+        position: 'absolute',
+        bottom: 20, 
+        left: '50%', 
+        marginLeft: -25, 
     }
 })

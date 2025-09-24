@@ -59,7 +59,6 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
                         <Text style={styles.title}>{traducao}</Text>
                     </View>
                 </Animated.View>
-                <View style={{zIndex: 300}}>pontuacao: {pontuacao}</View>
             </View>
         </Pressable>
     );

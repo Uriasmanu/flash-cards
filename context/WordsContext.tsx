@@ -14,6 +14,7 @@ interface WordsContextType {
     handleDelete: (id: number) => Promise<void>;
     handleUpdate: (id: number, title: string, traducao: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
+    handleResetPontuacao: () => Promise<void>;
 };
 
 
@@ -128,8 +129,23 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
+     const handleResetPontuacao = async (): Promise<void> => {
+        try {
+            const updatedWords =words.map((word) => ({
+                ...word,
+                pontuacao: 0
+            }))
+
+            setWords(updatedWords);
+            await storage.saveWordsData(updatedWords);
+        } catch (error) {
+            console.error('Erro ao restaurar pontuação', error)
+        }
+
+     }
+
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, palavra, traducao, setPalavra, setTraducao }}>
+        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, palavra, traducao, setPalavra, setTraducao, handleResetPontuacao }}>
             {children}
         </WordsContext.Provider>
     )
