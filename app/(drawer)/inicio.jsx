@@ -7,7 +7,7 @@ import CardWords from "../components/CardWords";
 export default function Inicio() {
 
     const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao } = useWords();
-    const filteredWords = words.filter((word) => !word.favoritar)
+    const filteredWords = words.filter((word) => !word.favoritar && word.pontuacao === 0)
 
     if (loading) {
         return (
