@@ -15,6 +15,8 @@ interface WordsContextType {
     handleUpdate: (id: number, title: string, traducao: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
     handleResetPontuacao: () => Promise<void>;
+    countPontuacaoPositive: () => number;
+    countPontuacaoNegative: () => number;
 };
 
 
@@ -129,9 +131,9 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-     const handleResetPontuacao = async (): Promise<void> => {
+    const handleResetPontuacao = async (): Promise<void> => {
         try {
-            const updatedWords =words.map((word) => ({
+            const updatedWords = words.map((word) => ({
                 ...word,
                 pontuacao: 0
             }))
@@ -142,10 +144,18 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             console.error('Erro ao restaurar pontuação', error)
         }
 
-     }
+    };
+
+    const countPontuacaoPositive = () => {
+        return words.filter((word) => word.pontuacao === 1).length;
+    };
+
+    const countPontuacaoNegative = () => {
+        return words.filter((word) => word.pontuacao === -1).length;
+    };
 
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, palavra, traducao, setPalavra, setTraducao, handleResetPontuacao }}>
+        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative, palavra, traducao, setPalavra, setTraducao  }}>
             {children}
         </WordsContext.Provider>
     )

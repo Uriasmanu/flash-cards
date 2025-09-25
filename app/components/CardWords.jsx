@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         height: 500,
         width: 320,
+        marginTop: 10
 
     },
     flipCardInner: {

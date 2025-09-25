@@ -6,7 +6,7 @@ import CardWords from "../components/CardWords";
 
 export default function Inicio() {
 
-    const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao } = useWords();
+    const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative } = useWords();
     const filteredWords = words.filter((word) => !word.favoritar && word.pontuacao === 0)
 
     if (loading) {
@@ -24,18 +24,34 @@ export default function Inicio() {
                 <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>
                     {words.length === 0
                         ? 'Você ainda não tem nenhum card'
-                        : 'Todas as palavras foram favoritadas'
+                        : 'Voce chegou ao final da lista'
                     }
                 </Text>
+
+                <TouchableOpacity
+                    style={styles.buttonReset}
+                    onPress={handleResetPontuacao}
+                >
+                    <RotateCw size={30} />
+                </TouchableOpacity>
             </View>
         );
     }
 
     return (
         <View style={styles.wrapper}>
-
+            <Text
+                style={styles.pontoPositivo}
+            >
+                {countPontuacaoPositive()}
+            </Text>
+            <Text
+                style={styles.pontoNetivo}
+            >
+                {countPontuacaoNegative()}
+            </Text>
             <Swiper
-            key={filteredWords.length}
+                key={filteredWords.length}
                 cards={filteredWords}
                 renderCard={(item) => (
                     <CardWords
@@ -69,7 +85,7 @@ export default function Inicio() {
                 style={styles.buttonReset}
                 onPress={handleResetPontuacao}
             >
-                <RotateCw size={30}/>
+                <RotateCw size={30} />
             </TouchableOpacity>
         </View>
     )
@@ -86,8 +102,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         justifyContent: 'center',
-        alignItems: 'center', 
-        marginHorizontal: 10
+        alignItems: 'center',
+        marginHorizontal: 10,
     },
 
     buttonReset: {
@@ -99,8 +115,47 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         position: 'absolute',
-        bottom: 20, 
-        left: '50%', 
-        marginLeft: -25, 
-    }
+        bottom: 20,
+        left: '50%',
+        marginLeft: -25,
+    },
+
+    pontoPositivo: {
+        backgroundColor: '#0b9b4aff',
+        padding: 10,
+        borderBottomEndRadius: 20,
+        borderTopEndRadius: 20,
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignContent: 'center',
+        position: 'absolute',
+        top: 5,
+        left: '0%',
+        marginLeft: -25,
+        color: '#fff',
+        fontSize: 18,
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+
+    pontoNetivo: {
+        backgroundColor: '#9b0b0bff',
+        padding: 10,
+        borderBottomStartRadius: 20,
+        borderTopStartRadius: 20,
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignContent: 'center',
+        position: 'absolute',
+        top: 5,
+        right: '0%',
+        marginRight: -25,
+        color: '#fff',
+        fontSize: 18,
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+
 })
