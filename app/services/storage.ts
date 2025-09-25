@@ -1,6 +1,6 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { WordsItem } from "../types/wordsTypes";
+import WordsItem from "../types/wordsTypes";
 
 const STORAGE_KEY = 'words'
 

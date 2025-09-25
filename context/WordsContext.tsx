@@ -1,4 +1,4 @@
-import { WordsItem } from "@/app/types/wordsTypes";
+import WordsItem from "@/app/types/wordsTypes";
 import { createContext, useContext, useEffect, useState } from "react";
 import storage from "../app/services/storage";
 
