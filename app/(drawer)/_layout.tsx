@@ -4,52 +4,42 @@ import { Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { WordsProvider } from '../../context/WordsContext';
 
-
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <WordsProvider>
         <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
-
+          
           <Drawer.Screen
-            name="index"
-            options={{
-              drawerLabel: 'index',
-              title: '',
-              drawerItemStyle: { display: 'none' }
-            }}
-          />
-
-          <Drawer.Screen
-            name="inicio"
+            name="inicio/index"
             options={{
               drawerLabel: 'inicio',
               title: '',
               drawerLabelStyle: {
-                fontSize: 18
-              }
+                fontSize: 18,
+              },
             }}
           />
 
           <Drawer.Screen
-            name='adicionar'
+            name="adicionar/index"
             options={{
               drawerLabel: 'adicionar',
               title: '',
               drawerLabelStyle: {
-                fontSize: 18
-              }
+                fontSize: 18,
+              },
             }}
           />
 
           <Drawer.Screen
-            name='listaDePalavras'
+            name="listaDePalavras/index"
             options={{
               drawerLabel: 'lista de palavras',
               title: '',
               drawerLabelStyle: {
-                fontSize: 18
-              }
+                fontSize: 18,
+              },
             }}
           />
         </Drawer>

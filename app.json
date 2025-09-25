@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "fala-ingles",
-    "slug": "fala-ingles",
+    "name": "flsh-cards",
+    "slug": "flsh-cards",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "falaingles",
+    "scheme": "flshcards",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

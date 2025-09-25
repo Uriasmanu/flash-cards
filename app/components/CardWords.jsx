@@ -44,7 +44,7 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
                     ]}
                 >
                     <View style={styles.flipCardFront}>
-                        <Languages style={{ width: 90, height: 90 }} />
+                        <Languages size={90} />
                         <Text style={styles.title}>{titulo}</Text>
                     </View>
                 </Animated.View>
@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         height: 500,
         width: 320,
-        marginTop: 10
+        marginTop: 20,
+        marginHorizontal: 10
 
     },
     flipCardInner: {

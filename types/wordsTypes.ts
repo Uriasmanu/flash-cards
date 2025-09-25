@@ -1,4 +1,4 @@
-export default interface WordsItem {
+export interface WordsItem {
     id: number,
     title: string,
     traducao: string,

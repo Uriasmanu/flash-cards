@@ -1,8 +1,8 @@
 import { RotateCw } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
-import { useWords } from "../../context/WordsContext";
-import CardWords from "../components/CardWords";
+import { useWords } from "../../../context/WordsContext";
+import CardWords from "../../components/CardWords";
 
 export default function Inicio() {
 
@@ -21,6 +21,16 @@ export default function Inicio() {
 
         return (
             <View style={styles.container}>
+                <Text
+                    style={styles.pontoPositivo}
+                >
+                    {countPontuacaoPositive()}
+                </Text>
+                <Text
+                    style={styles.pontoNetivo}
+                >
+                    {countPontuacaoNegative()}
+                </Text>
                 <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>
                     {words.length === 0
                         ? 'Você ainda não tem nenhum card'
@@ -95,7 +105,8 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: 'center',
-        height: '90%'
+        height: '90%',
+        marginHorizontal: 10,
     },
 
     wrapper: {
@@ -115,8 +126,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         position: 'absolute',
-        bottom: 20,
-        left: '50%',
+        bottom: 35,
+        left: '55%',
         marginLeft: -25,
     },
 
@@ -132,7 +143,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 5,
         left: '0%',
-        marginLeft: -25,
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
@@ -151,7 +161,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 5,
         right: '0%',
-        marginRight: -25,
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',

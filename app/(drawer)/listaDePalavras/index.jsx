@@ -3,9 +3,9 @@ import { useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
-import { useWords } from "../../context/WordsContext";
-import Favoritar from "../components/favoritar";
-import Form from "../components/form";
+import { useWords } from "../../../context/WordsContext";
+import Favoritar from "../../components/favoritar";
+import Form from "../../components/form";
 
 
 export default function ListaDePalavras() {
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         gap: 10,
-        height: 'auto',
+        height: 50,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
