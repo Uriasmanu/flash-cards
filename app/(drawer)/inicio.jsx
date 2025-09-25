@@ -35,6 +35,7 @@ export default function Inicio() {
         <View style={styles.wrapper}>
 
             <Swiper
+            key={filteredWords.length}
                 cards={filteredWords}
                 renderCard={(item) => (
                     <CardWords
