@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         position: 'absolute',
         top: 5,
-        left: '0%',
+        right: '0%',
+
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         position: 'absolute',
         top: 5,
-        right: '0%',
+        left: '0%',
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
