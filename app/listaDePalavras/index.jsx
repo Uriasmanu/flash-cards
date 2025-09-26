@@ -2,9 +2,9 @@ import { SquarePen, Trash2 } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-import { useWords } from "../../../context/WordsContext";
-import Favoritar from "../../components/favoritar";
-import Form from "../../components/form";
+import { useWords } from "../../context/WordsContext";
+import Favoritar from "../components/favoritar";
+import Form from "../components/form";
 
 
 export default function ListaDePalavras() {
@@ -127,7 +127,6 @@ export default function ListaDePalavras() {
                                     <Favoritar
                                         initialChecked={item.favoritar}
                                         onChange={() => handleToggleFavorite(item.id)}
-                                        style={{ alignItems: 'center' }}
                                     />
 
                                 </View>
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: 'left',
         width: 300,
-        fontWeight: 'semibold',
+        fontWeight: 600,
         marginLeft: 10
     },
     textoTraducao: {
@@ -204,7 +203,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        height: '100%'
     },
 
     editar: {

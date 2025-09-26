@@ -1,8 +1,8 @@
 import { RotateCw } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
-import { useWords } from "../../../context/WordsContext";
-import CardWords from "../../components/CardWords";
+import { useWords } from "../../context/WordsContext";
+import CardWords from "../components/CardWords";
 
 export default function Inicio() {
 
