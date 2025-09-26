@@ -1,8 +1,7 @@
 import { SquarePen, Trash2 } from "lucide-react-native";
 import { useRef, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
 import { useWords } from "../../../context/WordsContext";
 import Favoritar from "../../components/favoritar";
 import Form from "../../components/form";
@@ -68,7 +67,7 @@ export default function ListaDePalavras() {
                 }}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
-                    <SquarePen size={30} />
+                    <SquarePen size={50} />
                 </Animated.View>
             </TouchableOpacity>
         )
@@ -87,7 +86,7 @@ export default function ListaDePalavras() {
                 onPress={() => onDelete(itemId)}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
-                    <Trash2 size={30} />
+                    <Trash2 size={80} />
                 </Animated.View>
             </TouchableOpacity>
         )
@@ -121,8 +120,8 @@ export default function ListaDePalavras() {
                                 <View style={styles.ItemsList}>
                                     <View style={styles.containerLeft}>
                                         <View>
-                                            <Text style={{ fontSize: 24, textAlign: 'left', width: 300, fontWeight: 'semibold', marginLeft: 10 }}>{item.title}</Text>
-                                            <Text style={{ fontSize: 18, color: '#757575ff', marginLeft: 10, marginVertical: 5 }}>{item.traducao}</Text>
+                                            <Text style={styles.textoTitle}>{item.title}</Text>
+                                            <Text style={styles.textoTraducao}>{item.traducao}</Text>
                                         </View>
                                     </View>
                                     <Favoritar
@@ -158,9 +157,10 @@ export default function ListaDePalavras() {
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
+        alignItems: 'center',
         gap: 20,
         padding: 10,
-        height: '90vh',
+        height: '98%',
     },
 
     containerLeft: {
@@ -168,6 +168,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 10,
         flex: 1,
+    },
+
+    ItemsList: {
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        gap: 10,
+        minHeight: 50,
+        maxHeight: 90,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        width: '100%'
+    },
+
+    textoTitle: {
+        fontSize: 24,
+        textAlign: 'left',
+        width: 300,
+        fontWeight: 'semibold',
+        marginLeft: 10
+    },
+    textoTraducao: {
+        fontSize: 18,
+        color: '#757575ff',
+        marginLeft: 10,
+        marginVertical: 5
     },
 
     apagar: {
@@ -189,14 +216,4 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
-    ItemsList: {
-        backgroundColor: '#fff',
-        flexDirection: 'row',
-        gap: 10,
-        height: 50,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 10
-    }
 })

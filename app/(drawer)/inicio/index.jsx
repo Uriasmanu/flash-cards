@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         position: 'absolute',
         bottom: 35,
-        left: '55%',
+        left: '50%',
         marginLeft: -25,
     },
 
