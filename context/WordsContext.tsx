@@ -1,6 +1,7 @@
+import storage from "@/services/storage";
 import { WordsItem } from "@/types/wordsTypes";
 import { createContext, useContext, useEffect, useState } from "react";
-import storage from "../app/services/storage";
+
 
 interface WordsContextType {
     words: WordsItem[];
