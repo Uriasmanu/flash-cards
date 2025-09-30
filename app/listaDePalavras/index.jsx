@@ -2,9 +2,10 @@ import { SquarePen, Trash2 } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import Favoritar from "../../components/favoritar";
 import { useWords } from "../../context/WordsContext";
-import Favoritar from "../components/favoritar";
-import Form from "../components/form";
+import Form from './../../components/form';
+
 
 
 export default function ListaDePalavras() {

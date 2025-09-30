@@ -12,7 +12,7 @@ export default function RootLayout() {
         <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
 
           <Drawer.Screen
-            name="inicio/index"
+            name="index"
             options={{
               drawerLabel: 'inicio',
               title: '',
