@@ -3,6 +3,7 @@ import { Drawer } from 'expo-router/drawer';
 import { Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { WordsProvider } from '../context/WordsContext';
+import AdBannerMock from './../components/ads/AdBannerMock';
 
 export default function RootLayout() {
 
@@ -12,7 +13,7 @@ export default function RootLayout() {
         <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
 
           <Drawer.Screen
-            name="index"
+            name="inicio/index"
             options={{
               drawerLabel: 'inicio',
               title: '',
@@ -44,6 +45,7 @@ export default function RootLayout() {
             }}
           />
         </Drawer>
+        <AdBannerMock/>
       </WordsProvider>
     </GestureHandlerRootView>
   );

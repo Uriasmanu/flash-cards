@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useWords } from "../context/WordsContext";
+import { useWords } from "../../context/WordsContext";
 
 
 export default function Form({ onClose, tituloForm, editingWords }) {

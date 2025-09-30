@@ -1,8 +1,8 @@
+import { useWords } from "@/context/WordsContext";
 import { RotateCw } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
-import { useWords } from "../context/WordsContext";
-import CardWords from './../components/CardWords';
+import CardWords from '../../components/layout/CardWords.jsx';
 
 
 export default function Inicio() {
@@ -98,6 +98,7 @@ export default function Inicio() {
             >
                 <RotateCw size={30} />
             </TouchableOpacity>
+            
         </View>
     )
 }
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         position: 'absolute',
         bottom: 35,
-        left: '50%',
+        left: 200,
         marginLeft: -25,
     },
 
