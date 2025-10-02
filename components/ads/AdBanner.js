@@ -1,32 +1,36 @@
-import { Platform, View } from "react-native";
-import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
-import { AD_IDS } from "../../utils/constants.js";
+import { AdMobBanner } from 'expo-ads-admob';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
-const AdBanner = () => {
-  const getAdUnitID = () => {
-    if (__DEV__) {
-      return TestIds.BANNER; // ID de teste oficial do Google
+export default function AdBanner({ forceRealAds }) {
+  const [adsActive, setAdsActive] = useState(false);
+
+  useEffect(() => {
+    // Aqui você pode verificar se deve mostrar anúncios reais
+    // forceRealAds vem do layout, por exemplo
+    if (forceRealAds) {
+      setAdsActive(true);
+    } else {
+      setAdsActive(false);
     }
+  }, [forceRealAds]);
 
-    return Platform.select({
-      ios: AD_IDS.BANNER.IOS,
-      android: AD_IDS.BANNER.ANDROID,
-      default: TestIds.BANNER,
-    });
-  };
+  if (!adsActive) {
+    // Não renderiza nada se não houver anúncios ativos
+    return null;
+  }
 
   return (
-    <View>
-      <BannerAd
-        unitId={getAdUnitID()}
-        size={BannerAdSize.BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
+    <View style={{ alignItems: 'center', height: 50 }}>
+      <AdMobBanner
+        bannerSize="fullBanner"
+        adUnitID="ca-app-pub-xxxxxxxxxxxx/xxxxxxxxxx" // Coloque seu ID real
+        servePersonalizedAds={true}
+        onDidFailToReceiveAdWithError={(err) => {
+          console.log('Ad failed:', err);
+          setAdsActive(false); // Oculta banner se não houver anúncio
         }}
-        onAdFailedToLoad={(error) => console.log("Erro ao carregar anúncio:", error)}
       />
     </View>
   );
-};
-
-export default AdBanner;
+}
