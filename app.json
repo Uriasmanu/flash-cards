@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "flash-cards",
+    "name": "Flash Cards",
     "slug": "flash-cards",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,6 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
+      "softwareKeyboardLayoutMode": "resize",
       "package": "com.uriasmanoela.flashcards"
     },
     "web": {

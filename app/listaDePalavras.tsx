@@ -47,7 +47,7 @@ export default function ListaDePalavrasScreen() {
     if (words.length === 0) {
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>
+                <Text style={{ fontSize: 24, textAlign: 'center', width: 300 }}>
                     Você ainda não tem palavras cadastradas
                 </Text>
             </View>
