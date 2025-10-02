@@ -1,10 +1,10 @@
 import { SquarePlus } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import Form from "../../components/layout/form";
+import Form from "../components/layout/form";
 
 
-export default function Cards() {
+export default function CardsScreen() {
     const [showForm, setShowForm] = useState(false)
 
     return (
@@ -28,7 +28,7 @@ export default function Cards() {
 
                 </View>
             )}
-            {showForm && <Form onClose={() => setShowForm(false)} tituloForm={'Insira Uma Nova Palavra'} />}
+            {showForm && <Form onClose={() => setShowForm(false)} tituloForm={'Insira Uma Nova Palavra'}  editingWords={null}  />}
         </View>
     );
 }

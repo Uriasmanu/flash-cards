@@ -2,10 +2,10 @@ import { useWords } from "@/context/WordsContext";
 import { RotateCw } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
-import CardWords from '../../components/layout/CardWords.jsx';
+import CardWords from '../components/layout/CardWords.jsx';
 
 
-export default function Inicio() {
+export default function InicioScreen() {
 
     const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative } = useWords();
     const filteredWords = words.filter((word) => !word.favoritar && word.pontuacao === 0)

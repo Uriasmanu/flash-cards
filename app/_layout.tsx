@@ -1,68 +1,59 @@
-import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
 import { Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import AdBannerMock from '../components/ads/AdBannerMock';
 import { WordsProvider } from '../context/WordsContext';
-import AdBannerMock from './../components/ads/AdBannerMock';
 
 export default function RootLayout() {
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <WordsProvider>
-        <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
-
+        <Drawer
+          screenOptions={{
+            headerShown: true,
+            drawerLabelStyle: {
+              fontSize: 18,
+            },
+          }}
+          drawerContent={(props) => (
+            <DrawerContentScrollView {...props}>
+              <View style={{ padding: 20 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Menu</Text>
+              </View>
+              <DrawerItemList {...props} />
+            </DrawerContentScrollView>
+          )}
+        >
+          {/* Tela inicial */}
           <Drawer.Screen
-            name="inicio/index"
+            name="index"
             options={{
-              drawerLabel: 'inicio',
-              title: '',
-              drawerLabelStyle: {
-                fontSize: 18,
-              },
+              drawerLabel: "Início",
+              title: "Flash Cards",
             }}
           />
-
+          
+          {/* Tela adicionar */}
           <Drawer.Screen
-            name="adicionar/index"
+            name="adicionar"
             options={{
-              drawerLabel: 'adicionar',
-              title: '',
-              drawerLabelStyle: {
-                fontSize: 18,
-              },
+              drawerLabel: "Adicionar Palavras",
+              title: "Adicionar Nova Palavra",
             }}
           />
-
+          
+          {/* Tela listaDePalavras */}
           <Drawer.Screen
-            name="listaDePalavras/index"
+            name="listaDePalavras"
             options={{
-              drawerLabel: 'lista de palavras',
-              title: '',
-              drawerLabelStyle: {
-                fontSize: 18,
-              },
+              drawerLabel: "Minhas Palavras",
+              title: "Lista de Palavras",
             }}
           />
         </Drawer>
-        <AdBannerMock/>
+        <AdBannerMock />
       </WordsProvider>
     </GestureHandlerRootView>
-  );
-}
-
-function CustomDrawerContent(props: DrawerContentComponentProps) {
-  const { state, descriptors, navigation, ...restProps } = props;
-  return (
-    <DrawerContentScrollView {...restProps}>
-      <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Menu</Text>
-      </View>
-      <DrawerItemList
-        state={props.state}
-        descriptors={props.descriptors}
-        navigation={props.navigation}
-      />
-    </DrawerContentScrollView>
   );
 }

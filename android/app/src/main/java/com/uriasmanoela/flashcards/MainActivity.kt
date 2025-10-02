@@ -1,4 +1,4 @@
-package com.anonymous.flshcards
+package com.uriasmanoela.flashcards
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.anonymous.flshcards
+package com.uriasmanoela.flashcards
 
 import android.app.Application
 import android.content.res.Configuration

@@ -2,57 +2,68 @@ import { SquarePen, Trash2 } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-import Form from "../../components/layout/form";
-import { useWords } from "../../context/WordsContext";
-import Favoritar from './../../components/layout/favoritar';
+import Form from "../components/layout/form";
+import { useWords } from "../context/WordsContext";
+import Favoritar from './../components/layout/favoritar';
 
+// Defina a interface para os itens da lista
+interface WordItem {
+  id: number;
+  title: string;
+  traducao: string;
+  favoritar: boolean;
+}
 
+// Tipo para as referências do Swipeable
+type SwipeableRefs = {
+  [key: number]: Swipeable | null;
+};
 
-export default function ListaDePalavras() {
-
+export default function ListaDePalavrasScreen() {
     const { words, loading, handleToggleFavorite, handleDelete } = useWords();
     const [showForm, setShowForm] = useState(false);
-    const [editingWords, setEditingWords] = useState(null)
+    const [editingWords, setEditingWords] = useState<WordItem | null>(null);
 
+    // Corrigindo a tipagem do useRef
+    const swipeableRefs = useRef<SwipeableRefs>({});
 
-    const swipeableRefs = useRef({});
-
-    const closeOuthers = (id) => {
+    const closeOuthers = (id: number) => {
         Object.keys(swipeableRefs.current).forEach((key) => {
-            if (Number(key) !== id && swipeableRefs.current[key]) {
-                swipeableRefs.current[key].close();
+            const numericKey = Number(key);
+            if (numericKey !== id && swipeableRefs.current[numericKey]) {
+                swipeableRefs.current[numericKey]?.close();
             }
-        })
-    }
+        });
+    };
 
     if (loading) {
         return (
             <View>
                 <Text>...Carregando</Text>
             </View>
-        )
-    };
-
-    if (words.length === 0) {
-
-        return (
-            <View style={styles.container}>
-                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>Você ainda não tem palavras cadastradas</Text>
-            </View>
         );
-    };
-
-    const onDelete = async (id) => {
-        try {
-            await handleDelete(id);
-            console.log('Palavra deletada com sucesso')
-
-        } catch (error) {
-            console.error('Erro ao deletar palavra', error)
-        }
     }
 
-    const renderRightActions = (progress, dragX, item) => {
+    if (words.length === 0) {
+        return (
+            <View style={styles.container}>
+                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>
+                    Você ainda não tem palavras cadastradas
+                </Text>
+            </View>
+        );
+    }
+
+    const onDelete = async (id: number) => {
+        try {
+            await handleDelete(id);
+            console.log('Palavra deletada com sucesso');
+        } catch (error) {
+            console.error('Erro ao deletar palavra', error);
+        }
+    };
+
+    const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, item: WordItem) => {
         const scale = dragX.interpolate({
             inputRange: [-100, 0],
             outputRange: [1, 0],
@@ -63,18 +74,18 @@ export default function ListaDePalavras() {
             <TouchableOpacity
                 style={styles.editar}
                 onPress={() => {
-                    setEditingWords(item)
-                    setShowForm(true)
+                    setEditingWords(item);
+                    setShowForm(true);
                 }}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
-                    <SquarePen size={50} />
+                    <SquarePen size={50} color="#000" />
                 </Animated.View>
             </TouchableOpacity>
-        )
-    }
+        );
+    };
 
-    const renderLeftActions = (progress, dragX, itemId) => {
+    const renderLeftActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, itemId: number) => {
         const scale = dragX.interpolate({
             inputRange: [0, 100],
             outputRange: [1, 0],
@@ -87,29 +98,33 @@ export default function ListaDePalavras() {
                 onPress={() => onDelete(itemId)}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
-                    <Trash2 size={80} />
+                    <Trash2 size={80} color="#FFF" />
                 </Animated.View>
             </TouchableOpacity>
-        )
+        );
     };
-
 
     return (
         <View style={styles.container}>
             {!showForm && (
                 <View style={styles.container}>
-                    <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>Lista de Palavras</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>
+                        Lista de Palavras
+                    </Text>
 
                     <FlatList
                         data={words}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <Swipeable
-                                ref={(ref) => (swipeableRefs.current[item.id] = ref)}
+                                ref={(ref) => {
+                                    if (ref) {
+                                        swipeableRefs.current[item.id] = ref;
+                                    }
+                                }}
                                 renderRightActions={(progress, dragX) =>
                                     renderRightActions(progress, dragX, item)
                                 }
-
                                 renderLeftActions={(progress, dragX) =>
                                     renderLeftActions(progress, dragX, item.id)
                                 }
@@ -129,30 +144,26 @@ export default function ListaDePalavras() {
                                         initialChecked={item.favoritar}
                                         onChange={() => handleToggleFavorite(item.id)}
                                     />
-
                                 </View>
                             </Swipeable>
                         )}
-
                         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
                     />
                 </View>
             )}
-            {showForm &&
+            {showForm && (
                 <Form
                     onClose={() => {
                         setShowForm(false);
                         setEditingWords(null);
                     }}
-
                     tituloForm={'Editar Palavra'}
                     editingWords={editingWords}
-                />}
-
+                />
+            )}
         </View>
-    )
+    );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -187,9 +198,10 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: 'left',
         width: 300,
-        fontWeight: 600,
+        fontWeight: '600', // Corrigido: string em vez de number
         marginLeft: 10
     },
+    
     textoTraducao: {
         fontSize: 18,
         color: '#757575ff',
@@ -214,5 +226,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
-
-})
+});
