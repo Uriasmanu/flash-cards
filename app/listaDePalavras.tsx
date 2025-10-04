@@ -8,15 +8,15 @@ import Favoritar from './../components/layout/favoritar';
 
 // Defina a interface para os itens da lista
 interface WordItem {
-  id: number;
-  title: string;
-  traducao: string;
-  favoritar: boolean;
+    id: number;
+    title: string;
+    traducao: string;
+    favoritar: boolean;
 }
 
 // Tipo para as referências do Swipeable
 type SwipeableRefs = {
-  [key: number]: Swipeable | null;
+    [key: number]: Swipeable | null;
 };
 
 export default function ListaDePalavrasScreen() {
@@ -35,6 +35,10 @@ export default function ListaDePalavrasScreen() {
             }
         });
     };
+
+    const sortedWords = [...words].sort((a, b) =>
+        a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' })
+    );
 
     if (loading) {
         return (
@@ -113,7 +117,7 @@ export default function ListaDePalavrasScreen() {
                     </Text>
 
                     <FlatList
-                        data={words}
+                        data={sortedWords}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <Swipeable
@@ -201,7 +205,7 @@ const styles = StyleSheet.create({
         fontWeight: '600', // Corrigido: string em vez de number
         marginLeft: 10
     },
-    
+
     textoTraducao: {
         fontSize: 18,
         color: '#757575ff',
