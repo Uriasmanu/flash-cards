@@ -130,18 +130,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         position: 'absolute',
-        bottom: '5%',
+        bottom: 5,
         left: 200,
         marginLeft: -25,
         elevation: 5,
-        zIndex: 10
+        zIndex: 10,
+        marginBottom: '4%'
     },
 
     pontoPositivo: {
         backgroundColor: '#0b9b4aff',
         padding: 10,
         borderBottomEndRadius: 20,
-        borderTopEndRadius: 20,
+        borderRadius: 5,
         width: 50,
         height: 50,
         justifyContent: 'center',
@@ -159,8 +160,7 @@ const styles = StyleSheet.create({
     pontoNetivo: {
         backgroundColor: '#9b0b0bff',
         padding: 10,
-        borderBottomStartRadius: 20,
-        borderTopStartRadius: 20,
+        borderRadius: 5,
         width: 50,
         height: 50,
         justifyContent: 'center',
