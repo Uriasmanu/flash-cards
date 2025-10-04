@@ -1,34 +1,37 @@
-import { AdMobBanner } from 'expo-ads-admob';
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Platform, View } from "react-native";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
+import { AD_IDS } from "../../utils/constants";
 
 export default function AdBanner({ forceRealAds }) {
   const [adsActive, setAdsActive] = useState(false);
 
   useEffect(() => {
-    // Aqui você pode verificar se deve mostrar anúncios reais
-    // forceRealAds vem do layout, por exemplo
-    if (forceRealAds) {
-      setAdsActive(true);
-    } else {
-      setAdsActive(false);
-    }
+    setAdsActive(forceRealAds && Platform.OS === "android");
   }, [forceRealAds]);
 
   if (!adsActive) {
-    // Não renderiza nada se não houver anúncios ativos
-    return null;
+    // Placeholder no Expo Go ou quando anúncios não estão ativos
+    return (
+      <View style={{ height: 50, alignItems: "center", justifyContent: "center" }}>
+        {/* Pode colocar texto ou só deixar vazio */}
+      </View>
+    );
   }
 
+  // Escolhe o ID correto: teste em desenvolvimento, real no build
+  const adUnitId =
+    __DEV__ ? AD_IDS.BANNER.TEST : AD_IDS.BANNER.ANDROID;
+
   return (
-    <View style={{ alignItems: 'center', height: 50 }}>
-      <AdMobBanner
-        bannerSize="fullBanner"
-        adUnitID="ca-app-pub-xxxxxxxxxxxx/xxxxxxxxxx" // Coloque seu ID real
-        servePersonalizedAds={true}
-        onDidFailToReceiveAdWithError={(err) => {
-          console.log('Ad failed:', err);
-          setAdsActive(false); // Oculta banner se não houver anúncio
+    <View style={{ alignItems: "center", marginBottom: 10 }}>
+      <BannerAd
+        unitId={adUnitId}
+        size={BannerAdSize.FULL_BANNER}
+        requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+        onAdFailedToLoad={(error) => {
+          console.log("Ad failed to load:", error);
+          setAdsActive(false); // oculta banner se falhar
         }}
       />
     </View>

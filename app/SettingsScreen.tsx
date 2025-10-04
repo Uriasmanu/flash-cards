@@ -19,30 +19,6 @@ const SettingsScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>🔔 Notificações</Text>
-          <Text style={styles.menuArrow}>›</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>🌐 Idioma</Text>
-          <Text style={styles.menuArrow}>›</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>🛡️ Segurança</Text>
-          <Text style={styles.menuArrow}>›</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Suporte</Text>
-        
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>📧 Contato</Text>
-          <Text style={styles.menuArrow}>›</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem}>
           <Text style={styles.menuText}>⭐ Avaliar App</Text>
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>

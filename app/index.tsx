@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         position: 'absolute',
-        bottom: 35,
+        bottom: '5%',
         left: 200,
         marginLeft: -25,
     },

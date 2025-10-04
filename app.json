@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.uriasmanoela.flashcards",
+      "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +20,8 @@
       },
       "edgeToEdgeEnabled": true,
       "softwareKeyboardLayoutMode": "resize",
-      "package": "com.uriasmanoela.flashcards"
+      "package": "com.uriasmanoela.flashcards",
+      "googleMobileAdsAppId": "ca-app-pub-4527741505458161~6798045581"
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +42,8 @@
       [
         "react-native-google-mobile-ads",
         {
-          "androidAppId": "ca-app-pub-4527741505458161~6798045581"
+          "androidAppId": "ca-app-pub-4527741505458161~6798045581",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511"
         }
       ]
     ],

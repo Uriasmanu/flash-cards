@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderWidth: 2,
         borderRadius: 14,
-        height: 500,
-        width: 320,
+        height: '80%',
+        width: '85%',
         marginTop: 20,
         marginHorizontal: 10
 
@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 30
+        fontSize: 30,
+        textAlign: 'center'
     },
 
     favoritar: {
