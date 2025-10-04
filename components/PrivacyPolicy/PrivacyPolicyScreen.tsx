@@ -38,7 +38,7 @@ const PrivacyPolicyScreen = () => {
 
         <Text style={styles.contact}>
           Dúvidas?{'\n'}
-          <Text style={styles.email}>seu-email@dominio.com</Text>
+          <Text style={styles.email}>maanoelaurias@gmail.com</Text>
         </Text>
       </View>
     </ScrollView>
