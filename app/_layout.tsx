@@ -5,7 +5,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { WordsProvider } from '../context/WordsContext';
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import AdBanner from './../components/ads/AdBanner';
 
 export default function RootLayout() {
   return (
@@ -48,7 +47,7 @@ export default function RootLayout() {
               </Drawer>
             </View>
             <SafeAreaView edges={["bottom"]}>
-              <AdBanner forceRealAds={true} />
+             
             </SafeAreaView>
           </View>
         </WordsProvider>
