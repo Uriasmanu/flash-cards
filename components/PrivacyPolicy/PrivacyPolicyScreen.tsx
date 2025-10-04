@@ -17,7 +17,7 @@ const PrivacyPolicyScreen = () => {
         <Text style={styles.sectionTitle}>Seus Dados São Seguros</Text>
         <Text style={styles.text}>
           • Nenhum dado pessoal coletado{'\n'}
-          • Flash cards armazenados apenas no seu dispositivo{'\n'}
+          • Flash Cards armazenados apenas no seu dispositivo{'\n'}
           • Sem contas ou cadastros necessários{'\n'}
           • Sem sincronização com nuvem
         </Text>
