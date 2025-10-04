@@ -112,9 +112,6 @@ export default function ListaDePalavrasScreen() {
         <View style={styles.container}>
             {!showForm && (
                 <View style={styles.container}>
-                    <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>
-                        Lista de Palavras
-                    </Text>
 
                     <FlatList
                         data={sortedWords}
