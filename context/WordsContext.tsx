@@ -137,10 +137,12 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             const updatedWords = words.map((word) => ({
                 ...word,
                 pontuacao: 0
-            }))
+            }));
 
-            setWords(updatedWords);
-            await storage.saveWordsData(updatedWords);
+            const shuffledWords = updatedWords.sort(() => Math.random() - 0.5)
+
+            setWords(shuffledWords);
+            await storage.saveWordsData(shuffledWords);
         } catch (error) {
             console.error('Erro ao restaurar pontuação', error)
         }

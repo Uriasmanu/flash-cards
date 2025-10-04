@@ -11,7 +11,6 @@ export default function InicioScreen() {
 
     const filteredWords = words
         .filter((word) => !word.favoritar && word.pontuacao === 0)
-        .sort(() => Math.random() - 0.5);
 
     if (loading) {
         return (
