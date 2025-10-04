@@ -11,15 +11,12 @@ export default function AdBanner({ forceRealAds }) {
   }, [forceRealAds]);
 
   if (!adsActive) {
-    // Placeholder no Expo Go ou quando anúncios não estão ativos
     return (
       <View style={{ height: 50, alignItems: "center", justifyContent: "center" }}>
-        {/* Pode colocar texto ou só deixar vazio */}
       </View>
     );
   }
 
-  // Escolhe o ID correto: teste em desenvolvimento, real no build
   const adUnitId =
     __DEV__ ? AD_IDS.BANNER.TEST : AD_IDS.BANNER.ANDROID;
 
@@ -31,7 +28,7 @@ export default function AdBanner({ forceRealAds }) {
         requestOptions={{ requestNonPersonalizedAdsOnly: true }}
         onAdFailedToLoad={(error) => {
           console.log("Ad failed to load:", error);
-          setAdsActive(false); // oculta banner se falhar
+          setAdsActive(false); 
         }}
       />
     </View>
