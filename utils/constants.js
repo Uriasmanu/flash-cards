@@ -17,3 +17,12 @@ export const COLORS = {
   WHITE: '#FFFFFF',
   BORDER: '#E0E0E0'
 };
+
+export const appConfig = {
+  version: '1.0',
+  lastUpload: '04/10/2025',
+  features: [
+    'Correção de bugs',
+    'Nova logica de exebição dos cards e da lista de palavras'
+  ]
+}
