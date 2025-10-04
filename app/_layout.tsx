@@ -1,11 +1,11 @@
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
 import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { WordsProvider } from '../context/WordsContext';
 
+import { Settings } from 'lucide-react-native';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import AdBanner from './../components/ads/AdBanner';
 
 export default function RootLayout() {
   return (
@@ -17,14 +17,22 @@ export default function RootLayout() {
               <Drawer
                 screenOptions={{
                   headerShown: true,
-                  drawerLabelStyle: { fontSize: 18 },
+                  drawerLabelStyle: { fontSize: 16 },
                 }}
                 drawerContent={(props) => (
-                  <DrawerContentScrollView {...props}>
+                  <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
                     <View style={{ padding: 20 }}>
-                      <Text style={{ fontSize: 18, fontWeight: "bold" }}>Menu</Text>
+                      <Text style={{ fontSize: 16, fontWeight: "bold" }}>Menu</Text>
                     </View>
                     <DrawerItemList {...props} />
+
+                    <View style={{ flex: 1 }} />
+
+                    <DrawerItem
+                      label="Configuração"
+                      icon={() => <Settings/>}
+                      onPress={() => props.navigation.navigate('SettingsScreen')}
+                    />
                   </DrawerContentScrollView>
                 )}
               >
@@ -40,15 +48,10 @@ export default function RootLayout() {
                   name="listaDePalavras"
                   options={{ drawerLabel: "Minhas Palavras", title: "Lista de Palavras" }}
                 />
-
-                <Drawer.Screen
-                  name="SettingsScreen"
-                  options={{ drawerLabel: "Configurações", title: "Configurações" }}
-                />
               </Drawer>
             </View>
             <SafeAreaView edges={["bottom"]}>
-              <AdBanner forceRealAds={true} />
+              {/* <AdBanner forceRealAds={true} />*/}
             </SafeAreaView>
           </View>
         </WordsProvider>
