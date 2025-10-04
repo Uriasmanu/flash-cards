@@ -1,6 +1,6 @@
 # POLÍTICA DE PRIVACIDADE - Flash Cards
 
-**Última atualização:** 25 de outubro de 2024
+**Última atualização:** 04 de outubro de 2025
 
 ## 1. INFORMAÇÕES GERAIS
 
