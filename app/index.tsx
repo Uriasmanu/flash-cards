@@ -8,7 +8,10 @@ import CardWords from '../components/layout/CardWords.jsx';
 export default function InicioScreen() {
 
     const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative } = useWords();
-    const filteredWords = words.filter((word) => !word.favoritar && word.pontuacao === 0)
+
+    const filteredWords = words
+        .filter((word) => !word.favoritar && word.pontuacao === 0)
+        .sort(() => Math.random() - 0.5);
 
     if (loading) {
         return (
@@ -98,7 +101,7 @@ export default function InicioScreen() {
             >
                 <RotateCw size={30} />
             </TouchableOpacity>
-            
+
         </View>
     )
 }
@@ -131,6 +134,8 @@ const styles = StyleSheet.create({
         bottom: '5%',
         left: 200,
         marginLeft: -25,
+        elevation: 5,
+        zIndex: 10
     },
 
     pontoPositivo: {
