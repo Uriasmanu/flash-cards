@@ -1,11 +1,24 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { appConfig } from './../utils/constants';
 
 const SettingsScreen = () => {
-  const navigation = useNavigation();
   const [showVersionInfo, setShowVersionInfo] = useState(false);
+
+  const handlePrivacyPolicy = async () => {
+    const url = 'https://uriasmanu.github.io/flash-cards/';
+
+    try {
+      const canOpen = await Linking.canOpenURL(url);
+      if (canOpen) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('Erro', 'Não foi possivel abrir link')
+      }
+    } catch (error) {
+        Alert.alert('Erro', 'Ocorreu um erro ao tentar abrir a politica de privacidade')
+    }
+  }
 
   const toggleVersionInfo = () => {
     setShowVersionInfo(!showVersionInfo);
@@ -18,13 +31,9 @@ const SettingsScreen = () => {
 
         <TouchableOpacity
           style={styles.menuItem}
+          onPress={handlePrivacyPolicy}
         >
           <Text style={styles.menuText}>📄 Política de Privacidade</Text>
-          <Text style={styles.menuArrow}>›</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>⭐ Avaliar App</Text>
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
 
