@@ -40,6 +40,11 @@ export default function RootLayout() {
                   name="listaDePalavras"
                   options={{ drawerLabel: "Minhas Palavras", title: "Lista de Palavras" }}
                 />
+
+                <Drawer.Screen
+                  name="SettingsScreen"
+                  options={{ drawerLabel: "Configurações", title: "Configurações" }}
+                />
               </Drawer>
             </View>
             <SafeAreaView edges={["bottom"]}>
@@ -57,6 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   drawerContainer: {
-    flex: 1, // Ocupa todo o espaço disponível acima do banner
+    flex: 1,
   },
 });

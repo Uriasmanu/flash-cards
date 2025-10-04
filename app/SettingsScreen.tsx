@@ -1,9 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const SettingsScreen = () => {
-  const navigation = useNavigation();
 
   return (
     <ScrollView style={styles.container}>
@@ -12,7 +10,6 @@ const SettingsScreen = () => {
         
         <TouchableOpacity 
           style={styles.menuItem}
-          onPress={() => navigation.navigate('PrivacyPolicy' as never)}
         >
           <Text style={styles.menuText}>📄 Política de Privacidade</Text>
           <Text style={styles.menuArrow}>›</Text>
