@@ -1,14 +1,14 @@
 import { SquarePlus } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
 import Form from "../components/layout/form";
 import Sucesso from './../components/layout/sucesso';
@@ -68,7 +68,7 @@ export default function CardsScreen() {
               style={({ pressed }) => [
                 styles.addButton,
                 {
-                  backgroundColor: pressed ? "#f5f5f5" : "#ccc",
+                  backgroundColor: pressed ? "#f5f5f5" : "#e8e8e8ff",
                 },
               ]}
             >
@@ -105,7 +105,7 @@ export default function CardsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ccc",
+    backgroundColor: "#e8e8e8ff",
     alignItems: "center",
   },
   scrollContainer: {

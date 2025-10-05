@@ -1,11 +1,11 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
+import { Settings } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { WordsProvider } from '../context/WordsContext';
-
-import { Settings } from 'lucide-react-native';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { WordsProvider } from '../context/WordsContext';
+import AdBanner from './../components/ads/AdBanner';
 
 export default function RootLayout() {
   return (
@@ -46,12 +46,17 @@ export default function RootLayout() {
                 />
                 <Drawer.Screen
                   name="listaDePalavras"
-                  options={{ drawerLabel: "Minhas Palavras", title: "Lista de Palavras" }}
+                  options={{ drawerLabel: "Lista De Palavra", title: "Lista de Palavras" }}
+                />
+
+                <Drawer.Screen
+                  name="SettingsScreen"
+                  options={{ drawerLabel: () => null, drawerItemStyle: {display: 'none'} }}
                 />
               </Drawer>
             </View>
             <SafeAreaView edges={["bottom"]}>
-              {/* <AdBanner forceRealAds={true} />*/}
+              <AdBanner forceRealAds={true} />
             </SafeAreaView>
           </View>
         </WordsProvider>

@@ -1,5 +1,6 @@
 import { useWords } from "@/context/WordsContext";
-import { RotateCw } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { Plus, RotateCw } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import CardWords from '../components/layout/CardWords.jsx';
@@ -8,6 +9,7 @@ import CardWords from '../components/layout/CardWords.jsx';
 export default function InicioScreen() {
 
     const { words, loading, handleToggleFavorite, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative } = useWords();
+    const router = useRouter();
 
     const filteredWords = words
         .filter((word) => !word.favoritar && word.pontuacao === 0)
@@ -34,19 +36,32 @@ export default function InicioScreen() {
                 >
                     {countPontuacaoNegative()}
                 </Text>
-                <Text style={{ fontSize: 24, textAlign: 'center', width: 250 }}>
+
+                <Text style={styles.textoCentral}>
                     {words.length === 0
-                        ? 'Você ainda não tem nenhum card'
+                        ? 'Adicione o seu primeiro card'
                         : 'Voce chegou ao final da lista'
                     }
                 </Text>
 
-                <TouchableOpacity
-                    style={styles.buttonReset}
-                    onPress={handleResetPontuacao}
-                >
-                    <RotateCw size={30} />
-                </TouchableOpacity>
+                {words.length === 0 && (
+                    <TouchableOpacity
+                        style={styles.buttonAdd}
+                        onPress={() => router.push('/adicionar')}
+                    >
+                        <Plus size={28} />
+                    </TouchableOpacity>
+                )}
+
+                {words.length > 0 && (
+                    <TouchableOpacity
+                        style={styles.buttonReset}
+                        onPress={handleResetPontuacao}
+                    >
+                        <RotateCw size={28} />
+                    </TouchableOpacity>
+                )}
+
             </View>
         );
     }
@@ -138,6 +153,22 @@ const styles = StyleSheet.create({
         marginBottom: '4%'
     },
 
+    buttonAdd: {
+        backgroundColor: '#1acf69ff',
+        padding: 10,
+        borderRadius: 50,
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignContent: 'center',
+        position: 'absolute',
+        marginTop: '40%',
+        left: 200,
+        marginLeft: -25,
+        elevation: 5,
+        zIndex: 10,
+    },
+
     pontoPositivo: {
         backgroundColor: '#0b9b4aff',
         padding: 10,
@@ -150,7 +181,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 5,
         right: '0%',
-
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
@@ -173,5 +203,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold'
     },
+
+    textoCentral: {
+        fontSize: 24,
+        textAlign: 'center',
+        width: 250
+    }
 
 })
