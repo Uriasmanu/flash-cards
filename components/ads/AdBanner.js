@@ -5,6 +5,7 @@ import { AD_IDS } from "../../utils/constants";
 
 export default function AdBanner({ forceRealAds }) {
   const [adsActive, setAdsActive] = useState(false);
+  const { width } = Dimensions.get("window");
 
   useEffect(() => {
     setAdsActive(forceRealAds && Platform.OS === "android");
@@ -12,23 +13,23 @@ export default function AdBanner({ forceRealAds }) {
 
   if (!adsActive) {
     return (
-      <View style={{ height: 50, alignItems: "center", justifyContent: "center" }}>
-      </View>
+      <View
+        style={{ height: 50, alignItems: "center", justifyContent: "center" }}
+      ></View>
     );
   }
 
-  const adUnitId =
-    __DEV__ ? AD_IDS.BANNER.TEST : AD_IDS.BANNER.ANDROID;
+  const adUnitId = __DEV__ ? AD_IDS.BANNER.TEST : AD_IDS.BANNER.ANDROID;
 
   return (
     <View style={{ alignItems: "center", marginBottom: 10 }}>
       <BannerAd
         unitId={adUnitId}
-        size={BannerAdSize.FULL_BANNER}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER(width)}
         requestOptions={{ requestNonPersonalizedAdsOnly: true }}
         onAdFailedToLoad={(error) => {
           console.log("Ad failed to load:", error);
-          setAdsActive(false); 
+          setAdsActive(false);
         }}
       />
     </View>
