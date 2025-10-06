@@ -45,7 +45,7 @@ export default function InicioScreen() {
                         style={styles.buttonAdd}
                         onPress={() => router.push('/adicionar')}
                     >
-                        <Plus size={28} color="#fff" />
+                        <Plus size={35} color="#fff" />
                     </TouchableOpacity>
                 )}
 
@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         flex: 1,
-        justifyContent: 'center', // centraliza verticalmente
-        alignItems: 'center',     // centraliza horizontalmente
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     swiperContainer: {
         justifyContent: 'center',
@@ -140,21 +140,22 @@ const styles = StyleSheet.create({
         bottom: 20,
         elevation: 5,
         zIndex: 10,
-        alignSelf: 'center', // centraliza horizontalmente
+        alignSelf: 'center',
     },
     buttonAdd: {
         backgroundColor: '#1acf69ff',
         padding: 10,
         borderRadius: 50,
-        width: 50,
-        height: 50,
+        width: 90,
+        height: 90,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        top: '40%',
+        bottom: 20, 
+        right: 20, 
         elevation: 5,
         zIndex: 10,
-        alignSelf: 'center', // centraliza horizontalmente
+
     },
     pontoPositivo: {
         backgroundColor: '#0b9b4aff',
