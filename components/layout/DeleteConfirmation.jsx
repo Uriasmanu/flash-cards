@@ -50,7 +50,6 @@ export default function DeleteConfirmation({ title, mensagem, onCancel, onConfir
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ffffff4a',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

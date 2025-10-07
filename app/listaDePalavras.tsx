@@ -130,7 +130,6 @@ export default function ListaDePalavrasScreen() {
         <View style={styles.container}>
             {!showForm && (
                 <View style={styles.container}>
-
                     <FlatList
                         data={sortedWords}
                         keyExtractor={(item) => item.id.toString()}
@@ -168,13 +167,16 @@ export default function ListaDePalavrasScreen() {
                         )}
                         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
                     />
+
                     {showDeleteModal && (
-                        <DeleteConfirmation
-                            title={'Você Tem Certeza?'}
-                            mensagem={"Tem certeza que quer apagar?"}
-                            onCancel={onCancelDelete}
-                            onConfirm={onConfirmDelete}
-                        />
+                        <View style={styles.overlay}>
+                            <DeleteConfirmation
+                                title={'Você Tem Certeza?'}
+                                mensagem={"Tem certeza que quer apagar?"}
+                                onCancel={onCancelDelete}
+                                onConfirm={onConfirmDelete}
+                            />
+                        </View>
                     )}
                 </View>
             )}
@@ -252,5 +254,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
+    },
+
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 10,
     },
 });
