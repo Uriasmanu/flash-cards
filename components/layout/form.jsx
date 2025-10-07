@@ -51,7 +51,7 @@ export default function Form({ onClose, tituloForm, editingWords }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Tradução"
+                placeholder="Significado"
                 value={traducao}
                 onChangeText={setTraducao}
             />

@@ -4,6 +4,7 @@ import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "re
 import { Swipeable } from "react-native-gesture-handler";
 import Form from "../components/layout/form";
 import { useWords } from "../context/WordsContext";
+import DeleteConfirmation from './../components/layout/DeleteConfirmation';
 import Favoritar from './../components/layout/favoritar';
 
 // Defina a interface para os itens da lista
@@ -150,6 +151,7 @@ export default function ListaDePalavrasScreen() {
                         )}
                         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
                     />
+                    <DeleteConfirmation title={'Você Tem Certeza?'} mensagem={"Tem certeza que quer apagar?"}/>
                 </View>
             )}
             {showForm && (
