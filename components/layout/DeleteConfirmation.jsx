@@ -1,7 +1,7 @@
 import { Trash2 } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function DeleteConfirmation({ title, mensagem }) {
+export default function DeleteConfirmation({ title, mensagem, onCancel, onConfirm }) {
 
     return (
         <View style={styles.container}>
@@ -17,14 +17,28 @@ export default function DeleteConfirmation({ title, mensagem }) {
                 </View>
                 <View style={styles.Containerbuttons}>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={styles.cancelButton}>
-                            <Text style={styles.cancelButtonText}>Cancelar</Text>
+                        <TouchableOpacity
+                            style={styles.cancelButton}
+                            onPress={onCancel}
+                        >
+                            <Text
+                                style={styles.cancelButtonText}
+                            >
+                                Cancelar
+                            </Text>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={styles.confirmButton}>
-                            <Text style={styles.confirmButtonText}>Confirmar</Text>
+                        <TouchableOpacity
+                            style={styles.confirmButton}
+                            onPress={onConfirm}
+                        >
+                            <Text
+                                style={styles.confirmButtonText}
+                            >
+                                Confirmar
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -88,7 +102,7 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         paddingHorizontal: 8
     },
-    Containerbuttons:{
+    Containerbuttons: {
         gap: 15
     },
     buttonsContainer: {
@@ -112,7 +126,8 @@ const styles = StyleSheet.create({
     cancelButtonText: {
         color: '#e5e7eb',
         fontSize: 16,
-        fontWeight: '600'
+        fontWeight: '600',
+        cursor: 'pointer'
     },
 
     confirmButton: {

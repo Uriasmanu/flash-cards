@@ -23,7 +23,9 @@ type SwipeableRefs = {
 export default function ListaDePalavrasScreen() {
     const { words, loading, handleToggleFavorite, handleDelete } = useWords();
     const [showForm, setShowForm] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [editingWords, setEditingWords] = useState<WordItem | null>(null);
+    const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
     // Corrigindo a tipagem do useRef
     const swipeableRefs = useRef<SwipeableRefs>({});
@@ -40,6 +42,30 @@ export default function ListaDePalavrasScreen() {
     const sortedWords = [...words].sort((a, b) =>
         a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' })
     );
+
+    const handleDeleteClick = (id: number) => {
+        setSelectedItemId(id);
+        setShowDeleteModal(true);
+    };
+
+    const onConfirmDelete = async () => {
+        if (selectedItemId) {
+            try {
+                await handleDelete(selectedItemId);
+                console.log('Palavra deletada com sucesso');
+            } catch (error) {
+                console.error('Erro ao deletar palavra', error);
+            } finally {
+                setShowDeleteModal(false);
+                setSelectedItemId(null);
+            }
+        }
+    };
+
+    const onCancelDelete = () => {
+        setShowDeleteModal(false);
+        setSelectedItemId(null);
+    };
 
     if (loading) {
         return (
@@ -58,15 +84,6 @@ export default function ListaDePalavrasScreen() {
             </View>
         );
     }
-
-    const onDelete = async (id: number) => {
-        try {
-            await handleDelete(id);
-            console.log('Palavra deletada com sucesso');
-        } catch (error) {
-            console.error('Erro ao deletar palavra', error);
-        }
-    };
 
     const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, item: WordItem) => {
         const scale = dragX.interpolate({
@@ -100,7 +117,7 @@ export default function ListaDePalavrasScreen() {
         return (
             <TouchableOpacity
                 style={styles.apagar}
-                onPress={() => onDelete(itemId)}
+                onPress={() => handleDeleteClick(itemId)}
             >
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <Trash2 size={80} color="#FFF" />
@@ -151,7 +168,14 @@ export default function ListaDePalavrasScreen() {
                         )}
                         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
                     />
-                    <DeleteConfirmation title={'Você Tem Certeza?'} mensagem={"Tem certeza que quer apagar?"}/>
+                    {showDeleteModal && (
+                        <DeleteConfirmation
+                            title={'Você Tem Certeza?'}
+                            mensagem={"Tem certeza que quer apagar?"}
+                            onCancel={onCancelDelete}
+                            onConfirm={onConfirmDelete}
+                        />
+                    )}
                 </View>
             )}
             {showForm && (
@@ -201,7 +225,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: 'left',
         width: 300,
-        fontWeight: '600', // Corrigido: string em vez de number
+        fontWeight: '600',
         marginLeft: 10
     },
 
