@@ -33,7 +33,7 @@ const SettingsScreen = () => {
           style={styles.menuItem}
           onPress={handlePrivacyPolicy}
         >
-          <Text style={styles.menuText}>📄 Política de Privacidade</Text>
+          <Text style={styles.menuText}>Política de Privacidade</Text>
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
 
@@ -43,7 +43,7 @@ const SettingsScreen = () => {
             style={styles.accordionHeader}
             onPress={toggleVersionInfo}
           >
-            <Text style={styles.menuText}>🔄 Atualizações</Text>
+            <Text style={styles.menuText}>Atualizações</Text>
             <View style={styles.headerRight}>
               <Text style={styles.versionText}>v {appConfig.version}</Text>
               <Text style={[styles.accordionArrow, showVersionInfo && styles.accordionArrowOpen]}>

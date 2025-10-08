@@ -19,7 +19,7 @@ export const COLORS = {
 };
 
 export const appConfig = {
-  version: '9 (1.2.0)',
+  version: '2.0',
   lastUpload: '04/10/2025',
   features: [
     'Correção de bugs',
