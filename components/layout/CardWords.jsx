@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Animated, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Favoritar from './favoritar';
 
 import iconeCard from '../../assets/images/cardIcon.png';
@@ -46,7 +46,9 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
                 >
                     <View style={styles.flipCardFront}>
                         <Image source={iconeCard} style={{ width: 300, height: 300 }} />
-                        <Text style={styles.title}>{titulo}</Text>
+                        <ScrollView style={styles.titleWrapper}>
+                            <Text style={styles.title}>{titulo}</Text>
+                        </ScrollView>
                     </View>
                 </Animated.View>
                 <Animated.View
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderWidth: 2,
         borderRadius: 14,
-        height: '75%',
+        height: '78%',
         marginTop: 20,
         marginHorizontal: 10,
         borderColor: '#b8860b'
@@ -105,6 +107,13 @@ const styles = StyleSheet.create({
         borderColor: "coral",
         borderRadius: 16,
         padding: 10,
+    },
+
+    titleWrapper: {
+        maxHeight: 150,
+        width: '100%',
+        overflow: 'hidden',
+
     },
 
     title: {
