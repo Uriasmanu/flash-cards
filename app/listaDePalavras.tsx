@@ -214,29 +214,28 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         gap: 10,
-        minHeight: 50,
-        maxHeight: 90,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingVertical: 10,
-        width: '100%'
+        paddingHorizontal: 10,
+        width: '100%',
     },
 
     textoTitle: {
         fontSize: 24,
         textAlign: 'left',
-        width: 300,
         fontWeight: '600',
-        marginLeft: 10
+        marginBottom: 5, 
+        flexShrink: 1, 
     },
 
     textoTraducao: {
         fontSize: 18,
         color: '#757575ff',
-        marginLeft: 10,
-        marginVertical: 5
+        flexShrink: 1, 
     },
+
 
     apagar: {
         backgroundColor: '#F81111',

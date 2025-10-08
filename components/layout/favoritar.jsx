@@ -29,7 +29,7 @@ export default function Favoritar({ initialChecked, onChange }) {
             >
                 <Svg
                     xmlns="http://www.w3.org/2000/svg"
-                    fill={isChecked ? "#ffee02ff" : "none"}
+                    fill={isChecked ? '#ede275' : "none"}
                     viewBox="0 0 75 100"
                     style={styles.pin}
                 >

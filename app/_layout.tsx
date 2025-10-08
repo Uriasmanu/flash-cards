@@ -53,7 +53,11 @@ export default function RootLayout() {
 
                   <Drawer.Screen
                     name="SettingsScreen"
-                    options={{ drawerLabel: () => null, drawerItemStyle: { display: 'none' } }}
+                    options={{
+                      drawerLabel: () => null,
+                      drawerItemStyle: { display: 'none' },
+                      title: "Configuração",
+                    }}
                   />
                 </Drawer>
               </View>

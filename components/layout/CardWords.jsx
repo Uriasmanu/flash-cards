@@ -1,7 +1,8 @@
-import { Languages } from "lucide-react-native";
 import { useState } from "react";
-import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
+import { Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Favoritar from './favoritar';
+
+import iconeCard from '../../assets/images/cardIcon.png';
 
 
 export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, onToggleFavorite }) {
@@ -44,7 +45,7 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
                     ]}
                 >
                     <View style={styles.flipCardFront}>
-                        <Languages size={90} />
+                        <Image source={iconeCard} style={{ width: 300, height: 300 }} />
                         <Text style={styles.title}>{titulo}</Text>
                     </View>
                 </Animated.View>
@@ -56,7 +57,7 @@ export default function CardWords({ id, favoritar, titulo, traducao, pontuacao, 
                     ]}
                 >
                     <View style={styles.flipCardBack}>
-                        <Text style={styles.title}>{traducao}</Text>
+                        <Text style={styles.description}>{traducao}</Text>
                     </View>
                 </Animated.View>
             </View>
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         height: '75%',
         marginTop: 20,
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        borderColor: '#b8860b'
 
     },
     flipCardInner: {
@@ -93,13 +95,12 @@ const styles = StyleSheet.create({
         borderColor: "coral",
         borderRadius: 16,
         padding: 10,
-        gap: 40
     },
     flipCardBack: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#566752ff",
+        backgroundColor: "#1a1a1a",
         borderWidth: 1,
         borderColor: "coral",
         borderRadius: 16,
@@ -108,7 +109,15 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 30,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginBottom: 10
+    },
+
+    description: {
+        fontSize: 30,
+        textAlign: 'center',
+        marginBottom: 10,
+        color: '#faf0e6'
     },
 
     favoritar: {

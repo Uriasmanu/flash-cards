@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     buttonReset: {
-        backgroundColor: '#1acf69ff',
+        backgroundColor: '#120a8f',
         padding: 10,
         borderRadius: 50,
         width: 50,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
 
     },
     pontoPositivo: {
-        backgroundColor: '#0b9b4aff',
+        backgroundColor: '#556b2f',
         padding: 10,
         borderBottomEndRadius: 20,
         borderRadius: 5,
@@ -172,10 +172,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginRight: 5
     },
     pontoNegativo: {
-        backgroundColor: '#9b0b0bff',
+        backgroundColor: '#b93939ff',
         padding: 10,
         borderRadius: 5,
         width: 50,
@@ -188,7 +189,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginLeft: 5
     },
     textoCentral: {
         fontSize: 24,
