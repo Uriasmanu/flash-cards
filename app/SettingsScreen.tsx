@@ -1,9 +1,50 @@
-import React, { useState } from 'react';
-import { Alert, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNotification } from '@/context/NotificationContext';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Linking,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import { appConfig } from './../utils/constants';
 
 const SettingsScreen = () => {
   const [showVersionInfo, setShowVersionInfo] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [tempTime, setTempTime] = useState(new Date());
+  
+  const {
+    hasPermission,
+    isNotificationEnabled,
+    notificationTime,
+    updateNotificationTime,
+    toggleNotifications,
+    getNotificationScheduleStatus,
+    requestPermissions,
+    sendTestNotification
+  } = useNotification();
+
+  const [scheduleStatus, setScheduleStatus] = useState({
+    isEnabled: false,
+    scheduledTime: { hour: 19, minute: 0 },
+    hasScheduledNotifications: false
+  });
+
+  useEffect(() => {
+    loadNotificationStatus();
+  }, []);
+
+  const loadNotificationStatus = async () => {
+    const status = await getNotificationScheduleStatus();
+    setScheduleStatus(status);
+  };
 
   const handlePrivacyPolicy = async () => {
     const url = 'https://uriasmanu.github.io/flash-cards/';
@@ -18,16 +59,121 @@ const SettingsScreen = () => {
     } catch (error) {
         Alert.alert('Erro', 'Ocorreu um erro ao tentar abrir a politica de privacidade')
     }
-  }
+  };
+
+  const handleNotificationToggle = async (enabled: boolean) => {
+    if (enabled && !hasPermission) {
+      const granted = await requestPermissions();
+      if (!granted) {
+        Alert.alert('Permissão Necessária', 'Para ativar as notificações, é necessário conceder permissão.');
+        return;
+      }
+    }
+
+    const result = await toggleNotifications(enabled);
+    if (result.success) {
+      await loadNotificationStatus();
+      Alert.alert(
+        'Sucesso', 
+        enabled ? 'Lembretes ativados!' : 'Lembretes desativados!'
+      );
+    } else {
+      Alert.alert('Erro', 'Não foi possível alterar as configurações de notificação.');
+    }
+  };
+
+  const handleTimeChange = async (event: any, selectedTime?: Date) => {
+    setShowTimePicker(false);
+    
+    if (selectedTime) {
+      const hour = selectedTime.getHours();
+      const minute = selectedTime.getMinutes();
+      
+      setTempTime(selectedTime);
+      
+      const result = await updateNotificationTime(hour, minute);
+      if (result.success) {
+        await loadNotificationStatus();
+        Alert.alert('Sucesso', `Lembrete definido para ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`);
+      } else {
+        Alert.alert('Erro', 'Não foi possível atualizar o horário do lembrete.');
+      }
+    }
+  };
+
+  const showTimePickerModal = () => {
+    // Configurar o tempo atual para o horário salvo
+    const currentTime = new Date();
+    currentTime.setHours(notificationTime.hour);
+    currentTime.setMinutes(notificationTime.minute);
+    setTempTime(currentTime);
+    setShowTimePicker(true);
+  };
 
   const toggleVersionInfo = () => {
     setShowVersionInfo(!showVersionInfo);
+  };
+
+  const formatTime = (hour: number, minute: number) => {
+    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Configurações</Text>
+
+        {/* Configurações de Notificação */}
+        <View style={styles.notificationSection}>
+          <Text style={styles.subsectionTitle}>Lembretes de Estudo</Text>
+          
+          {/* Toggle para ativar/desativar notificações */}
+          <View style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingTitle}>Lembretes diários</Text>
+              <Text style={styles.settingDescription}>
+                Receba um lembrete para estudar todos os dias
+              </Text>
+            </View>
+            <Switch
+              value={isNotificationEnabled}
+              onValueChange={handleNotificationToggle}
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isNotificationEnabled ? '#2196F3' : '#f4f3f4'}
+            />
+          </View>
+
+          {/* Configuração de horário */}
+          <TouchableOpacity 
+            style={[
+              styles.settingItem, 
+              !isNotificationEnabled && styles.settingItemDisabled
+            ]} 
+            onPress={showTimePickerModal}
+            disabled={!isNotificationEnabled}
+          >
+            <View style={styles.settingInfo}>
+              <Text style={[
+                styles.settingTitle,
+                !isNotificationEnabled && styles.settingTextDisabled
+              ]}>
+                Horário do lembrete
+              </Text>
+              <Text style={[
+                styles.settingDescription,
+                !isNotificationEnabled && styles.settingTextDisabled
+              ]}>
+                {formatTime(notificationTime.hour, notificationTime.minute)}
+              </Text>
+            </View>
+            <Text style={[
+              styles.menuArrow,
+              !isNotificationEnabled && styles.settingTextDisabled
+            ]}>
+              ›
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity
           style={styles.menuItem}
@@ -70,7 +216,7 @@ const SettingsScreen = () => {
                 <View style={styles.versionDetailFeature}>
                   <Text style={styles.versionLabel}>Novidades:</Text>
                   <View style={styles.featuresList}>
-                    {appConfig.features.map((feature, index) => (
+                    {appConfig.features.map((feature: string, index: number) => (
                       <Text key={index} style={styles.featureItem}>
                         • {feature}
                       </Text>
@@ -82,6 +228,44 @@ const SettingsScreen = () => {
           )}
         </View>
       </View>
+
+      {/* Modal do Time Picker */}
+      <Modal
+        visible={showTimePicker}
+        transparent={true}
+        animationType="slide"
+      >
+        <TouchableWithoutFeedback onPress={() => setShowTimePicker(false)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.timePickerContainer}>
+                <Text style={styles.timePickerTitle}>Escolha o horário</Text>
+                <DateTimePicker
+                  value={tempTime}
+                  mode="time"
+                  display="spinner"
+                  onChange={handleTimeChange}
+                  style={styles.timePicker}
+                />
+                <View style={styles.timePickerButtons}>
+                  <TouchableOpacity 
+                    style={styles.cancelButton}
+                    onPress={() => setShowTimePicker(false)}
+                  >
+                    <Text style={styles.cancelButtonText}>Cancelar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.confirmButton}
+                    onPress={() => handleTimeChange(null, tempTime)}
+                  >
+                    <Text style={styles.confirmButtonText}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </ScrollView>
   );
 };
@@ -102,6 +286,49 @@ const styles = StyleSheet.create({
     color: '#666',
     marginVertical: 12,
     textTransform: 'uppercase',
+  },
+  notificationSection: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  subsectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#444',
+    marginTop: 8,
+    marginBottom: 12,
+    textTransform: 'uppercase',
+  },
+  settingItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  settingItemDisabled: {
+    opacity: 0.5,
+  },
+  settingInfo: {
+    flex: 1,
+    marginRight: 12,
+  },
+  settingTitle: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  settingDescription: {
+    fontSize: 14,
+    color: '#666',
+  },
+  settingTextDisabled: {
+    color: '#999',
+  },
+  testButton: {
+    fontSize: 20,
   },
   menuItem: {
     flexDirection: 'row',
@@ -194,9 +421,54 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 4,
   },
-  checkUpdateText: {
-    color: '#fff',
-    fontSize: 14,
+  // Estilos do Modal e Time Picker
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timePickerContainer: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 20,
+    width: '85%',
+    alignItems: 'center',
+  },
+  timePickerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
+    color: '#333',
+  },
+  timePicker: {
+    width: '100%',
+    height: 160,
+  },
+  timePickerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 16,
+  },
+  cancelButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: '#f0f0f0',
+  },
+  cancelButtonText: {
+    color: '#666',
+    fontWeight: '600',
+  },
+  confirmButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: '#2196F3',
+  },
+  confirmButtonText: {
+    color: 'white',
     fontWeight: '600',
   },
 });
