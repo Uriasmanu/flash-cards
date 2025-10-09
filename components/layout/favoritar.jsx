@@ -35,7 +35,7 @@ export default function Favoritar({ initialChecked, onChange }) {
                 >
                     <Line
                         strokeWidth="12"
-                        stroke={isChecked ? "#000000ff" : "black"}
+                        stroke={isChecked ? "#b8860b" : "#b8860b"}
                         y2="100"
                         x2="37"
                         y1="64"
@@ -43,7 +43,7 @@ export default function Favoritar({ initialChecked, onChange }) {
                     />
                     <Path
                         strokeWidth="10"
-                        stroke={isChecked ? "#000000ff" : "black"}
+                        stroke={isChecked ? "#b8860b" : "#b8860b"}
                         d="M16.5 36V4.5H58.5V36V53.75V54.9752L59.1862 55.9903L66.9674 67.5H8.03256L15.8138 55.9903L16.5 54.9752V53.75V36Z"
                     />
                 </Svg>

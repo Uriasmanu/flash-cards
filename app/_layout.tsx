@@ -40,11 +40,11 @@ export default function RootLayout() {
                 >
                   <Drawer.Screen
                     name="index"
-                    options={{ drawerLabel: "Início", title: "Flash Cards" }}
+                    options={{ drawerLabel: "Flash Cards", title: "Flash Cards" }}
                   />
                   <Drawer.Screen
                     name="adicionar"
-                    options={{ drawerLabel: "Adicionar Palavras", title: "Adicionar Nova Palavra" }}
+                    options={{ drawerLabel: "Adiciona Palavras", title: "Nova Palavra" }}
                   />
                   <Drawer.Screen
                     name="listaDePalavras"

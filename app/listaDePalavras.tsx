@@ -26,6 +26,7 @@ export default function ListaDePalavrasScreen() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [editingWords, setEditingWords] = useState<WordItem | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+      const { setPalavra, setTraducao } = useWords();
 
     // Corrigindo a tipagem do useRef
     const swipeableRefs = useRef<SwipeableRefs>({});
@@ -185,10 +186,13 @@ export default function ListaDePalavrasScreen() {
                     onClose={() => {
                         setShowForm(false);
                         setEditingWords(null);
+                        setPalavra('');
+                        setTraducao('');
                     }}
                     tituloForm={'Editar Palavra'}
                     editingWords={editingWords}
                 />
+
             )}
         </View>
     );
@@ -226,14 +230,14 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: 'left',
         fontWeight: '600',
-        marginBottom: 5, 
-        flexShrink: 1, 
+        marginBottom: 5,
+        flexShrink: 1,
     },
 
     textoTraducao: {
         fontSize: 18,
         color: '#757575ff',
-        flexShrink: 1, 
+        flexShrink: 1,
     },
 
 
