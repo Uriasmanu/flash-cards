@@ -1,10 +1,20 @@
-import { useEffect } from "react";
+import i18n from "@/locates";
+import { Picker } from '@react-native-picker/picker';
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useWords } from "../../context/WordsContext";
 
-
 export default function Form({ onClose, tituloForm, editingWords }) {
     const { handleAdd, handleUpdate, palavra, traducao, setPalavra, setTraducao } = useWords();
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const categories = [
+        { label: 'Selecione uma categoria', value: '' },
+        { label: 'Verbos', value: 'verbos' },
+        { label: 'Substantivos', value: 'substantivos' },
+        { label: 'Adjetivos', value: 'adjetivos' },
+        { label: 'Expressões', value: 'expressoes' },
+    ];
 
     useEffect(() => {
         if (editingWords) {
@@ -41,6 +51,26 @@ export default function Form({ onClose, tituloForm, editingWords }) {
             </TouchableOpacity>
 
             <Text style={styles.title}>{tituloForm}</Text>
+
+            {/* Dropdown de Categoria */}
+            <View style={styles.dropdownContainer}>
+                <Text style={styles.dropdownLabel}>{i18n.t('adicionar.categoria')}</Text>
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={selectedCategory}
+                        onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+                        style={styles.picker}
+                    >
+                        {categories.map((category) => (
+                            <Picker.Item
+                                key={category.value}
+                                label={category.label}
+                                value={category.value}
+                            />
+                        ))}
+                    </Picker>
+                </View>
+            </View>
 
             <TextInput
                 style={styles.input}
@@ -133,4 +163,25 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         lineHeight: 24,
     },
+
+      dropdownContainer: {
+    width: '100%',
+    marginBottom: 12,
+  },
+  dropdownLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: "#1a1a1a",
+    marginBottom: 8,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#8fb4ffff",
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  picker: {
+    width: '100%',
+    height: 50,
+  },
 });

@@ -29,6 +29,7 @@ i18n.translations = {
       tituloVerso2: "(Definição/Resposta)",
       exemploResposta: "Ex: Paris",
       botaoSalvar: "SALVAR FLASH CARD",
+      categoria:'Categoria',
     },
     listaDePalavras: {
       listaVazia: "Você ainda não tem palavras cadastradas",
@@ -87,6 +88,7 @@ i18n.translations = {
       tituloVerso2: "(Definition/Answer)",
       exemploResposta: "E.g.: Paris",
       botaoSalvar: "SAVE FLASH CARD",
+      categoria:'Category',
     },
     listaDePalavras: {
       listaVazia: "You don't have any words yet",

@@ -102,7 +102,7 @@ export default function CardsScreen() {
             
             {/* Dropdown de Categoria */}
             <View style={styles.dropdownContainer}>
-              <Text style={styles.dropdownLabel}>Categoria</Text>
+              <Text style={styles.dropdownLabel}>{i18n.t('adicionar.categoria')}</Text>
               <View style={styles.pickerContainer}>
                 <Picker
                   selectedValue={selectedCategory}
