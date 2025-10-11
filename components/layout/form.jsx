@@ -4,48 +4,32 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useWords } from "../../context/WordsContext";
 
-export default function Form({ onClose, tituloForm, editingWords }) {
-    const { handleAdd, handleUpdate, palavra, traducao, setPalavra, setTraducao } = useWords();
-    const [selectedCategory, setSelectedCategory] = useState("");
 
-    const categories = [
-        { label: 'Selecione uma categoria', value: '' },
-        { label: 'Verbos', value: 'verbos' },
-        { label: 'Substantivos', value: 'substantivos' },
-        { label: 'Adjetivos', value: 'adjetivos' },
-        { label: 'Expressões', value: 'expressoes' },
-    ];
+export default function Form({ onClose, tituloForm, editingWords, allCategories }) {
+    const { handleAdd, handleUpdate, palavra, traducao, setPalavra, setTraducao } = useWords();
+    const [selectedCategory, setSelectedCategory] = useState("Sem Categoria");
 
     useEffect(() => {
         if (editingWords) {
             setPalavra(editingWords.title);
             setTraducao(editingWords.traducao);
-            setSelectedCategory(editingWords.categoria || "");
+            setSelectedCategory(editingWords.categoria || "Sem Categoria");
         } else {
             setPalavra("");
             setTraducao("");
-            setSelectedCategory("");
+            setSelectedCategory("Sem Categoria");
         }
     }, [editingWords]);
 
-
-
     const handleSubmit = async () => {
-        try {
-            let success;
-            if (editingWords) {
-                success = await handleUpdate(editingWords.id, palavra, traducao, selectedCategory)
-            } else {
-                success = await handleAdd();
-            }
-
-            if (success) {
-                onClose();
-            }
-
-        } catch (error) {
-            console.error('Erro no formulario:', error)
+        let success = false;
+        if (editingWords) {
+            success = await handleUpdate(editingWords.id, palavra, traducao, selectedCategory);
+        } else {
+            success = await handleAdd(selectedCategory);
         }
+
+        if (success) onClose();
     }
 
     return (
@@ -56,7 +40,7 @@ export default function Form({ onClose, tituloForm, editingWords }) {
 
             <Text style={styles.title}>{tituloForm}</Text>
 
-            {/* Dropdown de Categoria */}
+            {/* Picker de categoria */}
             <View style={styles.dropdownContainer}>
                 <Text style={styles.dropdownLabel}>{i18n.t('adicionar.categoria')}</Text>
                 <View style={styles.pickerContainer}>
@@ -65,12 +49,8 @@ export default function Form({ onClose, tituloForm, editingWords }) {
                         onValueChange={(itemValue) => setSelectedCategory(itemValue)}
                         style={styles.picker}
                     >
-                        {categories.map((category) => (
-                            <Picker.Item
-                                key={category.value}
-                                label={category.label}
-                                value={category.value}
-                            />
+                        {allCategories.map((category) => (
+                            <Picker.Item key={category} label={category} value={category} />
                         ))}
                     </Picker>
                 </View>
@@ -91,9 +71,7 @@ export default function Form({ onClose, tituloForm, editingWords }) {
             />
 
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>
-                    {editingWords ? "Salvar" : "Adicionar"}
-                </Text>
+                <Text style={styles.buttonText}>{editingWords ? "Salvar" : "Adicionar"}</Text>
             </TouchableOpacity>
         </View>
     );

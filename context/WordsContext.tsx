@@ -50,18 +50,14 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     const handleAdd = async (categoriaSelecionada: string): Promise<boolean> => {
-        if (!palavra || !traducao ) {
+        if (!palavra || !traducao) {
             alert('Necessario preencher todos os campos');
             return false;
         }
 
         try {
             const existeWords = await storage.loadWordsData();
-
-            const nextId =
-                existeWords.length > 0
-                    ? Math.max(...existeWords.map((m: { id: any; }) => m.id)) + 1
-                    : 1;
+            const nextId = existeWords.length > 0 ? Math.max(...existeWords.map((m: { id: any; }) => m.id)) + 1 : 1;
 
             const newWord = {
                 id: nextId,
@@ -69,14 +65,11 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 traducao: traducao,
                 favoritar: false,
                 pontuacao: 0,
-                categoria: categoriaSelecionada || "",
+                categoria: categoriaSelecionada || "Sem Categoria",
                 listaCategorias: categorias
             };
 
-            console.log('Palavra salva: ', newWord);
-
             const updatedWords = [...existeWords, newWord];
-
             await storage.saveWordsData(updatedWords);
             setWords(updatedWords);
 
@@ -84,20 +77,29 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             setTraducao("");
 
             return true;
-
         } catch (error) {
             console.error('Erro ao adicionar palavra: ', error);
             return false;
         }
-
     };
 
-    const handleAddCategoria = (novaCategoria: string) => {
+
+    const handleAddCategoria = async (novaCategoria: string) => {
         if (!novaCategoria) return;
         if (!categorias.includes(novaCategoria)) {
-            setCategorias([...categorias, novaCategoria]);
+            const updatedCategorias = [...categorias, novaCategoria];
+            setCategorias(updatedCategorias);
+
+            // Salva a lista de categorias atualizada no storage
+            const storedWords = await storage.loadWordsData();
+            const updatedWords = storedWords.map((word: any) => ({
+                ...word,
+                listaCategorias: updatedCategorias
+            }));
+            await storage.saveWordsData(updatedWords);
         }
     };
+
 
     const handleDelete = async (id: number): Promise<void> => {
         try {

@@ -8,16 +8,15 @@ import { useWords } from "../context/WordsContext";
 import DeleteConfirmation from './../components/layout/DeleteConfirmation';
 import Favoritar from './../components/layout/favoritar';
 
-// Defina a interface para os itens da lista
+// Interface atualizada incluindo categoria
 interface WordItem {
     id: number;
     title: string;
     traducao: string;
     favoritar: boolean;
-    
+    categoria?: string;
 }
 
-// Tipo para as referências do Swipeable
 type SwipeableRefs = {
     [key: number]: Swipeable | null;
 };
@@ -28,18 +27,16 @@ export default function ListaDePalavrasScreen() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [editingWords, setEditingWords] = useState<WordItem | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-    const { setPalavra, setTraducao } = useWords();
+    const { setPalavra, setTraducao, categorias } = useWords();
 
     const [currentLocale, setCurrentLocale] = useState(i18n.locale);
-    
-    // Escutar mudanças de idioma
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (i18n.locale !== currentLocale) {
                 setCurrentLocale(i18n.locale);
             }
         }, 1000);
-
         return () => clearInterval(interval);
     }, [currentLocale]);
 
@@ -67,7 +64,6 @@ export default function ListaDePalavrasScreen() {
         if (selectedItemId) {
             try {
                 await handleDelete(selectedItemId);
-                console.log('Palavra deletada com sucesso');
             } catch (error) {
                 console.error('Erro ao deletar palavra', error);
             } finally {
@@ -111,7 +107,7 @@ export default function ListaDePalavrasScreen() {
             <TouchableOpacity
                 style={styles.editar}
                 onPress={() => {
-                    setEditingWords(item);
+                    setEditingWords(item); // agora inclui categoria
                     setShowForm(true);
                 }}
             >
@@ -141,8 +137,11 @@ export default function ListaDePalavrasScreen() {
         );
     };
 
+    // Garantir que "Sem Categoria" sempre apareça no picker
+    const allCategories = categorias.includes("Sem Categoria") ? categorias : ["Sem Categoria", ...categorias];
+
     return (
-        <View style={styles.container} key={currentLocale}> 
+        <View style={styles.container} key={currentLocale}>
             {!showForm && (
                 <View style={styles.container}>
                     <FlatList
@@ -150,17 +149,9 @@ export default function ListaDePalavrasScreen() {
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <Swipeable
-                                ref={(ref) => {
-                                    if (ref) {
-                                        swipeableRefs.current[item.id] = ref;
-                                    }
-                                }}
-                                renderRightActions={(progress, dragX) =>
-                                    renderRightActions(progress, dragX, item)
-                                }
-                                renderLeftActions={(progress, dragX) =>
-                                    renderLeftActions(progress, dragX, item.id)
-                                }
+                                ref={(ref) => { if (ref) swipeableRefs.current[item.id] = ref; }}
+                                renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, item)}
+                                renderLeftActions={(progress, dragX) => renderLeftActions(progress, dragX, item.id)}
                                 onSwipeableWillOpen={() => closeOuthers(item.id)}
                                 rightThreshold={40}
                                 leftThreshold={40}
@@ -205,6 +196,7 @@ export default function ListaDePalavrasScreen() {
                     }}
                     tituloForm={i18n.t('listaDePalavras.formTexto')}
                     editingWords={editingWords}
+                    allCategories={allCategories} 
                 />
             )}
         </View>
