@@ -2,35 +2,33 @@ import storage from "@/services/storage";
 import { WordsItem } from "@/types/wordsTypes";
 import { createContext, useContext, useEffect, useState } from "react";
 
-
 interface WordsContextType {
     words: WordsItem[];
     loading: boolean;
     palavra: string;
     traducao: string;
-    categoria: string;
+    categorias: string[];
     setPalavra: React.Dispatch<React.SetStateAction<string>>;
     setTraducao: React.Dispatch<React.SetStateAction<string>>;
     handleToggleFavorite: (id: number) => Promise<void>;
-    handleAdd: (categoria: string) => Promise<boolean>;
+    handleAdd: (categoriaSelecionada: string) => Promise<boolean>;
+    handleAddCategoria: (novaCategoria: string) => void;
     handleDelete: (id: number) => Promise<void>;
-    handleUpdate: (id: number, title: string, traducao: string, categoria: string) => Promise<boolean>;
+    handleUpdate: (id: number, title: string, traducao: string, categoriaSelecionada: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
     handleResetPontuacao: () => Promise<void>;
     countPontuacaoPositive: () => number;
     countPontuacaoNegative: () => number;
-};
-
+}
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
 export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
     const [words, setWords] = useState<WordsItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [palavra, setPalavra] = useState("");
     const [traducao, setTraducao] = useState("");
-    const [categoria, setCategoria] = useState("")
+    const [categorias, setCategorias] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchWords = async () => {
@@ -51,8 +49,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         await storage.saveWordsData(updatedWords);
     };
 
-    const handleAdd = async (categoria: string): Promise<boolean> => {
-        if (!palavra || !traducao) {
+    const handleAdd = async (categoriaSelecionada: string): Promise<boolean> => {
+        if (!palavra || !traducao ) {
             alert('Necessario preencher todos os campos');
             return false;
         }
@@ -71,7 +69,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 traducao: traducao,
                 favoritar: false,
                 pontuacao: 0,
-                categoria: categoria || 'Tudo'
+                categoria: categoriaSelecionada || "",
+                listaCategorias: categorias
             };
 
             console.log('Palavra salva: ', newWord);
@@ -93,6 +92,13 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     };
 
+    const handleAddCategoria = (novaCategoria: string) => {
+        if (!novaCategoria) return;
+        if (!categorias.includes(novaCategoria)) {
+            setCategorias([...categorias, novaCategoria]);
+        }
+    };
+
     const handleDelete = async (id: number): Promise<void> => {
         try {
             const currentWords = await storage.loadWordsData();
@@ -108,20 +114,30 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-    const handleUpdate = async (id: number, title: string, traducao: string, categoria: string): Promise<boolean> => {
+    const handleUpdate = async (
+        id: number,
+        title: string,
+        traducao: string,
+        categoriaSelecionada: string
+    ): Promise<boolean> => {
         try {
-            const updateWords = await storage.updateWordsData(id, title, traducao, categoria)
+            const updateWords = words.map(word =>
+                word.id === id ? { ...word, title, traducao, categoria: categoriaSelecionada } : word
+            );
+
+            await storage.saveWordsData(updateWords);
             setWords(updateWords);
 
             setPalavra("");
             setTraducao("");
-            setCategoria("");
+
             return true;
         } catch (error) {
-            console.error('Erro ao atualiza palavra', error)
+            console.error('Erro ao atualizar palavra', error);
             return false;
         }
     };
+
 
     const handlePontuacao = async (id: number, delta: number) => {
         try {
@@ -141,7 +157,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             const updatedWords = words.map((word) => ({
                 ...word,
                 pontuacao: 0,
-                categoria: 'Tudo'
+                categorias: ['']
             }));
 
             const shuffledWords = updatedWords.sort(() => Math.random() - 0.5)
@@ -163,17 +179,33 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     return (
-        <WordsContext.Provider value={{ words, loading, categoria, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative, palavra, traducao, setPalavra, setTraducao  }}>
+        <WordsContext.Provider
+            value={{
+                words,
+                loading,
+                categorias,
+                palavra,
+                traducao,
+                setPalavra,
+                setTraducao,
+                handleToggleFavorite,
+                handleAdd,
+                handleAddCategoria,
+                handleDelete,
+                handleUpdate,
+                handlePontuacao,
+                handleResetPontuacao,
+                countPontuacaoPositive,
+                countPontuacaoNegative,
+            }}
+        >
             {children}
         </WordsContext.Provider>
-    )
+    );
 };
 
 export const useWords = () => {
     const context = useContext(WordsContext);
-    if (!context) {
-        throw new Error("Erro ao usar o WordsContext")
-    }
-
+    if (!context) throw new Error("Erro ao usar o WordsContext");
     return context;
-}
+};

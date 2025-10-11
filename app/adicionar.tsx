@@ -18,19 +18,11 @@ import Sucesso from './../components/layout/sucesso';
 export default function CardsScreen() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [keyboardPadding, setKeyboardPadding] = useState(0);
-  const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
+  const { handleAdd, palavra, traducao, categorias, setPalavra, setTraducao } = useWords();
 
   const [currentLocale, setCurrentLocale] = useState(i18n.locale);
-  const [selectedCategory, setSelectedCategory] = useState(""); 
-  
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const categories = [
-    { label: 'Selecione uma categoria', value: '' },
-    { label: 'Verbos', value: 'verbos' },
-    { label: 'Substantivos', value: 'substantivos' },
-    { label: 'Adjetivos', value: 'adjetivos' },
-    { label: 'Expressões', value: 'expressoes' },
-  ];
 
   // Escutar mudanças de idioma
   useEffect(() => {
@@ -45,7 +37,7 @@ export default function CardsScreen() {
 
   const handleSubmit = async () => {
     try {
-      if (!palavra.trim() || !traducao.trim() || !selectedCategory) {
+      if (!palavra.trim() || !traducao.trim()) {
         alert(i18n.t('adicionar.alerta'));
         return;
       }
@@ -56,7 +48,7 @@ export default function CardsScreen() {
         setShowSuccess(true);
         setPalavra("");
         setTraducao("");
-        setSelectedCategory(""); 
+        setSelectedCategory("");
         setTimeout(() => setShowSuccess(false), 2000);
       }
     } catch (error) {
@@ -99,7 +91,7 @@ export default function CardsScreen() {
       >
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
-            
+
             {/* Dropdown de Categoria */}
             <View style={styles.dropdownContainer}>
               <Text style={styles.dropdownLabel}>{i18n.t('adicionar.categoria')}</Text>
@@ -109,14 +101,23 @@ export default function CardsScreen() {
                   onValueChange={(itemValue) => setSelectedCategory(itemValue)}
                   style={styles.picker}
                 >
-                  {categories.map((category) => (
-                    <Picker.Item 
-                      key={category.value} 
-                      label={category.label} 
-                      value={category.value} 
+                  {/* Opção padrão "Sem categoria" */}
+                  <Picker.Item
+                    key="none"
+                    label="Sem categoria"
+                    value=""
+                  />
+
+                  {/* Lista de categorias do contexto */}
+                  {categorias.map((category) => (
+                    <Picker.Item
+                      key={category}
+                      label={category}
+                      value={category}
                     />
                   ))}
                 </Picker>
+
               </View>
             </View>
 
