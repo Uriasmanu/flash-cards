@@ -1,9 +1,22 @@
+// app/index.tsx
 import { useWords } from "@/context/WordsContext";
 import { useRouter } from "expo-router";
 import { Plus, RotateCw } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import CardWords from '../components/layout/CardWords.jsx';
+import i18n from '../locates/index';
+
+// Função segura para traduções
+const t = (key: string, fallback: string = '') => {
+  if (!i18n || typeof i18n.t !== 'function') {
+    console.warn('i18n não está inicializado, usando fallback:', key);
+    return fallback;
+  }
+  const translation = i18n.t(key);
+  return translation && typeof translation === 'string' ? translation : fallback;
+};
+
 
 export default function InicioScreen() {
     const { 
@@ -22,7 +35,7 @@ export default function InicioScreen() {
     if (loading) {
         return (
             <View style={styles.loadingContainer}>
-                <Text>...Carregando</Text>
+                <Text>{i18n.t('mensagemSistema.carregando')}</Text>
             </View>
         )
     }
@@ -35,8 +48,8 @@ export default function InicioScreen() {
 
                 <Text style={styles.textoCentral}>
                     {words.length === 0
-                        ? 'Adicione o seu primeiro card'
-                        : 'Você chegou ao final da lista'
+                        ? i18n.t('index.adicionarCard')
+                        : i18n.t('index.finalLista')
                     }
                 </Text>
 
@@ -105,6 +118,7 @@ export default function InicioScreen() {
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     loadingContainer: {

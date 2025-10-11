@@ -28,7 +28,7 @@ export default function ListaDePalavrasScreen() {
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
       const { setPalavra, setTraducao } = useWords();
 
-    // Corrigindo a tipagem do useRef
+
     const swipeableRefs = useRef<SwipeableRefs>({});
 
     const closeOuthers = (id: number) => {

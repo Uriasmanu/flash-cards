@@ -207,33 +207,6 @@ export const NotificationProvider = ({ children }) => {
     }
   };
 
-  // Enviar notificação de teste
-  const sendTestNotification = async () => {
-    if (!hasPermission) {
-      const granted = await requestPermissions();
-      if (!granted) return { success: false, error: 'Permissão negada' };
-    }
-
-    try {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Teste de Notificação ✅",
-          body: "Esta é uma notificação de teste do seu app de estudos!",
-          sound: true,
-          data: { type: 'test', timestamp: new Date().toISOString() },
-        },
-        trigger: {
-          seconds: 2, // Envia após 2 segundos
-        },
-      });
-
-      return { success: true, type: notificationType };
-    } catch (error) {
-      console.error('Erro ao enviar notificação de teste:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
   // Obter status atual
   const getNotificationStatus = () => {
     return {
@@ -369,7 +342,6 @@ const value = {
     getScheduledNotifications,
     getNotificationScheduleStatus,
     requestPermissions,
-    sendTestNotification,
     getNotificationStatus,
   };
 

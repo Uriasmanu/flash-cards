@@ -14,7 +14,7 @@ import { TextInput } from "react-native-gesture-handler";
 import Sucesso from './../components/layout/sucesso';
 
 export default function CardsScreen() {
-  const [showForm, setShowForm] = useState(false);
+ 
   const [showSuccess, setShowSuccess] = useState(false);
   const [keyboardPadding, setKeyboardPadding] = useState(0);
   const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();

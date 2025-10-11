@@ -1,4 +1,5 @@
 import { useNotification } from '@/context/NotificationContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useEffect, useState } from 'react';
 import {
@@ -18,8 +19,9 @@ import { appConfig } from './../utils/constants';
 const SettingsScreen = () => {
   const [showVersionInfo, setShowVersionInfo] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [language, setLanguage] = useState('pt');
   const [tempTime, setTempTime] = useState(new Date());
-  
+
   const {
     hasPermission,
     isNotificationEnabled,
@@ -28,7 +30,6 @@ const SettingsScreen = () => {
     toggleNotifications,
     getNotificationScheduleStatus,
     requestPermissions,
-    sendTestNotification
   } = useNotification();
 
   const [scheduleStatus, setScheduleStatus] = useState({
@@ -39,12 +40,28 @@ const SettingsScreen = () => {
 
   useEffect(() => {
     loadNotificationStatus();
+    loadLanguage(); // Carrega o idioma salvo
   }, []);
 
   const loadNotificationStatus = async () => {
     const status = await getNotificationScheduleStatus();
     setScheduleStatus(status);
   };
+
+  const loadLanguage = async () => {
+    const storedLang = await AsyncStorage.getItem('appLanguage');
+    if (storedLang) setLanguage(storedLang);
+  }
+
+  const handleChangeLanguage = async (newLang: string) => {
+    try {
+      await AsyncStorage.setItem('appLanguage', newLang);
+      setLanguage(newLang);
+      Alert.alert('Idioma alterado', `O idioma foi alterado para ${newLang.toUpperCase()}`);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possivel alterar o idioma');
+    }
+  }
 
   const handlePrivacyPolicy = async () => {
     const url = 'https://uriasmanu.github.io/flash-cards/';
@@ -57,7 +74,7 @@ const SettingsScreen = () => {
         Alert.alert('Erro', 'Não foi possivel abrir link')
       }
     } catch (error) {
-        Alert.alert('Erro', 'Ocorreu um erro ao tentar abrir a politica de privacidade')
+      Alert.alert('Erro', 'Ocorreu um erro ao tentar abrir a politica de privacidade')
     }
   };
 
@@ -74,7 +91,7 @@ const SettingsScreen = () => {
     if (result.success) {
       await loadNotificationStatus();
       Alert.alert(
-        'Sucesso', 
+        'Sucesso',
         enabled ? 'Lembretes ativados!' : 'Lembretes desativados!'
       );
     } else {
@@ -84,13 +101,13 @@ const SettingsScreen = () => {
 
   const handleTimeChange = async (event: any, selectedTime?: Date) => {
     setShowTimePicker(false);
-    
+
     if (selectedTime) {
       const hour = selectedTime.getHours();
       const minute = selectedTime.getMinutes();
-      
+
       setTempTime(selectedTime);
-      
+
       const result = await updateNotificationTime(hour, minute);
       if (result.success) {
         await loadNotificationStatus();
@@ -102,7 +119,6 @@ const SettingsScreen = () => {
   };
 
   const showTimePickerModal = () => {
-    // Configurar o tempo atual para o horário salvo
     const currentTime = new Date();
     currentTime.setHours(notificationTime.hour);
     currentTime.setMinutes(notificationTime.minute);
@@ -121,13 +137,11 @@ const SettingsScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Configurações</Text>
 
         {/* Configurações de Notificação */}
         <View style={styles.notificationSection}>
           <Text style={styles.subsectionTitle}>Lembretes de Estudo</Text>
-          
-          {/* Toggle para ativar/desativar notificações */}
+
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingTitle}>Lembretes diários</Text>
@@ -143,12 +157,11 @@ const SettingsScreen = () => {
             />
           </View>
 
-          {/* Configuração de horário */}
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[
-              styles.settingItem, 
+              styles.settingItem,
               !isNotificationEnabled && styles.settingItemDisabled
-            ]} 
+            ]}
             onPress={showTimePickerModal}
             disabled={!isNotificationEnabled}
           >
@@ -227,6 +240,20 @@ const SettingsScreen = () => {
             </View>
           )}
         </View>
+
+        {/* Seletor de Idioma */}
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 8 }}>Idioma</Text>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => handleChangeLanguage(language === 'pt' ? 'en' : 'pt')}
+          >
+            <Text style={styles.menuText}>
+              {language === 'pt' ? 'Português (PT-BR)' : 'English (EN)'}
+            </Text>
+            <Text style={styles.menuArrow}>›</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Modal do Time Picker */}
@@ -248,13 +275,13 @@ const SettingsScreen = () => {
                   style={styles.timePicker}
                 />
                 <View style={styles.timePickerButtons}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.cancelButton}
                     onPress={() => setShowTimePicker(false)}
                   >
                     <Text style={styles.cancelButtonText}>Cancelar</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.confirmButton}
                     onPress={() => handleTimeChange(null, tempTime)}
                   >
