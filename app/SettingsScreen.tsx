@@ -14,6 +14,8 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
+import i18n, { changeLanguage } from '../locates/index';
+
 import { appConfig } from './../utils/constants';
 
 const SettingsScreen = () => {
@@ -40,7 +42,7 @@ const SettingsScreen = () => {
 
   useEffect(() => {
     loadNotificationStatus();
-    loadLanguage(); // Carrega o idioma salvo
+    loadLanguage();
   }, []);
 
   const loadNotificationStatus = async () => {
@@ -55,11 +57,18 @@ const SettingsScreen = () => {
 
   const handleChangeLanguage = async (newLang: string) => {
     try {
-      await AsyncStorage.setItem('appLanguage', newLang);
-      setLanguage(newLang);
-      Alert.alert('Idioma alterado', `O idioma foi alterado para ${newLang.toUpperCase()}`);
+      const success = await changeLanguage(newLang);
+      if (success) {
+        setLanguage(newLang);
+        Alert.alert(
+          i18n.t('configuracao.idiomaAlteradoTitle'),
+          i18n.t('configuracao.idiomaAlteradoTexto', { lang: newLang.toUpperCase() })
+        );
+      } else {
+        Alert.alert('Erro', i18n.t('configuracao.alertaErro'));
+      }
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possivel alterar o idioma');
+      Alert.alert('Erro', i18n.t('configuracao.alertaErro'));
     }
   }
 
@@ -71,10 +80,10 @@ const SettingsScreen = () => {
       if (canOpen) {
         await Linking.openURL(url);
       } else {
-        Alert.alert('Erro', 'Não foi possivel abrir link')
+        Alert.alert('Erro', i18n.t('configuracao.erroAbrirLink'));
       }
     } catch (error) {
-      Alert.alert('Erro', 'Ocorreu um erro ao tentar abrir a politica de privacidade')
+      Alert.alert('Erro', i18n.t('configuracao.erroPolitica'));
     }
   };
 
@@ -82,7 +91,10 @@ const SettingsScreen = () => {
     if (enabled && !hasPermission) {
       const granted = await requestPermissions();
       if (!granted) {
-        Alert.alert('Permissão Necessária', 'Para ativar as notificações, é necessário conceder permissão.');
+        Alert.alert(
+          i18n.t('configuracao.alertaPermissaoTitle'),
+          i18n.t('configuracao.alertaPermissaoTexto')
+        );
         return;
       }
     }
@@ -91,11 +103,13 @@ const SettingsScreen = () => {
     if (result.success) {
       await loadNotificationStatus();
       Alert.alert(
-        'Sucesso',
-        enabled ? 'Lembretes ativados!' : 'Lembretes desativados!'
+        i18n.t('configuracao.alertaSucessoTitle'),
+        enabled 
+          ? i18n.t('configuracao.alertaSucessoTextoAtivado')
+          : i18n.t('configuracao.alertaSucessoTextoDesativado')
       );
     } else {
-      Alert.alert('Erro', 'Não foi possível alterar as configurações de notificação.');
+      Alert.alert('Erro', i18n.t('configuracao.alertaErro'));
     }
   };
 
@@ -111,9 +125,12 @@ const SettingsScreen = () => {
       const result = await updateNotificationTime(hour, minute);
       if (result.success) {
         await loadNotificationStatus();
-        Alert.alert('Sucesso', `Lembrete definido para ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`);
+        Alert.alert(
+          i18n.t('configuracao.alertaSucessoTitle'),
+          `Lembrete definido para ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+        );
       } else {
-        Alert.alert('Erro', 'Não foi possível atualizar o horário do lembrete.');
+        Alert.alert('Erro', i18n.t('configuracao.horarioDefinido'));
       }
     }
   };
@@ -140,13 +157,17 @@ const SettingsScreen = () => {
 
         {/* Configurações de Notificação */}
         <View style={styles.notificationSection}>
-          <Text style={styles.subsectionTitle}>Lembretes de Estudo</Text>
+          <Text style={styles.subsectionTitle}>
+            {i18n.t('configuracao.cabecalho')}
+          </Text>
 
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
-              <Text style={styles.settingTitle}>Lembretes diários</Text>
+              <Text style={styles.settingTitle}>
+                {i18n.t('configuracao.lembrete')}
+              </Text>
               <Text style={styles.settingDescription}>
-                Receba um lembrete para estudar todos os dias
+                {i18n.t('configuracao.lembreteTexto')}
               </Text>
             </View>
             <Switch
@@ -170,7 +191,7 @@ const SettingsScreen = () => {
                 styles.settingTitle,
                 !isNotificationEnabled && styles.settingTextDisabled
               ]}>
-                Horário do lembrete
+                {i18n.t('configuracao.horarioLembrete')}
               </Text>
               <Text style={[
                 styles.settingDescription,
@@ -192,7 +213,9 @@ const SettingsScreen = () => {
           style={styles.menuItem}
           onPress={handlePrivacyPolicy}
         >
-          <Text style={styles.menuText}>Política de Privacidade</Text>
+          <Text style={styles.menuText}>
+            {i18n.t('configuracao.politica')}
+          </Text>
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
 
@@ -202,7 +225,9 @@ const SettingsScreen = () => {
             style={styles.accordionHeader}
             onPress={toggleVersionInfo}
           >
-            <Text style={styles.menuText}>Atualizações</Text>
+            <Text style={styles.menuText}>
+              {i18n.t('configuracao.atualizacao')}
+            </Text>
             <View style={styles.headerRight}>
               <Text style={styles.versionText}>v {appConfig.version}</Text>
               <Text style={[styles.accordionArrow, showVersionInfo && styles.accordionArrowOpen]}>
@@ -214,20 +239,28 @@ const SettingsScreen = () => {
           {showVersionInfo && (
             <View style={styles.accordionContent}>
               <View style={styles.versionInfo}>
-                <Text style={styles.versionTitle}>Informações da Versão</Text>
+                <Text style={styles.versionTitle}>
+                  {i18n.t('configuracao.infoVersaoTitulo')}
+                </Text>
 
                 <View style={styles.versionDetail}>
-                  <Text style={styles.versionLabel}>Versão:</Text>
+                  <Text style={styles.versionLabel}>
+                    {i18n.t('configuracao.versao')}
+                  </Text>
                   <Text style={styles.versionValue}>{appConfig.version}</Text>
                 </View>
 
                 <View style={styles.versionDetail}>
-                  <Text style={styles.versionLabel}>Última atualização:</Text>
+                  <Text style={styles.versionLabel}>
+                    {i18n.t('configuracao.ultimaAtualizacao')}
+                  </Text>
                   <Text style={styles.versionValue}>{appConfig.lastUpload}</Text>
                 </View>
 
                 <View style={styles.versionDetailFeature}>
-                  <Text style={styles.versionLabel}>Novidades:</Text>
+                  <Text style={styles.versionLabel}>
+                    {i18n.t('configuracao.novidades')}
+                  </Text>
                   <View style={styles.featuresList}>
                     {appConfig.features.map((feature: string, index: number) => (
                       <Text key={index} style={styles.featureItem}>
@@ -243,7 +276,9 @@ const SettingsScreen = () => {
 
         {/* Seletor de Idioma */}
         <View style={{ marginTop: 20 }}>
-          <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 8 }}>Idioma</Text>
+          <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 8 }}>
+            Idioma
+          </Text>
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => handleChangeLanguage(language === 'pt' ? 'en' : 'pt')}
@@ -266,7 +301,9 @@ const SettingsScreen = () => {
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
               <View style={styles.timePickerContainer}>
-                <Text style={styles.timePickerTitle}>Escolha o horário</Text>
+                <Text style={styles.timePickerTitle}>
+                  {i18n.t('configuracao.escolhaHorario')}
+                </Text>
                 <DateTimePicker
                   value={tempTime}
                   mode="time"
@@ -279,13 +316,17 @@ const SettingsScreen = () => {
                     style={styles.cancelButton}
                     onPress={() => setShowTimePicker(false)}
                   >
-                    <Text style={styles.cancelButtonText}>Cancelar</Text>
+                    <Text style={styles.cancelButtonText}>
+                      {i18n.t('configuracao.cancelar')}
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.confirmButton}
                     onPress={() => handleTimeChange(null, tempTime)}
                   >
-                    <Text style={styles.confirmButtonText}>Confirmar</Text>
+                    <Text style={styles.confirmButtonText}>
+                      {i18n.t('configuracao.confirmar')}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -297,6 +338,7 @@ const SettingsScreen = () => {
   );
 };
 
+// Os estilos permanecem os mesmos...
 const styles = StyleSheet.create({
   container: {
     flex: 1,

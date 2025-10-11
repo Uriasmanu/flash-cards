@@ -2,21 +2,11 @@
 import { useWords } from "@/context/WordsContext";
 import { useRouter } from "expo-router";
 import { Plus, RotateCw } from "lucide-react-native";
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import CardWords from '../components/layout/CardWords.jsx';
 import i18n from '../locates/index';
-
-// Função segura para traduções
-const t = (key: string, fallback: string = '') => {
-  if (!i18n || typeof i18n.t !== 'function') {
-    console.warn('i18n não está inicializado, usando fallback:', key);
-    return fallback;
-  }
-  const translation = i18n.t(key);
-  return translation && typeof translation === 'string' ? translation : fallback;
-};
-
 
 export default function InicioScreen() {
     const { 
@@ -29,8 +19,26 @@ export default function InicioScreen() {
         countPontuacaoNegative 
     } = useWords();
     const router = useRouter();
+    
+    // Estado para forçar o rerender quando o idioma mudar
+    const [currentLocale, setCurrentLocale] = useState(i18n.locale);
 
     const filteredWords = words.filter((word) => !word.favoritar && word.pontuacao === 0);
+
+    // Escutar mudanças de idioma
+    useEffect(() => {
+        const updateLocale = () => {
+            setCurrentLocale(i18n.locale);
+        };
+
+        const interval = setInterval(() => {
+            if (i18n.locale !== currentLocale) {
+                setCurrentLocale(i18n.locale);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [currentLocale]);
 
     if (loading) {
         return (
@@ -81,7 +89,7 @@ export default function InicioScreen() {
 
             <View style={styles.swiperContainer}>
                 <Swiper
-                    key={filteredWords.length}
+                    key={filteredWords.length + currentLocale} // Adiciona locale na key para forçar rerender
                     cards={filteredWords}
                     renderCard={(item) => (
                         <CardWords
@@ -118,7 +126,6 @@ export default function InicioScreen() {
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     loadingContainer: {
@@ -170,7 +177,6 @@ const styles = StyleSheet.create({
         right: 20, 
         elevation: 5,
         zIndex: 10,
-
     },
     pontoPositivo: {
         backgroundColor: '#556b2f',

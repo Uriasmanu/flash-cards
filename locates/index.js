@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
 
@@ -122,10 +123,39 @@ i18n.translations = {
   },
 };
 
-// Configurações do i18n
-const locale = Localization.locale || "pt";
-i18n.locale = locale.startsWith("pt") ? "pt" : "en";
+// Configuração inicial
 i18n.fallbacks = true;
 i18n.defaultLocale = "pt";
+
+// Função para inicializar o idioma
+export const initI18n = async () => {
+  try {
+    const storedLang = await AsyncStorage.getItem('appLanguage');
+    if (storedLang) {
+      i18n.locale = storedLang;
+    } else {
+      const systemLocale = Localization.locale || "pt";
+      i18n.locale = systemLocale.startsWith("pt") ? "pt" : "en";
+    }
+  } catch (error) {
+    console.warn('Erro ao carregar idioma:', error);
+    i18n.locale = "pt";
+  }
+};
+
+// Função para mudar o idioma
+export const changeLanguage = async (newLang) => {
+  try {
+    await AsyncStorage.setItem('appLanguage', newLang);
+    i18n.locale = newLang;
+    return true;
+  } catch (error) {
+    console.warn('Erro ao salvar idioma:', error);
+    return false;
+  }
+};
+
+// Inicializa imediatamente
+initI18n();
 
 export default i18n;

@@ -1,5 +1,6 @@
+import i18n from "@/locates";
 import { SquarePen, Trash2 } from "lucide-react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import Form from "../components/layout/form";
@@ -26,8 +27,20 @@ export default function ListaDePalavrasScreen() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [editingWords, setEditingWords] = useState<WordItem | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-      const { setPalavra, setTraducao } = useWords();
+    const { setPalavra, setTraducao } = useWords();
 
+    const [currentLocale, setCurrentLocale] = useState(i18n.locale);
+    
+    // Escutar mudanças de idioma
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (i18n.locale !== currentLocale) {
+                setCurrentLocale(i18n.locale);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [currentLocale]);
 
     const swipeableRefs = useRef<SwipeableRefs>({});
 
@@ -70,8 +83,8 @@ export default function ListaDePalavrasScreen() {
 
     if (loading) {
         return (
-            <View>
-                <Text>...Carregando</Text>
+            <View style={styles.loadingContainer}>
+                <Text>{i18n.t('mensagemSistema.carregando')}</Text>
             </View>
         );
     }
@@ -79,8 +92,8 @@ export default function ListaDePalavrasScreen() {
     if (words.length === 0) {
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 24, textAlign: 'center', width: 300 }}>
-                    Você ainda não tem palavras cadastradas
+                <Text style={styles.emptyListText}>
+                    {i18n.t('listaDePalavras.listaVazia')}
                 </Text>
             </View>
         );
@@ -128,7 +141,7 @@ export default function ListaDePalavrasScreen() {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} key={currentLocale}> {/* Adiciona key aqui */}
             {!showForm && (
                 <View style={styles.container}>
                     <FlatList
@@ -172,8 +185,8 @@ export default function ListaDePalavrasScreen() {
                     {showDeleteModal && (
                         <View style={styles.overlay}>
                             <DeleteConfirmation
-                                title={'Você Tem Certeza?'}
-                                mensagem={"Tem certeza que quer apagar?"}
+                                title={i18n.t('listaDePalavras.deleteConfirmacaoTitulo')}
+                                mensagem={i18n.t('listaDePalavras.deleteConfirmacaoTexto')}
                                 onCancel={onCancelDelete}
                                 onConfirm={onConfirmDelete}
                             />
@@ -189,10 +202,9 @@ export default function ListaDePalavrasScreen() {
                         setPalavra('');
                         setTraducao('');
                     }}
-                    tituloForm={'Editar Palavra'}
+                    tituloForm={i18n.t('listaDePalavras.formTexto')}
                     editingWords={editingWords}
                 />
-
             )}
         </View>
     );
@@ -206,14 +218,22 @@ const styles = StyleSheet.create({
         padding: 10,
         height: '98%',
     },
-
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center',
+    },
+    emptyListText: {
+        fontSize: 24,
+        textAlign: 'center',
+        width: 300,
+    },
     containerLeft: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
         flex: 1,
     },
-
     ItemsList: {
         backgroundColor: '#fff',
         flexDirection: 'row',
@@ -225,7 +245,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: '100%',
     },
-
     textoTitle: {
         fontSize: 24,
         textAlign: 'left',
@@ -233,14 +252,11 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         flexShrink: 1,
     },
-
     textoTraducao: {
         fontSize: 18,
         color: '#757575ff',
         flexShrink: 1,
     },
-
-
     apagar: {
         backgroundColor: '#F81111',
         height: '100%',
@@ -249,7 +265,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
-
     editar: {
         backgroundColor: '#FFD501',
         height: '100%',
@@ -258,7 +273,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
-
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.65)',

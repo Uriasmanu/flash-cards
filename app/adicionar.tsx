@@ -1,5 +1,6 @@
 import { useWords } from "@/context/WordsContext";
-import React, { useState } from "react";
+import i18n from "@/locates";
+import React, { useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,16 +15,27 @@ import { TextInput } from "react-native-gesture-handler";
 import Sucesso from './../components/layout/sucesso';
 
 export default function CardsScreen() {
- 
   const [showSuccess, setShowSuccess] = useState(false);
   const [keyboardPadding, setKeyboardPadding] = useState(0);
   const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
 
+  const [currentLocale, setCurrentLocale] = useState(i18n.locale);
+  
+  // Escutar mudanças de idioma
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (i18n.locale !== currentLocale) {
+        setCurrentLocale(i18n.locale);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentLocale]);
 
   const handleSubmit = async () => {
     try {
       if (!palavra.trim() || !traducao.trim()) {
-        alert("Por favor, preencha todos os campos obrigatórios.");
+        alert(i18n.t('adicionar.alerta'));
         return;
       }
 
@@ -39,7 +51,6 @@ export default function CardsScreen() {
       console.error("Erro no formulário:", error);
     }
   };
-
 
   // Detecta quando o teclado aparece/desaparece
   React.useEffect(() => {
@@ -65,6 +76,7 @@ export default function CardsScreen() {
 
   return (
     <KeyboardAvoidingView
+      key={currentLocale} // Adiciona key para forçar rerender quando idioma mudar
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
@@ -77,40 +89,42 @@ export default function CardsScreen() {
           <View style={styles.inputContainer}>
             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
-                <Text style={styles.textTitulo}>Frente do Card</Text>
-                <Text style={styles.textTitulo}>(Termo ou Pergunta)</Text>
+                <Text style={styles.textTitulo}>{i18n.t('adicionar.tituloFrente1')}</Text>
+                <Text style={styles.textTitulo}>{i18n.t('adicionar.tituloFrente2')}</Text>
               </View>
-              <Text style={styles.obrigatorio}>Obrigatorio</Text>
+              <Text style={styles.obrigatorio}>{i18n.t('adicionar.requeride')}</Text>
             </View>
-
 
             <TextInput
               style={styles.input}
-              placeholder="Ex: Qual é a capital da França?"
+              placeholder={i18n.t('adicionar.exemploPalavra')}
               value={palavra}
               onChangeText={setPalavra}
+              multiline={true}
+              numberOfLines={4}
             />
 
             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
-                <Text style={styles.textTitulo}>Verso do Card</Text>
-                <Text style={styles.textTitulo}>(Definição/Resposta)</Text>
+                <Text style={styles.textTitulo}>{i18n.t('adicionar.tituloVerso1')}</Text>
+                <Text style={styles.textTitulo}>{i18n.t('adicionar.tituloVerso2')}</Text>
               </View>
-              <Text style={styles.obrigatorio}>Obrigatorio</Text>
+              <Text style={styles.obrigatorio}>{i18n.t('adicionar.requeride')}</Text>
             </View>
 
             <TextInput
               style={styles.input}
-              placeholder="Ex: Paris"
+              placeholder={i18n.t('adicionar.exemploResposta')}
               value={traducao}
               onChangeText={setTraducao}
+              multiline={true}
+              numberOfLines={4}
             />
-
           </View>
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>
-              SALVAR FLASH CARD
+              {i18n.t('adicionar.botaoSalvar')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -142,7 +156,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-
   formContainer: {
     alignItems: 'center',
     width: 380,
@@ -162,7 +175,7 @@ const styles = StyleSheet.create({
   },
   textTitulo: {
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: '600',
     color: "#1a1a1a",
     textTransform: 'uppercase',
     width: '100%'
@@ -171,7 +184,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
     height: 38,
-    fontWeight: 600,
+    fontWeight: '600',
     fontSize: 14,
     justifyContent: 'center',
     alignItems: 'center',
@@ -181,11 +194,12 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: '32%',
+    height: 120, // Altura fixa melhor para multiline
     borderWidth: 1,
     borderColor: "#8fb4ffff",
     borderRadius: 8,
     paddingHorizontal: 16,
+    paddingVertical: 12,
     marginBottom: 12,
     fontSize: 16,
     textAlignVertical: 'top',
@@ -196,6 +210,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
+    marginTop: 20,
   },
   buttonText: {
     color: "#fff",

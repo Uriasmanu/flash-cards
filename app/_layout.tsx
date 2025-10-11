@@ -1,7 +1,9 @@
 import { NotificationProvider } from '@/context/NotificationContext';
+import i18n from '@/locates';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
 import { Settings } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +11,20 @@ import { WordsProvider } from '../context/WordsContext';
 import AdBannerMock from './../components/ads/AdBannerMock';
 
 export default function RootLayout() {
+  // Estado para forçar o rerender quando o idioma mudar
+  const [currentLocale, setCurrentLocale] = useState(i18n.locale);
+
+  // Escutar mudanças de idioma
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (i18n.locale !== currentLocale) {
+        setCurrentLocale(i18n.locale);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentLocale]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
@@ -17,6 +33,7 @@ export default function RootLayout() {
             <View style={styles.container}>
               <View style={styles.drawerContainer}>
                 <Drawer
+                  key={currentLocale} // Adiciona key para forçar rerender do Drawer
                   screenOptions={{
                     headerShown: true,
                     drawerLabelStyle: { fontSize: 16 },
@@ -31,7 +48,7 @@ export default function RootLayout() {
                       <View style={{ flex: 1 }} />
 
                       <DrawerItem
-                        label="Configuração"
+                        label={i18n.t('layout.configuracao')}
                         icon={() => <Settings />}
                         onPress={() => props.navigation.navigate('SettingsScreen')}
                       />
@@ -40,15 +57,24 @@ export default function RootLayout() {
                 >
                   <Drawer.Screen
                     name="index"
-                    options={{ drawerLabel: "Flash Cards", title: "Flash Cards" }}
+                    options={{ 
+                      drawerLabel: i18n.t('layout.indexTitulo'), 
+                      title: i18n.t('layout.indexTitulo') 
+                    }}
                   />
                   <Drawer.Screen
                     name="adicionar"
-                    options={{ drawerLabel: "Adiciona Palavras", title: "Nova Palavra" }}
+                    options={{ 
+                      drawerLabel: i18n.t('layout.adicionarTitulo'), 
+                      title: i18n.t('layout.adicionarTitulo') 
+                    }}
                   />
                   <Drawer.Screen
                     name="listaDePalavras"
-                    options={{ drawerLabel: "Lista De Palavra", title: "Lista de Palavras" }}
+                    options={{ 
+                      drawerLabel: i18n.t('layout.listaPalavrasTitulo'), 
+                      title: i18n.t('layout.listaPalavrasTitulo') 
+                    }}
                   />
 
                   <Drawer.Screen
@@ -56,7 +82,7 @@ export default function RootLayout() {
                     options={{
                       drawerLabel: () => null,
                       drawerItemStyle: { display: 'none' },
-                      title: "Configuração",
+                      title: i18n.t('layout.configuracao'),
                     }}
                   />
                 </Drawer>
