@@ -77,6 +77,14 @@ export default function RootLayout() {
                     }}
                   />
 
+                                    <Drawer.Screen
+                    name="categorias"
+                    options={{ 
+                      drawerLabel: i18n.t('layout.categoriasTitulo'), 
+                      title: i18n.t('layout.categoriasTitulo') 
+                    }}
+                  />
+
                   <Drawer.Screen
                     name="SettingsScreen"
                     options={{

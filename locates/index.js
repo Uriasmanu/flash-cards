@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
 
@@ -29,9 +29,15 @@ i18n.translations = {
       tituloVerso2: "(Definição/Resposta)",
       exemploResposta: "Ex: Paris",
       botaoSalvar: "SALVAR FLASH CARD",
-      categoria:'Categoria',
+      categoria: "Categoria",
     },
     listaDePalavras: {
+      listaVazia: "Você ainda não tem palavras cadastradas",
+      deleteConfirmacaoTitulo: "Você tem certeza?",
+      deleteConfirmacaoTexto: "Tem certeza que quer apagar?",
+      formTexto: "Editar Palavra",
+    },
+    categorias: {
       listaVazia: "Você ainda não tem palavras cadastradas",
       deleteConfirmacaoTitulo: "Você tem certeza?",
       deleteConfirmacaoTexto: "Tem certeza que quer apagar?",
@@ -52,7 +58,8 @@ i18n.translations = {
       ultimaAtualizacao: "Última atualização:",
       novidades: "Novidades:",
       alertaPermissaoTitle: "Permissão Necessária",
-      alertaPermissaoTexto: "Para ativar as notificações, é necessário conceder permissão.",
+      alertaPermissaoTexto:
+        "Para ativar as notificações, é necessário conceder permissão.",
       alertaSucessoTitle: "Sucesso",
       alertaSucessoTextoAtivado: "Lembretes ativados!",
       alertaSucessoTextoDesativado: "Lembretes desativados!",
@@ -88,9 +95,15 @@ i18n.translations = {
       tituloVerso2: "(Definition/Answer)",
       exemploResposta: "E.g.: Paris",
       botaoSalvar: "SAVE FLASH CARD",
-      categoria:'Category',
+      categoria: "Category",
     },
     listaDePalavras: {
+      listaVazia: "You don't have any words yet",
+      deleteConfirmacaoTitulo: "Are you sure?",
+      deleteConfirmacaoTexto: "Do you really want to delete?",
+      formTexto: "Edit Word",
+    },
+    categorias: {
       listaVazia: "You don't have any words yet",
       deleteConfirmacaoTitulo: "Are you sure?",
       deleteConfirmacaoTexto: "Do you really want to delete?",
@@ -111,7 +124,8 @@ i18n.translations = {
       ultimaAtualizacao: "Last update:",
       novidades: "What's new:",
       alertaPermissaoTitle: "Permission Required",
-      alertaPermissaoTexto: "To enable notifications, you need to grant permission.",
+      alertaPermissaoTexto:
+        "To enable notifications, you need to grant permission.",
       alertaSucessoTitle: "Success",
       alertaSucessoTextoAtivado: "Reminders enabled!",
       alertaSucessoTextoDesativado: "Reminders disabled!",
@@ -132,7 +146,7 @@ i18n.defaultLocale = "pt";
 // Função para inicializar o idioma
 export const initI18n = async () => {
   try {
-    const storedLang = await AsyncStorage.getItem('appLanguage');
+    const storedLang = await AsyncStorage.getItem("appLanguage");
     if (storedLang) {
       i18n.locale = storedLang;
     } else {
@@ -140,7 +154,7 @@ export const initI18n = async () => {
       i18n.locale = systemLocale.startsWith("pt") ? "pt" : "en";
     }
   } catch (error) {
-    console.warn('Erro ao carregar idioma:', error);
+    console.warn("Erro ao carregar idioma:", error);
     i18n.locale = "pt";
   }
 };
@@ -148,11 +162,11 @@ export const initI18n = async () => {
 // Função para mudar o idioma
 export const changeLanguage = async (newLang) => {
   try {
-    await AsyncStorage.setItem('appLanguage', newLang);
+    await AsyncStorage.setItem("appLanguage", newLang);
     i18n.locale = newLang;
     return true;
   } catch (error) {
-    console.warn('Erro ao salvar idioma:', error);
+    console.warn("Erro ao salvar idioma:", error);
     return false;
   }
 };
