@@ -3,5 +3,6 @@ export interface WordsItem {
     title: string,
     traducao: string,
     favoritar: boolean,
-    pontuacao: number
+    pontuacao: number,
+    categoria: string
 }

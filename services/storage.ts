@@ -1,6 +1,7 @@
 
+import { WordsItem } from "@/types/wordsTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { WordsItem } from "../../types/wordsTypes";
+
 
 const STORAGE_KEY = 'words'
 
@@ -33,12 +34,12 @@ async function deleteWordData(id: number): Promise<void> {
     }
 }
 
-async function updateWordsData(id: number, title: string, traducao: string): Promise<WordsItem[]> {
+async function updateWordsData(id: number, title: string, traducao: string, categoria: string): Promise<WordsItem[]> {
     try {
         const words = await loadWordsData();
         const updateWords = words.map((word: WordsItem) =>
             word.id === id
-                ? { ...word, title: title, traducao: traducao }
+                ? { ...word, title: title, traducao: traducao, categoria: categoria }
                 : word
         )
 

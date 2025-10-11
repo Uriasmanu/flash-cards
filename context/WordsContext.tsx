@@ -8,12 +8,13 @@ interface WordsContextType {
     loading: boolean;
     palavra: string;
     traducao: string;
+    categoria: string;
     setPalavra: React.Dispatch<React.SetStateAction<string>>;
     setTraducao: React.Dispatch<React.SetStateAction<string>>;
     handleToggleFavorite: (id: number) => Promise<void>;
-    handleAdd: () => Promise<boolean>;
+    handleAdd: (categoria: string) => Promise<boolean>;
     handleDelete: (id: number) => Promise<void>;
-    handleUpdate: (id: number, title: string, traducao: string) => Promise<boolean>;
+    handleUpdate: (id: number, title: string, traducao: string, categoria: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
     handleResetPontuacao: () => Promise<void>;
     countPontuacaoPositive: () => number;
@@ -29,6 +30,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const [loading, setLoading] = useState(true);
     const [palavra, setPalavra] = useState("");
     const [traducao, setTraducao] = useState("");
+    const [categoria, setCategoria] = useState("")
 
     useEffect(() => {
         const fetchWords = async () => {
@@ -49,7 +51,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         await storage.saveWordsData(updatedWords);
     };
 
-    const handleAdd = async (): Promise<boolean> => {
+    const handleAdd = async (categoria: string): Promise<boolean> => {
         if (!palavra || !traducao) {
             alert('Necessario preencher todos os campos');
             return false;
@@ -68,7 +70,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 title: palavra,
                 traducao: traducao,
                 favoritar: false,
-                pontuacao: 0
+                pontuacao: 0,
+                categoria: categoria || 'Tudo'
             };
 
             console.log('Palavra salva: ', newWord);
@@ -105,13 +108,14 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-    const handleUpdate = async (id: number, title: string, traducao: string): Promise<boolean> => {
+    const handleUpdate = async (id: number, title: string, traducao: string, categoria: string): Promise<boolean> => {
         try {
-            const updateWords = await storage.updateWordsData(id, title, traducao)
+            const updateWords = await storage.updateWordsData(id, title, traducao, categoria)
             setWords(updateWords);
 
             setPalavra("");
             setTraducao("");
+            setCategoria("");
             return true;
         } catch (error) {
             console.error('Erro ao atualiza palavra', error)
@@ -136,7 +140,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         try {
             const updatedWords = words.map((word) => ({
                 ...word,
-                pontuacao: 0
+                pontuacao: 0,
+                categoria: 'Tudo'
             }));
 
             const shuffledWords = updatedWords.sort(() => Math.random() - 0.5)
@@ -158,7 +163,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     return (
-        <WordsContext.Provider value={{ words, loading, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative, palavra, traducao, setPalavra, setTraducao  }}>
+        <WordsContext.Provider value={{ words, loading, categoria, handleToggleFavorite, handleAdd, handleDelete, handleUpdate, handlePontuacao, handleResetPontuacao, countPontuacaoPositive, countPontuacaoNegative, palavra, traducao, setPalavra, setTraducao  }}>
             {children}
         </WordsContext.Provider>
     )

@@ -14,6 +14,7 @@ interface WordItem {
     title: string;
     traducao: string;
     favoritar: boolean;
+    
 }
 
 // Tipo para as referências do Swipeable
@@ -141,7 +142,7 @@ export default function ListaDePalavrasScreen() {
     };
 
     return (
-        <View style={styles.container} key={currentLocale}> {/* Adiciona key aqui */}
+        <View style={styles.container} key={currentLocale}> 
             {!showForm && (
                 <View style={styles.container}>
                     <FlatList

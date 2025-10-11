@@ -6,7 +6,7 @@ import { useWords } from "../../context/WordsContext";
 
 export default function Form({ onClose, tituloForm, editingWords }) {
     const { handleAdd, handleUpdate, palavra, traducao, setPalavra, setTraducao } = useWords();
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     const categories = [
         { label: 'Selecione uma categoria', value: '' },
@@ -18,19 +18,23 @@ export default function Form({ onClose, tituloForm, editingWords }) {
 
     useEffect(() => {
         if (editingWords) {
-            setPalavra(editingWords.title)
-            setTraducao(editingWords.traducao)
+            setPalavra(editingWords.title);
+            setTraducao(editingWords.traducao);
+            setSelectedCategory(editingWords.categoria || "");
         } else {
-            setPalavra("")
-            setTraducao("")
+            setPalavra("");
+            setTraducao("");
+            setSelectedCategory("");
         }
     }, [editingWords]);
+
+
 
     const handleSubmit = async () => {
         try {
             let success;
             if (editingWords) {
-                success = await handleUpdate(editingWords.id, palavra, traducao)
+                success = await handleUpdate(editingWords.id, palavra, traducao, selectedCategory)
             } else {
                 success = await handleAdd();
             }
@@ -164,24 +168,24 @@ const styles = StyleSheet.create({
         lineHeight: 24,
     },
 
-      dropdownContainer: {
-    width: '100%',
-    marginBottom: 12,
-  },
-  dropdownLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: "#1a1a1a",
-    marginBottom: 8,
-  },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: "#8fb4ffff",
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
-  picker: {
-    width: '100%',
-    height: 50,
-  },
+    dropdownContainer: {
+        width: '100%',
+        marginBottom: 12,
+    },
+    dropdownLabel: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: "#1a1a1a",
+        marginBottom: 8,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: "#8fb4ffff",
+        borderRadius: 8,
+        overflow: 'hidden',
+    },
+    picker: {
+        width: '100%',
+        height: 50,
+    },
 });

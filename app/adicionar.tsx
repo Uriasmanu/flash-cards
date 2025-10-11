@@ -21,7 +21,7 @@ export default function CardsScreen() {
   const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
 
   const [currentLocale, setCurrentLocale] = useState(i18n.locale);
-  const [selectedCategory, setSelectedCategory] = useState(''); 
+  const [selectedCategory, setSelectedCategory] = useState(""); 
   
 
   const categories = [
@@ -45,12 +45,12 @@ export default function CardsScreen() {
 
   const handleSubmit = async () => {
     try {
-      if (!palavra.trim() || !traducao.trim()) {
+      if (!palavra.trim() || !traducao.trim() || !selectedCategory) {
         alert(i18n.t('adicionar.alerta'));
         return;
       }
 
-      const success = await handleAdd();
+      const success = await handleAdd(selectedCategory);
 
       if (success) {
         setShowSuccess(true);
