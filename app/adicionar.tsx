@@ -1,5 +1,6 @@
 import { useWords } from "@/context/WordsContext";
 import i18n from "@/locates";
+import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from "react";
 import {
   Keyboard,
@@ -20,7 +21,17 @@ export default function CardsScreen() {
   const { handleAdd, palavra, traducao, setPalavra, setTraducao } = useWords();
 
   const [currentLocale, setCurrentLocale] = useState(i18n.locale);
+  const [selectedCategory, setSelectedCategory] = useState(''); 
   
+
+  const categories = [
+    { label: 'Selecione uma categoria', value: '' },
+    { label: 'Verbos', value: 'verbos' },
+    { label: 'Substantivos', value: 'substantivos' },
+    { label: 'Adjetivos', value: 'adjetivos' },
+    { label: 'Expressões', value: 'expressoes' },
+  ];
+
   // Escutar mudanças de idioma
   useEffect(() => {
     const interval = setInterval(() => {
@@ -45,6 +56,7 @@ export default function CardsScreen() {
         setShowSuccess(true);
         setPalavra("");
         setTraducao("");
+        setSelectedCategory(""); 
         setTimeout(() => setShowSuccess(false), 2000);
       }
     } catch (error) {
@@ -76,7 +88,7 @@ export default function CardsScreen() {
 
   return (
     <KeyboardAvoidingView
-      key={currentLocale} // Adiciona key para forçar rerender quando idioma mudar
+      key={currentLocale}
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
@@ -87,6 +99,27 @@ export default function CardsScreen() {
       >
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
+            
+            {/* Dropdown de Categoria */}
+            <View style={styles.dropdownContainer}>
+              <Text style={styles.dropdownLabel}>Categoria</Text>
+              <View style={styles.pickerContainer}>
+                <Picker
+                  selectedValue={selectedCategory}
+                  onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+                  style={styles.picker}
+                >
+                  {categories.map((category) => (
+                    <Picker.Item 
+                      key={category.value} 
+                      label={category.label} 
+                      value={category.value} 
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </View>
+
             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
                 <Text style={styles.textTitulo}>{i18n.t('adicionar.tituloFrente1')}</Text>
@@ -129,7 +162,6 @@ export default function CardsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Mensagem de sucesso só aparece se showSuccess for true */}
         {showSuccess && (
           <View style={styles.successContainer}>
             <Sucesso />
@@ -152,10 +184,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 16,
   },
-  initialContent: {
-    alignItems: "center",
-    width: "100%",
-  },
   formContainer: {
     alignItems: 'center',
     width: 380,
@@ -172,6 +200,26 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     gap: 15
+  },
+  dropdownContainer: {
+    width: '100%',
+    marginBottom: 12,
+  },
+  dropdownLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: "#1a1a1a",
+    marginBottom: 8,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#8fb4ffff",
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  picker: {
+    width: '100%',
+    height: 50,
   },
   textTitulo: {
     fontSize: 16,
@@ -194,7 +242,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 120, // Altura fixa melhor para multiline
+    height: 120,
     borderWidth: 1,
     borderColor: "#8fb4ffff",
     borderRadius: 8,
