@@ -3,7 +3,7 @@ import { WordsItem } from "@/types/wordsTypes";
 import { useSearchParams } from "expo-router/build/hooks";
 import { SquarePen, Trash2 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
-import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import Form from "../components/layout/form";
 import { useWords } from "../context/WordsContext";
@@ -23,19 +23,30 @@ export default function ListaDePalavrasScreen() {
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
     const { setPalavra, setTraducao, categorias } = useWords();
     const [filteredWords, setFilteredWords] = useState<WordsItem[]>([]);
-
+    const [search, setSearch] = useState("")
 
     const searchParams = useSearchParams();
     const categoria = searchParams.get("categoria");
 
     useEffect(() => {
+        let filtered = words;
+
+        // Filtra por categoria se houver
         if (categoria) {
             const decodedCategoria = decodeURIComponent(categoria);
-            setFilteredWords(words.filter(word => word.categoria === decodedCategoria));
-        } else {
-            setFilteredWords(words);
+            filtered = filtered.filter(word => word.categoria === decodedCategoria);
         }
-    }, [categoria, words]);
+
+        // Filtra pelo texto de busca
+        if (search.trim() !== "") {
+            filtered = filtered.filter(word =>
+                word.title.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+
+        setFilteredWords(filtered);
+    }, [search, words, categoria]);
+
 
 
     const [currentLocale, setCurrentLocale] = useState(i18n.locale);
@@ -153,6 +164,14 @@ export default function ListaDePalavrasScreen() {
         <View style={styles.container} key={currentLocale}>
             {!showForm && (
                 <View style={styles.container}>
+                    <View style={{ width: 370 }}>
+                        <TextInput
+                            placeholder="Buscar por Palavra"
+                            placeholderTextColor="#888"
+                            style={styles.input}
+                            onChangeText={setSearch}
+                        />
+                    </View>
                     <FlatList
                         data={filteredWords}
                         keyExtractor={(item) => item.id.toString()}
@@ -224,6 +243,21 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: 'center',
+    },
+    input: {
+        width: "100%",
+        backgroundColor: "#fff",
+        paddingVertical: 16,
+        paddingHorizontal: 18,
+        borderRadius: 12,
+        fontSize: 17,
+        fontWeight: "500",
+        color: "#333",
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     emptyListText: {
         fontSize: 24,
