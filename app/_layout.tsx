@@ -78,6 +78,14 @@ export default function RootLayout() {
                   />
 
                   <Drawer.Screen
+                    name="listaDeCategoriasScreen"
+                    options={{
+                      drawerLabel:'Lista De Categorias',
+                      title: 'Categorias'
+                    }}
+                  />
+
+                  <Drawer.Screen
                     name="categoriasConfigScreen"
                     options={{
                       drawerLabel: () => null,
