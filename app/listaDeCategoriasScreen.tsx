@@ -1,4 +1,5 @@
 import { useWords } from "@/context/WordsContext";
+import i18n from "@/locates";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -29,13 +30,13 @@ export default function ListaDeCategoriasScreen() {
     return (
         <View style={styles.container}>
             <TextInput
-                placeholder="Buscar por Categoria"
+                placeholder={i18n.t("listaDeCategorias.placeholderBusca")}
                 placeholderTextColor="#888"
                 style={styles.input}
                 onChangeText={setSearch}
             />
 
-            <Text style={styles.sectionTitle}>Categorias Salvas</Text>
+            <Text style={styles.sectionTitle}>{i18n.t("listaDeCategorias.tituloSecao")}</Text>
 
             {filteredCategorias.map((cat) => (
                 <TouchableOpacity

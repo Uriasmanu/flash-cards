@@ -96,13 +96,13 @@ export default function CardsScreen() {
                 style={[styles.modeButton, mode === "select" && styles.modeButtonActive]}
                 onPress={() => setMode("select")}
               >
-                <Text style={styles.modeButtonText}>Selecionar</Text>
+                <Text style={styles.modeButtonText}>{i18n.t('adicionar.modoSelecionar')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modeButton, mode === "add" && styles.modeButtonActive]}
                 onPress={() => setMode("add")}
               >
-                <Text style={styles.modeButtonText}>Adicionar nova</Text>
+                <Text style={styles.modeButtonText}>{i18n.t('adicionar.modoAdicionar')}</Text>
               </TouchableOpacity>
             </View>
 
@@ -115,7 +115,7 @@ export default function CardsScreen() {
                     onValueChange={(itemValue) => setSelectedCategory(itemValue)}
                     style={styles.picker}
                   >
-                    <Picker.Item key="none" label="Sem categoria" value="" />
+                    <Picker.Item key="none" label={i18n.t('adicionar.semCategoria')} value="" />
                     {categorias.map(cat => (
                       <Picker.Item key={cat} label={cat} value={cat} />
                     ))}
@@ -126,7 +126,7 @@ export default function CardsScreen() {
               <View style={styles.newCategoryContainer}>
                 <TextInput
                   style={styles.newCategoryInput}
-                  placeholder="Nova categoria"
+                  placeholder={i18n.t('adicionar.placeholderNovaCategoria')}
                   value={newCategory}
                   onChangeText={setNewCategory}
                 />
@@ -141,7 +141,7 @@ export default function CardsScreen() {
                     }
                   }}
                 >
-                  <Text style={styles.newCategoryButtonText}>Adicionar</Text>
+                  <Text style={styles.newCategoryButtonText}>{i18n.t('adicionar.botaoAddCategoria')}</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   dropdownContainer: { width: '100%', marginBottom: 12 },
   dropdownLabel: { fontSize: 16, fontWeight: '600', color: "#1a1a1a", marginBottom: 8 },
   pickerContainer: { borderWidth: 1, borderColor: "#8fb4ffff", borderRadius: 8, overflow: 'hidden' },
-  picker: { width: '100%', height: 50 },
+  picker: { width: '100%', height: 60 },
   newCategoryContainer: { flexDirection: 'row', alignItems: 'center', width: '100%', marginTop: 8, gap: 8 },
   newCategoryInput: { flex: 1, height: 45, borderWidth: 1, borderColor: "#8fb4ffff", borderRadius: 8, paddingHorizontal: 12, fontSize: 16 },
   newCategoryButton: { backgroundColor: "#4F46E5", paddingVertical: 12, paddingHorizontal: 16, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },

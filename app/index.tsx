@@ -63,6 +63,7 @@ export default function InicioScreen() {
     const renderPicker = () => (
         <View style={styles.dropdownContainer}>
             <View style={styles.pickerContainer}>
+                <Text style={styles.dropdownLabel}>{selectedCategory}</Text>
                 <Picker
                     selectedValue={selectedCategory}
                     onValueChange={(itemValue) => setSelectedCategory(itemValue)}
@@ -72,9 +73,9 @@ export default function InicioScreen() {
                         <Picker.Item key={category} label={category} value={category} />
                     ))}
                 </Picker>
-
             </View>
         </View>
+
     );
 
     if (filteredWords.length === 0) {
@@ -250,14 +251,15 @@ const styles = StyleSheet.create({
         width: 250
     },
     dropdownContainer: {
-        flexDirection: 'row',
         position: 'absolute',
         top: 10,
+        left: 80,
+        right: 80, // ocupa toda a largura disponível
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 12,
-        width: '60%',
     },
+
     dropdownLabel: {
         fontSize: 14,
         fontWeight: '600',
@@ -272,15 +274,20 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: '#fff',
         height: 40,
-        justifyContent: 'center',
-        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        width: '90%', 
     },
+
+
     picker: {
-        width: '100%',
+        flex: 1,
         height: '100%',
         color: '#120a8f',
         fontWeight: '600',
         fontSize: 14,
-        paddingHorizontal: 10,
     },
+
+
 });

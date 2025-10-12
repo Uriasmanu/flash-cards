@@ -18,6 +18,7 @@ i18n.translations = {
       indexTitulo: "Flash Cards",
       adicionarTitulo: "Nova Palavra",
       listaPalavrasTitulo: "Lista de Palavras",
+      listaCategoriasTitulo: "Categorias",
     },
     adicionar: {
       alerta: "Por favor, preencha todos os campos obrigatórios.",
@@ -30,6 +31,11 @@ i18n.translations = {
       exemploResposta: "Ex: Paris",
       botaoSalvar: "SALVAR FLASH CARD",
       categoria: "Categoria",
+      modoSelecionar: "Selecionar",
+      modoAdicionar: "Adicionar nova",
+      placeholderNovaCategoria: "Nova categoria",
+      botaoAddCategoria: "Adicionar",
+      ssemCategoria: "Sem categoria",
     },
     listaDePalavras: {
       listaVazia: "Você ainda não tem palavras cadastradas",
@@ -37,11 +43,9 @@ i18n.translations = {
       deleteConfirmacaoTexto: "Tem certeza que quer apagar?",
       formTexto: "Editar Palavra",
     },
-    categorias: {
-      listaVazia: "Você ainda não tem palavras cadastradas",
-      deleteConfirmacaoTitulo: "Você tem certeza?",
-      deleteConfirmacaoTexto: "Tem certeza que quer apagar?",
-      formTexto: "Editar Palavra",
+    listaDeCategorias: {
+      placeholderBusca: "Buscar por Categoria",
+      tituloSecao: "Categorias Salvas",
     },
     configuracao: {
       cabecalho: "Lembretes de Estudo",
@@ -84,6 +88,7 @@ i18n.translations = {
       indexTitulo: "Flash Cards",
       adicionarTitulo: "New Word",
       listaPalavrasTitulo: "Word List",
+      listaCategoriasTitulo: "Categories",
     },
     adicionar: {
       alerta: "Please fill in all required fields.",
@@ -96,6 +101,11 @@ i18n.translations = {
       exemploResposta: "E.g.: Paris",
       botaoSalvar: "SAVE FLASH CARD",
       categoria: "Category",
+      modoSelecionar: "Select",
+      modoAdicionar: "Add new",
+      placeholderNovaCategoria: "New category",
+      botaoAddCategoria: "Add",
+      semCategoria: "No category",
     },
     listaDePalavras: {
       listaVazia: "You don't have any words yet",
@@ -103,11 +113,9 @@ i18n.translations = {
       deleteConfirmacaoTexto: "Do you really want to delete?",
       formTexto: "Edit Word",
     },
-    categorias: {
-      listaVazia: "You don't have any words yet",
-      deleteConfirmacaoTitulo: "Are you sure?",
-      deleteConfirmacaoTexto: "Do you really want to delete?",
-      formTexto: "Edit Word",
+    listaDeCategorias: {
+      placeholderBusca: "Search by Category",
+      tituloSecao: "Saved Categories",
     },
     configuracao: {
       cabecalho: "Study Reminders",
