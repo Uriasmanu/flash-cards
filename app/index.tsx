@@ -1,5 +1,6 @@
 // app/index.tsx
 import { useWords } from "@/context/WordsContext";
+import { Picker } from "@react-native-picker/picker";
 import { useRouter } from "expo-router";
 import { Plus, RotateCw } from "lucide-react-native";
 import { useEffect, useState } from 'react';
@@ -9,28 +10,39 @@ import CardWords from '../components/layout/CardWords.jsx';
 import i18n from '../locates/index';
 
 export default function InicioScreen() {
-    const { 
-        words, 
-        loading, 
-        handleToggleFavorite, 
-        handlePontuacao, 
-        handleResetPontuacao, 
-        countPontuacaoPositive, 
-        countPontuacaoNegative 
+    const {
+        words,
+        loading,
+        handleToggleFavorite,
+        handlePontuacao,
+        handleResetPontuacao,
+        countPontuacaoPositive,
+        countPontuacaoNegative,
+        handleLoadCategorias,
+        categorias
     } = useWords();
     const router = useRouter();
-    
-    // Estado para forçar o rerender quando o idioma mudar
+
     const [currentLocale, setCurrentLocale] = useState(i18n.locale);
+    const [selectedCategory, setSelectedCategory] = useState("Sem Categoria");
 
-    const filteredWords = words.filter((word) => !word.favoritar && word.pontuacao === 0);
+    const allCategories = categorias.includes("Sem Categoria")
+        ? categorias
+        : ["Sem Categoria", ...categorias];
 
-    // Escutar mudanças de idioma
+
+    // Filtra as palavras não favoritas e com pontuação 0
+    const filteredWords = words
+        .filter(word => !word.favoritar && word.pontuacao === 0)
+        // Filtra também pela categoria selecionada, ignorando "Sem Categoria" se necessário
+        .filter(word => word.categoria === selectedCategory);
+
+
     useEffect(() => {
-        const updateLocale = () => {
-            setCurrentLocale(i18n.locale);
-        };
+        handleLoadCategorias();
+    }, []);
 
+    useEffect(() => {
         const interval = setInterval(() => {
             if (i18n.locale !== currentLocale) {
                 setCurrentLocale(i18n.locale);
@@ -48,10 +60,28 @@ export default function InicioScreen() {
         )
     }
 
+    const renderPicker = () => (
+        <View style={styles.dropdownContainer}>
+            <View style={styles.pickerContainer}>
+                <Picker
+                    selectedValue={selectedCategory}
+                    onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+                    style={styles.picker}
+                >
+                    {allCategories.map((category) => (
+                        <Picker.Item key={category} label={category} value={category} />
+                    ))}
+                </Picker>
+
+            </View>
+        </View>
+    );
+
     if (filteredWords.length === 0) {
         return (
             <View style={styles.container}>
                 <Text style={styles.pontoPositivo}>{countPontuacaoPositive()}</Text>
+                {renderPicker()}
                 <Text style={styles.pontoNegativo}>{countPontuacaoNegative()}</Text>
 
                 <Text style={styles.textoCentral}>
@@ -85,11 +115,12 @@ export default function InicioScreen() {
     return (
         <View style={styles.wrapper}>
             <Text style={styles.pontoPositivo}>{countPontuacaoPositive()}</Text>
+            {renderPicker()}
             <Text style={styles.pontoNegativo}>{countPontuacaoNegative()}</Text>
 
             <View style={styles.swiperContainer}>
                 <Swiper
-                    key={filteredWords.length + currentLocale} // Adiciona locale na key para forçar rerender
+                    key={filteredWords.length + currentLocale}
                     cards={filteredWords}
                     renderCard={(item) => (
                         <CardWords
@@ -173,8 +204,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 20, 
-        right: 20, 
+        bottom: 20,
+        right: 20,
         elevation: 5,
         zIndex: 10,
     },
@@ -217,5 +248,39 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: 'center',
         width: 250
-    }
+    },
+    dropdownContainer: {
+        flexDirection: 'row',
+        position: 'absolute',
+        top: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 12,
+        width: '60%',
+    },
+    dropdownLabel: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: "#1a1a1a",
+        marginRight: 8,
+
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: "#8fb4ff",
+        borderRadius: 10,
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+        height: 40,
+        justifyContent: 'center',
+        flex: 1,
+    },
+    picker: {
+        width: '100%',
+        height: '100%',
+        color: '#120a8f',
+        fontWeight: '600',
+        fontSize: 14,
+        paddingHorizontal: 10,
+    },
 });

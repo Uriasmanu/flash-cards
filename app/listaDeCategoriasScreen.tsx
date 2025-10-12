@@ -51,9 +51,6 @@ export default function ListaDeCategoriasScreen() {
                 </TouchableOpacity>
             ))}
 
-            <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.addButtonText}>+ Adicionar Nova Categoria</Text>
-            </TouchableOpacity>
         </View>
     );
 }
@@ -65,7 +62,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#f8f9fb",
         paddingVertical: 20,
-        gap: 20,
+        gap: 10,
     },
 
     input: {
@@ -97,6 +94,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         width: "92%",
+        height: 90,
         backgroundColor: "#fff",
         borderRadius: 12,
         elevation: 3,
@@ -133,20 +131,5 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         color: "#4b7bec",
         marginLeft: 20,
-    },
-
-    addButton: {
-        marginTop: 25,
-        backgroundColor: "#4b7bec",
-        paddingVertical: 15,
-        paddingHorizontal: 35,
-        borderRadius: 10,
-        elevation: 3,
-    },
-
-    addButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "600",
     },
 });
