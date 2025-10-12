@@ -3,7 +3,9 @@ import { WordsItem } from "@/types/wordsTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const STORAGE_KEY = 'words'
+const STORAGE_KEY = 'words';
+
+const STORAGE_KEY_CATEGORIAS = 'categorias';
 
 async function saveWordsData(data: WordsItem[]): Promise<void> {
     try {
@@ -67,4 +69,30 @@ async function getWordsPontuacao(): Promise<{ positive: number[], negative: numb
     }
 }
 
-export default { saveWordsData, loadWordsData, deleteWordData, updateWordsData, getWordsPontuacao };
+async function saveCategoriasData(data: string[]): Promise<void> {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEY_CATEGORIAS, JSON.stringify(data));
+    } catch (error) {
+        console.error('Erro ao salvar categorias', error);
+    }
+}
+
+async function loadCategoriasData(): Promise<string[]> {
+    try {
+        const value = await AsyncStorage.getItem(STORAGE_KEY_CATEGORIAS);
+        return value ? JSON.parse(value) : [];
+    } catch (error) {
+        console.error('Erro ao carregar categorias', error);
+        return [];
+    }
+}
+
+export default { 
+    saveWordsData, 
+    loadWordsData, 
+    deleteWordData, 
+    updateWordsData, 
+    getWordsPontuacao,
+    saveCategoriasData,
+    loadCategoriasData, 
+};

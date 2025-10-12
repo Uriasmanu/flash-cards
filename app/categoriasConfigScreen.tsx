@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Sucesso from './../components/layout/sucesso';
 
-export default function CategoriasScreen() {
+export default function CategoriasConfigScreen() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [keyboardPadding, setKeyboardPadding] = useState(0);
 

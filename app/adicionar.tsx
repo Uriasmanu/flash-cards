@@ -22,6 +22,7 @@ export default function CardsScreen() {
   const {
     handleAdd,
     handleAddCategoria,
+    handleLoadCategorias,
     palavra,
     traducao,
     categorias,
@@ -60,6 +61,7 @@ export default function CardsScreen() {
     }
   };
 
+
   // Ajuste de teclado
   useEffect(() => {
     const showListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardPadding(10));
@@ -69,6 +71,10 @@ export default function CardsScreen() {
       hideListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    handleLoadCategorias();
+  }, [])
 
   return (
     <KeyboardAvoidingView
@@ -128,7 +134,7 @@ export default function CardsScreen() {
                   style={styles.newCategoryButton}
                   onPress={async () => {
                     if (newCategory.trim()) {
-                      await handleAddCategoria(newCategory.trim());
+                      handleAddCategoria(newCategory.trim());
                       setSelectedCategory(newCategory.trim());
                       setNewCategory("");
                       setMode("select");
@@ -174,7 +180,7 @@ export default function CardsScreen() {
   );
 }
 
-// Estilos (mantidos do seu original)
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f6f6f68a", alignItems: "center" },
   scrollContainer: { flexGrow: 1, justifyContent: "center", alignItems: "center", paddingBottom: 16 },

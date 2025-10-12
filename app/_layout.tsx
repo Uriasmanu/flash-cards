@@ -57,31 +57,32 @@ export default function RootLayout() {
                 >
                   <Drawer.Screen
                     name="index"
-                    options={{ 
-                      drawerLabel: i18n.t('layout.indexTitulo'), 
-                      title: i18n.t('layout.indexTitulo') 
+                    options={{
+                      drawerLabel: i18n.t('layout.indexTitulo'),
+                      title: i18n.t('layout.indexTitulo')
                     }}
                   />
                   <Drawer.Screen
                     name="adicionar"
-                    options={{ 
-                      drawerLabel: i18n.t('layout.adicionarTitulo'), 
-                      title: i18n.t('layout.adicionarTitulo') 
+                    options={{
+                      drawerLabel: i18n.t('layout.adicionarTitulo'),
+                      title: i18n.t('layout.adicionarTitulo')
                     }}
                   />
                   <Drawer.Screen
                     name="listaDePalavras"
-                    options={{ 
-                      drawerLabel: i18n.t('layout.listaPalavrasTitulo'), 
-                      title: i18n.t('layout.listaPalavrasTitulo') 
+                    options={{
+                      drawerLabel: i18n.t('layout.listaPalavrasTitulo'),
+                      title: i18n.t('layout.listaPalavrasTitulo')
                     }}
                   />
 
-                                    <Drawer.Screen
-                    name="categorias"
-                    options={{ 
-                      drawerLabel: i18n.t('layout.categoriasTitulo'), 
-                      title: i18n.t('layout.categoriasTitulo') 
+                  <Drawer.Screen
+                    name="categoriasConfigScreen"
+                    options={{
+                      drawerLabel: () => null,
+                      drawerItemStyle: { display: 'none' },
+                      title: i18n.t('layout.configuracao'),
                     }}
                   />
 

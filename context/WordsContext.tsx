@@ -13,12 +13,14 @@ interface WordsContextType {
     handleToggleFavorite: (id: number) => Promise<void>;
     handleAdd: (categoriaSelecionada: string) => Promise<boolean>;
     handleAddCategoria: (novaCategoria: string) => void;
+    handleLoadCategorias: () => Promise<void>
     handleDelete: (id: number) => Promise<void>;
     handleUpdate: (id: number, title: string, traducao: string, categoriaSelecionada: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
     handleResetPontuacao: () => Promise<void>;
     countPontuacaoPositive: () => number;
     countPontuacaoNegative: () => number;
+
 }
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
@@ -34,6 +36,10 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const fetchWords = async () => {
             const data = await storage.loadWordsData();
             setWords(data);
+
+            const categoriasSalvas = await storage.loadCategoriasData();
+            setCategorias(categoriasSalvas);
+
             setLoading(false)
         };
 
@@ -66,7 +72,6 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 favoritar: false,
                 pontuacao: 0,
                 categoria: categoriaSelecionada || "Sem Categoria",
-                listaCategorias: categorias
             };
 
             const updatedWords = [...existeWords, newWord];
@@ -86,19 +91,32 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const handleAddCategoria = async (novaCategoria: string) => {
         if (!novaCategoria) return;
-        if (!categorias.includes(novaCategoria)) {
-            const updatedCategorias = [...categorias, novaCategoria];
-            setCategorias(updatedCategorias);
 
-            // Salva a lista de categorias atualizada no storage
-            const storedWords = await storage.loadWordsData();
-            const updatedWords = storedWords.map((word: any) => ({
-                ...word,
-                listaCategorias: updatedCategorias
-            }));
-            await storage.saveWordsData(updatedWords);
+        const storedCategorias = await storage.loadCategoriasData();
+
+        if (!storedCategorias.includes(novaCategoria)) {
+            const updateCategorias = [...storedCategorias, novaCategoria];
+
+            setCategorias(updateCategorias);
+            await storage.saveCategoriasData(updateCategorias);
+
+            await handleLoadCategorias();
         }
     };
+
+    const handleLoadCategorias = async () => {
+        try {
+            const categoriasSalvas = await storage.loadCategoriasData();
+            if (categoriasSalvas) {
+                setCategorias(categoriasSalvas);
+            } else {
+                setCategorias([])
+            }
+
+        } catch (error) {
+            console.error('Erro ao carregar categorias', error)
+        }
+    }
 
 
     const handleDelete = async (id: number): Promise<void> => {
@@ -199,6 +217,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 handleResetPontuacao,
                 countPontuacaoPositive,
                 countPontuacaoNegative,
+                handleLoadCategorias
             }}
         >
             {children}
