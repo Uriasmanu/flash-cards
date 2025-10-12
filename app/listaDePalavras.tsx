@@ -1,5 +1,6 @@
 import i18n from "@/locates";
 import { WordsItem } from "@/types/wordsTypes";
+import { useSearchParams } from "expo-router/build/hooks";
 import { SquarePen, Trash2 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -8,7 +9,6 @@ import Form from "../components/layout/form";
 import { useWords } from "../context/WordsContext";
 import DeleteConfirmation from './../components/layout/DeleteConfirmation';
 import Favoritar from './../components/layout/favoritar';
-
 
 
 type SwipeableRefs = {
@@ -22,6 +22,21 @@ export default function ListaDePalavrasScreen() {
     const [editingWords, setEditingWords] = useState<WordsItem | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
     const { setPalavra, setTraducao, categorias } = useWords();
+    const [filteredWords, setFilteredWords] = useState<WordsItem[]>([]);
+
+
+    const searchParams = useSearchParams();
+    const categoria = searchParams.get("categoria");
+
+    useEffect(() => {
+        if (categoria) {
+            const decodedCategoria = decodeURIComponent(categoria);
+            setFilteredWords(words.filter(word => word.categoria === decodedCategoria));
+        } else {
+            setFilteredWords(words);
+        }
+    }, [categoria, words]);
+
 
     const [currentLocale, setCurrentLocale] = useState(i18n.locale);
 
@@ -139,7 +154,7 @@ export default function ListaDePalavrasScreen() {
             {!showForm && (
                 <View style={styles.container}>
                     <FlatList
-                        data={sortedWords}
+                        data={filteredWords}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <Swipeable
@@ -190,7 +205,7 @@ export default function ListaDePalavrasScreen() {
                     }}
                     tituloForm={i18n.t('listaDePalavras.formTexto')}
                     editingWords={editingWords}
-                    allCategories={allCategories} 
+                    allCategories={allCategories}
                 />
             )}
         </View>

@@ -71,9 +71,10 @@ export default function RootLayout() {
                   />
                   <Drawer.Screen
                     name="listaDePalavras"
-                    options={{
-                      drawerLabel: i18n.t('layout.listaPalavrasTitulo'),
-                      title: i18n.t('layout.listaPalavrasTitulo')
+                  options={{
+                      drawerLabel: () => null,
+                      drawerItemStyle: { display: 'none' },
+                      title: i18n.t('layout.listaPalavrasTitulo'),
                     }}
                   />
 

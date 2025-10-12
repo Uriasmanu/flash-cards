@@ -13,7 +13,8 @@ interface WordsContextType {
     handleToggleFavorite: (id: number) => Promise<void>;
     handleAdd: (categoriaSelecionada: string) => Promise<boolean>;
     handleAddCategoria: (novaCategoria: string) => void;
-    handleLoadCategorias: () => Promise<void>
+    handleLoadCategorias: () => Promise<void>;
+    countWordsByCategory: () => Record<string, number>;
     handleDelete: (id: number) => Promise<void>;
     handleUpdate: (id: number, title: string, traducao: string, categoriaSelecionada: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
@@ -118,6 +119,17 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     }
 
+    const countWordsByCategory = (): Record<string, number> => {
+        const counts: Record<string, number> ={};
+
+        words.forEach(word => {
+            const categoria = word.categoria || "Sem Categoria";
+            counts[categoria] = (counts[categoria] || 0) + 1;
+        });
+
+        return counts;
+    }
+
 
     const handleDelete = async (id: number): Promise<void> => {
         try {
@@ -217,7 +229,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 handleResetPontuacao,
                 countPontuacaoPositive,
                 countPontuacaoNegative,
-                handleLoadCategorias
+                handleLoadCategorias,
+                countWordsByCategory
             }}
         >
             {children}
