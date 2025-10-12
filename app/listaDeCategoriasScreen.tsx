@@ -21,7 +21,8 @@ export default function ListaDeCategoriasScreen() {
 
     const wordCounts = countWordsByCategory();
 
-    const filteredCategorias = categorias.filter(cat =>
+    const allCategorias = Array.from(new Set([...categorias, ...Object.keys(wordCounts)]));
+    const filteredCategorias = allCategorias.filter(cat =>
         cat.toLowerCase().includes(search.toLowerCase())
     )
 
@@ -37,10 +38,10 @@ export default function ListaDeCategoriasScreen() {
             <Text style={styles.sectionTitle}>Categorias Salvas</Text>
 
             {filteredCategorias.map((cat) => (
-                <TouchableOpacity 
-                key={cat} 
-                style={styles.categoryCard}
-                onPress={() => router.push(`/listaDePalavras?categoria=${encodeURIComponent(cat)}`)}
+                <TouchableOpacity
+                    key={cat}
+                    style={styles.categoryCard}
+                    onPress={() => router.push(`/listaDePalavras?categoria=${encodeURIComponent(cat)}`)}
                 >
                     <View style={styles.colorAccent} />
                     <View style={styles.categoryInfo}>
