@@ -6,7 +6,7 @@ import { useWords } from "../../context/WordsContext";
 
 
 export default function Form({ onClose, tituloForm, editingWords, allCategories }) {
-    const { handleAdd, handleUpdate, palavra, traducao, setPalavra, setTraducao } = useWords();
+    const { handleAdd, handleUpdate, handleLoadCategorias, palavra, traducao, setPalavra, setTraducao } = useWords();
     const [selectedCategory, setSelectedCategory] = useState("Sem Categoria");
 
     useEffect(() => {

@@ -41,7 +41,12 @@ async function updateWordsData(id: number, title: string, traducao: string, cate
         const words = await loadWordsData();
         const updateWords = words.map((word: WordsItem) =>
             word.id === id
-                ? { ...word, title: title, traducao: traducao, categoria: categoria }
+                ? { 
+                    ...word, 
+                    title: title, 
+                    traducao: traducao, 
+                    categoria: categoria && categoria.trim() !== "" ? categoria: "  ",
+                }
                 : word
         )
 

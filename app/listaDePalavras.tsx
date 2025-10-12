@@ -1,4 +1,5 @@
 import i18n from "@/locates";
+import { WordsItem } from "@/types/wordsTypes";
 import { SquarePen, Trash2 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -8,14 +9,7 @@ import { useWords } from "../context/WordsContext";
 import DeleteConfirmation from './../components/layout/DeleteConfirmation';
 import Favoritar from './../components/layout/favoritar';
 
-// Interface atualizada incluindo categoria
-interface WordItem {
-    id: number;
-    title: string;
-    traducao: string;
-    favoritar: boolean;
-    categoria?: string;
-}
+
 
 type SwipeableRefs = {
     [key: number]: Swipeable | null;
@@ -25,7 +19,7 @@ export default function ListaDePalavrasScreen() {
     const { words, loading, handleToggleFavorite, handleDelete } = useWords();
     const [showForm, setShowForm] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [editingWords, setEditingWords] = useState<WordItem | null>(null);
+    const [editingWords, setEditingWords] = useState<WordsItem | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
     const { setPalavra, setTraducao, categorias } = useWords();
 
@@ -96,7 +90,7 @@ export default function ListaDePalavrasScreen() {
         );
     }
 
-    const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, item: WordItem) => {
+    const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, item: WordsItem) => {
         const scale = dragX.interpolate({
             inputRange: [-100, 0],
             outputRange: [1, 0],
