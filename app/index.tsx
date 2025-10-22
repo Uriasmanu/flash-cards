@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         left: 80,
-        right: 80, // ocupa toda a largura disponível
+        right: 80, 
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 12,

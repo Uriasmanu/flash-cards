@@ -1,7 +1,7 @@
 import i18n from "@/locates";
 import { WordsItem } from "@/types/wordsTypes";
-import { useSearchParams } from "expo-router/build/hooks";
-import { SquarePen, Trash2 } from "lucide-react-native";
+import { useRouter, useSearchParams } from "expo-router/build/hooks";
+import { Plus, SquarePen, Trash2 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
@@ -24,6 +24,8 @@ export default function ListaDePalavrasScreen() {
     const { setPalavra, setTraducao, categorias } = useWords();
     const [filteredWords, setFilteredWords] = useState<WordsItem[]>([]);
     const [search, setSearch] = useState("")
+
+    const router = useRouter();
 
     const searchParams = useSearchParams();
     const categoria = searchParams.get("categoria");
@@ -157,20 +159,27 @@ export default function ListaDePalavrasScreen() {
         );
     };
 
-    // Garantir que "Sem Categoria" sempre apareça no picker
     const allCategories = categorias.includes("Sem Categoria") ? categorias : ["Sem Categoria", ...categorias];
 
     return (
         <View style={styles.container} key={currentLocale}>
             {!showForm && (
                 <View style={styles.container}>
-                    <View style={{ width: 370 }}>
+                    <View style={{ flexDirection: 'row', width: 370, alignItems: 'center' }}>
                         <TextInput
                             placeholder="Buscar por Palavra"
                             placeholderTextColor="#888"
-                            style={styles.input}
+                            style={[styles.input, { flex: 1 }]} // input ocupa o espaço disponível
                             onChangeText={setSearch}
+                            value={search} // importante controlar o valor
                         />
+
+                        <TouchableOpacity style={styles.adicionar}>
+                            <Plus
+                                color="#fff" size={20}
+                                onPress={() => router.push('/adicionar')}
+                            />
+                        </TouchableOpacity>
                     </View>
                     <FlatList
                         data={filteredWords}
@@ -258,6 +267,19 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4,
         shadowOffset: { width: 0, height: 2 },
+    },
+    adicionar: {
+        marginLeft: 10,
+        backgroundColor: '#120a8f',
+        padding: 12,
+        borderRadius: 25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     emptyListText: {
         fontSize: 24,
