@@ -8,7 +8,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { WordsProvider } from '../context/WordsContext';
-import AdBanner from './../components/ads/AdBanner';
 
 export default function RootLayout() {
   // Estado para forçar o rerender quando o idioma mudar
@@ -97,8 +96,8 @@ export default function RootLayout() {
                 </Drawer>
               </View>
               <SafeAreaView edges={["bottom"]}>
-                <AdBanner forceRealAds={true} />
-                {/*  <AdBannerMock />  */}
+                
+                {/*  <AdBannerMock /> <AdBanner forceRealAds={true} /> */}
                 
               </SafeAreaView>
             </View>

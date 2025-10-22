@@ -63,7 +63,24 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
 
         try {
-            const existeWords = await storage.loadWordsData();
+            
+            let existeWords = await storage.loadWordsData();
+
+            if (!Array.isArray(existeWords)) {
+                existeWords = [];
+            }
+
+            // ✅ Verifica se a palavra já existe
+            const palavraExiste = existeWords.some(
+                (w: WordsItem) => w.title.toLowerCase() === palavra.toLowerCase()
+            );
+
+            if (palavraExiste) {
+                alert('Esta palavra ou tradução já existe na lista!');
+                return false;
+            }
+
+
             const nextId = existeWords.length > 0 ? Math.max(...existeWords.map((m: { id: any; }) => m.id)) + 1 : 1;
 
             const newWord = {
@@ -120,7 +137,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
 
     const countWordsByCategory = (): Record<string, number> => {
-        const counts: Record<string, number> ={};
+        const counts: Record<string, number> = {};
 
         words.forEach(word => {
             const categoria = word.categoria || "Sem Categoria";
