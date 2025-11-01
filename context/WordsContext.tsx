@@ -36,7 +36,14 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     useEffect(() => {
         const fetchWords = async () => {
             const data = await storage.loadWordsData();
-            setWords(data);
+
+            const corrigidas = data.map((word: WordsItem) =>({
+                ...word,
+                categorias: word.categoria && word.categoria.trim() !== "" ? word.categoria : "Sem Categoria"
+            }));
+
+            setWords(corrigidas);
+            await storage.saveWordsData(corrigidas);
 
             const categoriasSalvas = await storage.loadCategoriasData();
             setCategorias(categoriasSalvas);

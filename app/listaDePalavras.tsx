@@ -36,7 +36,10 @@ export default function ListaDePalavrasScreen() {
         // Filtra por categoria se houver
         if (categoria) {
             const decodedCategoria = decodeURIComponent(categoria);
-            filtered = filtered.filter(word => word.categoria === decodedCategoria);
+            filtered = filtered.filter(word => {
+                const cat = word.categoria && word.categoria.trim() !== "" ? word.categoria : "Sem Categoria";
+                return cat === decodedCategoria;
+            })
         }
 
         // Filtra pelo texto de busca
@@ -72,10 +75,6 @@ export default function ListaDePalavrasScreen() {
             }
         });
     };
-
-    const sortedWords = [...words].sort((a, b) =>
-        a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' })
-    );
 
     const handleDeleteClick = (id: number) => {
         setSelectedItemId(id);
