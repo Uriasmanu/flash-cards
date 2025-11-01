@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -303,6 +304,7 @@ export const NotificationProvider = ({ children }) => {
   // Alternar notificações (ligar/desligar)
   const toggleNotifications = async (enabled) => {
     setIsNotificationEnabled(enabled);
+    await AsyncStorage.setItem('isNotificationEnabled', JSON.stringify(enabled))
     
     if (enabled) {
       // Se está ativando, agendar com o horário atual
@@ -314,6 +316,16 @@ export const NotificationProvider = ({ children }) => {
       return { success: true, enabled: false };
     }
   };
+
+  useEffect(() => {
+    const loadNotificationEnabled = async () => {
+      const stored = await AsyncStorage.getItem('isNotificationEnabled');
+      if (stored !== null) {
+        setIsNotificationEnabled(JSON.parse(stored));
+      }
+    }
+    loadNotificationEnabled();
+  }, []);
 
   // Verificar status atual do agendamento
   const getNotificationScheduleStatus = async () => {
