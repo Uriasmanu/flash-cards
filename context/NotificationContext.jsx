@@ -292,6 +292,8 @@ export const NotificationProvider = ({ children }) => {
   // Atualizar horário da notificação
   const updateNotificationTime = async (hour, minute) => {
     setNotificationTime({ hour, minute });
+
+    await AsyncStorage.setItem('notificationTime', JSON.stringify({hour, minute}));
     
     // Se as notificações estão habilitadas, reagendar com o novo horário
     if (isNotificationEnabled) {
@@ -300,6 +302,16 @@ export const NotificationProvider = ({ children }) => {
     
     return { success: true, enabled: false };
   };
+
+  useEffect(()=>{
+    const loadNotificationTime = async () => {
+      const storedTime = await AsyncStorage.getItem('notificationTime');
+      if (storedTime) {
+        setNotificationTime(JSON.parse(storedTime))
+      }
+    };
+    loadNotificationTime();
+  },[])
 
   // Alternar notificações (ligar/desligar)
   const toggleNotifications = async (enabled) => {

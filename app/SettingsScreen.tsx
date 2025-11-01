@@ -104,7 +104,7 @@ const SettingsScreen = () => {
       await loadNotificationStatus();
       Alert.alert(
         i18n.t('configuracao.alertaSucessoTitle'),
-        enabled 
+        enabled
           ? i18n.t('configuracao.alertaSucessoTextoAtivado')
           : i18n.t('configuracao.alertaSucessoTextoDesativado')
       );
@@ -298,22 +298,17 @@ const SettingsScreen = () => {
         animationType="slide"
       >
         <TouchableWithoutFeedback onPress={() => setShowTimePicker(false)}>
-          <View style={styles.modalOverlay}>
-            <TouchableWithoutFeedback>
-              <View style={styles.timePickerContainer}>
-                <Text style={styles.timePickerTitle}>
-                  {i18n.t('configuracao.escolhaHorario')}
-                </Text>
-                <DateTimePicker
-                  value={tempTime}
-                  mode="time"
-                  display='clock'
-                  onChange={handleTimeChange}
-                  style={styles.timePicker}
-                />
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+          <TouchableWithoutFeedback>
+            <DateTimePicker
+              value={tempTime}
+              mode="time"
+              display='clock'
+              onChange={handleTimeChange}
+              style={styles.timePicker}
+            />
+
+          </TouchableWithoutFeedback>
+
         </TouchableWithoutFeedback>
       </Modal>
     </ScrollView>
@@ -472,26 +467,7 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 4,
   },
-  // Estilos do Modal e Time Picker
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  timePickerContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 20,
-    width: '85%',
-    alignItems: 'center',
-  },
-  timePickerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 16,
-    color: '#333',
-  },
+
   timePicker: {
     width: '100%',
     height: 160,
