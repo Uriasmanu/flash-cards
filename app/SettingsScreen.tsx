@@ -307,28 +307,10 @@ const SettingsScreen = () => {
                 <DateTimePicker
                   value={tempTime}
                   mode="time"
-                  display="spinner"
+                  display='clock'
                   onChange={handleTimeChange}
                   style={styles.timePicker}
                 />
-                <View style={styles.timePickerButtons}>
-                  <TouchableOpacity
-                    style={styles.cancelButton}
-                    onPress={() => setShowTimePicker(false)}
-                  >
-                    <Text style={styles.cancelButtonText}>
-                      {i18n.t('configuracao.cancelar')}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.confirmButton}
-                    onPress={() => handleTimeChange(null, tempTime)}
-                  >
-                    <Text style={styles.confirmButtonText}>
-                      {i18n.t('configuracao.confirmar')}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -513,32 +495,6 @@ const styles = StyleSheet.create({
   timePicker: {
     width: '100%',
     height: 160,
-  },
-  timePickerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginTop: 16,
-  },
-  cancelButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    backgroundColor: '#f0f0f0',
-  },
-  cancelButtonText: {
-    color: '#666',
-    fontWeight: '600',
-  },
-  confirmButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    backgroundColor: '#2196F3',
-  },
-  confirmButtonText: {
-    color: 'white',
-    fontWeight: '600',
   },
 });
 
