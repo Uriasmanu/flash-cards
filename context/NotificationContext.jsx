@@ -146,7 +146,7 @@ export const NotificationProvider = ({ children }) => {
       }
     }
   };
-  
+
 
   // Verificar notificações agendadas
   const getScheduledNotifications = async () => {
@@ -248,6 +248,16 @@ export const NotificationProvider = ({ children }) => {
         };
       }
 
+      const now = new Date();
+      let triggerDate = new Date();
+      triggerDate.setHours(hour);
+      triggerDate.setMinutes(minute);
+      triggerDate.setSeconds(0)
+
+      if (triggerDate <= now) {
+        triggerDate.setDate(triggerDate.getDate() + 1)
+      }
+
       // Agendar nova notificação LOCAL
       const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
@@ -256,17 +266,11 @@ export const NotificationProvider = ({ children }) => {
           sound: true,
           priority: Notifications.AndroidNotificationPriority.HIGH,
           data: {
-            type: 'study_reminder',
             screen: 'flashcards',
-            hour: hour,
-            minute: minute
           },
         },
-        trigger: {
-          hour: hour,
-          minute: minute,
-          repeats: true,
-        },
+        trigger: triggerDate,
+        
       });
 
       console.log(`✅ Lembrete agendado para ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`);
@@ -293,17 +297,17 @@ export const NotificationProvider = ({ children }) => {
   const updateNotificationTime = async (hour, minute) => {
     setNotificationTime({ hour, minute });
 
-    await AsyncStorage.setItem('notificationTime', JSON.stringify({hour, minute}));
-    
+    await AsyncStorage.setItem('notificationTime', JSON.stringify({ hour, minute }));
+
     // Se as notificações estão habilitadas, reagendar com o novo horário
     if (isNotificationEnabled) {
       return await scheduleStudyReminder(hour, minute);
     }
-    
+
     return { success: true, enabled: false };
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const loadNotificationTime = async () => {
       const storedTime = await AsyncStorage.getItem('notificationTime');
       if (storedTime) {
@@ -311,13 +315,13 @@ export const NotificationProvider = ({ children }) => {
       }
     };
     loadNotificationTime();
-  },[])
+  }, [])
 
   // Alternar notificações (ligar/desligar)
   const toggleNotifications = async (enabled) => {
     setIsNotificationEnabled(enabled);
     await AsyncStorage.setItem('isNotificationEnabled', JSON.stringify(enabled))
-    
+
     if (enabled) {
       // Se está ativando, agendar com o horário atual
       return await scheduleStudyReminder();
@@ -351,7 +355,7 @@ export const NotificationProvider = ({ children }) => {
   };
 
 
-const value = {
+  const value = {
     hasPermission,
     isExpoGo,
     expoPushToken,
