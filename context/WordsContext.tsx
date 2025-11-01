@@ -21,7 +21,9 @@ interface WordsContextType {
     handleResetPontuacao: () => Promise<void>;
     countPontuacaoPositive: () => number;
     countPontuacaoNegative: () => number;
-
+    // Novas funções para gerenciar categorias
+    handleDeleteCategoria: (categoria: string) => Promise<void>;
+    handleUpdateCategoria: (categoriaAntiga: string, categoriaNova: string) => Promise<boolean>;
 }
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
@@ -154,7 +156,6 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return counts;
     }
 
-
     const handleDelete = async (id: number): Promise<void> => {
         try {
             const currentWords = await storage.loadWordsData();
@@ -194,7 +195,6 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-
     const handlePontuacao = async (id: number, delta: number) => {
         try {
             const updatedWords = words.map((word) =>
@@ -223,7 +223,6 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         } catch (error) {
             console.error('Erro ao restaurar pontuação', error)
         }
-
     };
 
     const countPontuacaoPositive = () => {
@@ -232,6 +231,80 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const countPontuacaoNegative = () => {
         return words.filter((word) => word.pontuacao === -1).length;
+    };
+
+    // NOVAS FUNÇÕES PARA GERENCIAR CATEGORIAS
+
+    const handleDeleteCategoria = async (categoria: string): Promise<void> => {
+        try {
+            // Não permitir deletar "Sem Categoria"
+            if (categoria === "Sem Categoria") {
+                alert('Não é possível deletar a categoria "Sem Categoria"');
+                return;
+            }
+
+            // Filtrar a categoria da lista de categorias
+            const updatedCategorias = categorias.filter(cat => cat !== categoria);
+            setCategorias(updatedCategorias);
+            await storage.saveCategoriasData(updatedCategorias);
+
+            // Atualizar palavras que usavam essa categoria para "Sem Categoria"
+            const updatedWords = words.map(word => 
+                word.categoria === categoria 
+                    ? { ...word, categoria: "Sem Categoria" }
+                    : word
+            );
+            setWords(updatedWords);
+            await storage.saveWordsData(updatedWords);
+
+            console.log(`Categoria "${categoria}" deletada com sucesso`);
+        } catch (error) {
+            console.error('Erro ao deletar categoria:', error);
+            throw error;
+        }
+    };
+
+    const handleUpdateCategoria = async (categoriaAntiga: string, categoriaNova: string): Promise<boolean> => {
+        try {
+            if (!categoriaNova.trim()) {
+                alert('O nome da categoria não pode estar vazio');
+                return false;
+            }
+
+            // Não permitir editar "Sem Categoria"
+            if (categoriaAntiga === "Sem Categoria") {
+                alert('Não é possível editar a categoria "Sem Categoria"');
+                return false;
+            }
+
+            // Verificar se a nova categoria já existe
+            if (categorias.includes(categoriaNova) && categoriaNova !== categoriaAntiga) {
+                alert('Já existe uma categoria com este nome');
+                return false;
+            }
+
+            // Atualizar a lista de categorias
+            const updatedCategorias = categorias.map(cat => 
+                cat === categoriaAntiga ? categoriaNova : cat
+            );
+            setCategorias(updatedCategorias);
+            await storage.saveCategoriasData(updatedCategorias);
+
+            // Atualizar palavras que usavam a categoria antiga
+            const updatedWords = words.map(word => 
+                word.categoria === categoriaAntiga 
+                    ? { ...word, categoria: categoriaNova }
+                    : word
+            );
+            setWords(updatedWords);
+            await storage.saveWordsData(updatedWords);
+
+            console.log(`Categoria "${categoriaAntiga}" atualizada para "${categoriaNova}"`);
+            return true;
+        } catch (error) {
+            console.error('Erro ao atualizar categoria:', error);
+            return false;
+        }
     };
 
     return (
@@ -254,7 +327,10 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 countPontuacaoPositive,
                 countPontuacaoNegative,
                 handleLoadCategorias,
-                countWordsByCategory
+                countWordsByCategory,
+                // Novas funções
+                handleDeleteCategoria,
+                handleUpdateCategoria
             }}
         >
             {children}
