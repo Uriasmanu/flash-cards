@@ -35,7 +35,7 @@ i18n.translations = {
       modoAdicionar: "Adicionar nova",
       placeholderNovaCategoria: "Nova categoria",
       botaoAddCategoria: "Adicionar",
-      ssemCategoria: "Sem categoria",
+      semCategoria: "Sem categoria",
     },
     listaDePalavras: {
       listaVazia: "Você ainda não tem palavras cadastradas",
