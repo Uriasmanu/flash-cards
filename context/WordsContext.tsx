@@ -195,36 +195,39 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-    const handlePontuacao = async (id: number, delta: number) => {
-        try {
-            const updatedWords = words.map((word) => {
-                if (word.id === id) {
-                    const novaPontuacao = word.pontuacao + delta;
-                    let novaPontuacaoErro = word.pontuacaoErro || 0;
+const handlePontuacao = async (id: number, delta: number) => {
+    try {
+        const updatedWords = words.map((word) => {
+            if (word.id === id) {
+                const novaPontuacao = word.pontuacao + delta;
+                let novaPontuacaoErro = word.pontuacaoErro || 0;
 
-                    if (delta < 0) {
-                        // Erro: aumenta contador de erros
+                if (delta < 0) {
+                    // Erro: só incrementa pontuacaoErro se a pontuação for < 0
+                    // ou se for o primeiro erro (pontuacao vai de 0 para -1)
+                    if (word.pontuacao < 0 || novaPontuacao < 0) {
                         novaPontuacaoErro += 1;
-                    } else if (delta > 0 && novaPontuacaoErro > 0) {
-                        // Acerto: diminui contador de erros (mas não fica negativo)
-                        novaPontuacaoErro = Math.max(0, novaPontuacaoErro - 1);
                     }
-
-                    return {
-                        ...word,
-                        pontuacao: novaPontuacao,
-                        pontuacaoErro: novaPontuacaoErro
-                    };
+                } else if (delta > 0 && novaPontuacaoErro > 0) {
+                    // Acerto: diminui contador de erros (mas não fica negativo)
+                    novaPontuacaoErro = Math.max(0, novaPontuacaoErro - 1);
                 }
-                return word;
-            });
 
-            setWords(updatedWords);
-            await storage.saveWordsData(updatedWords);
-        } catch (error) {
-            console.error('Erro ao atualizar pontuação', error);
-        }
-    };
+                return {
+                    ...word,
+                    pontuacao: novaPontuacao,
+                    pontuacaoErro: novaPontuacaoErro
+                };
+            }
+            return word;
+        });
+
+        setWords(updatedWords);
+        await storage.saveWordsData(updatedWords);
+    } catch (error) {
+        console.error('Erro ao atualizar pontuação', error);
+    }
+};
 
 
     const getWordsWithErrors = (): WordsItem[] => {
