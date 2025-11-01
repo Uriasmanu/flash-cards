@@ -70,7 +70,7 @@ export default function RootLayout() {
                   />
                   <Drawer.Screen
                     name="listaDePalavras"
-                  options={{
+                    options={{
                       drawerLabel: () => null,
                       drawerItemStyle: { display: 'none' },
                       title: i18n.t('layout.listaPalavrasTitulo'),
@@ -82,6 +82,14 @@ export default function RootLayout() {
                     options={{
                       drawerLabel: i18n.t('layout.listaCategoriasTitulo'),
                       title: i18n.t('layout.listaCategoriasTitulo'),
+                    }}
+                  />
+
+                  <Drawer.Screen
+                    name="resumoScreen"
+                    options={{
+                      drawerLabel: i18n.t('layout.resumoTitulo'),
+                      title: i18n.t('layout.resumoTitulo'),
                     }}
                   />
 
@@ -98,7 +106,7 @@ export default function RootLayout() {
               <SafeAreaView edges={["bottom"]}>
                 
                 {/*  <AdBannerMock /> <AdBanner forceRealAds={true} /> */}
-                
+
               </SafeAreaView>
             </View>
           </NotificationProvider>

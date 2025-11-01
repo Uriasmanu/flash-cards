@@ -19,9 +19,9 @@ interface WordsContextType {
     handleUpdate: (id: number, title: string, traducao: string, categoriaSelecionada: string) => Promise<boolean>;
     handlePontuacao: (id: number, delta: number) => Promise<void>;
     handleResetPontuacao: () => Promise<void>;
+    getWordsWithErrors: () => WordsItem[];
     countPontuacaoPositive: () => number;
     countPontuacaoNegative: () => number;
-    // Novas funções para gerenciar categorias
     handleDeleteCategoria: (categoria: string) => Promise<void>;
     handleUpdateCategoria: (categoriaAntiga: string, categoriaNova: string) => Promise<boolean>;
 }
@@ -39,7 +39,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const fetchWords = async () => {
             const data = await storage.loadWordsData();
 
-            const corrigidas = data.map((word: WordsItem) =>({
+            const corrigidas = data.map((word: WordsItem) => ({
                 ...word,
                 categorias: word.categoria && word.categoria.trim() !== "" ? word.categoria : "Sem Categoria"
             }));
@@ -72,7 +72,7 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
 
         try {
-            
+
             let existeWords = await storage.loadWordsData();
 
             if (!Array.isArray(existeWords)) {
@@ -197,16 +197,43 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const handlePontuacao = async (id: number, delta: number) => {
         try {
-            const updatedWords = words.map((word) =>
-                word.id === id ? { ...word, pontuacao: word.pontuacao + delta } : word
-            );
+            const updatedWords = words.map((word) => {
+                if (word.id === id) {
+                    const novaPontuacao = word.pontuacao + delta;
+                    let novaPontuacaoErro = word.pontuacaoErro || 0;
+
+                    if (delta < 0) {
+                        // Erro: aumenta contador de erros
+                        novaPontuacaoErro += 1;
+                    } else if (delta > 0 && novaPontuacaoErro > 0) {
+                        // Acerto: diminui contador de erros (mas não fica negativo)
+                        novaPontuacaoErro = Math.max(0, novaPontuacaoErro - 1);
+                    }
+
+                    return {
+                        ...word,
+                        pontuacao: novaPontuacao,
+                        pontuacaoErro: novaPontuacaoErro
+                    };
+                }
+                return word;
+            });
 
             setWords(updatedWords);
             await storage.saveWordsData(updatedWords);
         } catch (error) {
-            console.error('Erro ao atualiza pontuação', error)
+            console.error('Erro ao atualizar pontuação', error);
         }
     };
+
+
+    const getWordsWithErrors = (): WordsItem[] => {
+        return words
+            .filter(word => (word.pontuacaoErro || 0) > 0)
+            .sort((a, b) => (b.pontuacaoErro || 0) - (a.pontuacaoErro || 0)); // do maior para o menor
+    };
+
+
 
     const handleResetPontuacao = async (): Promise<void> => {
         try {
@@ -249,8 +276,8 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             await storage.saveCategoriasData(updatedCategorias);
 
             // Atualizar palavras que usavam essa categoria para "Sem Categoria"
-            const updatedWords = words.map(word => 
-                word.categoria === categoria 
+            const updatedWords = words.map(word =>
+                word.categoria === categoria
                     ? { ...word, categoria: "Sem Categoria" }
                     : word
             );
@@ -284,15 +311,15 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             }
 
             // Atualizar a lista de categorias
-            const updatedCategorias = categorias.map(cat => 
+            const updatedCategorias = categorias.map(cat =>
                 cat === categoriaAntiga ? categoriaNova : cat
             );
             setCategorias(updatedCategorias);
             await storage.saveCategoriasData(updatedCategorias);
 
             // Atualizar palavras que usavam a categoria antiga
-            const updatedWords = words.map(word => 
-                word.categoria === categoriaAntiga 
+            const updatedWords = words.map(word =>
+                word.categoria === categoriaAntiga
                     ? { ...word, categoria: categoriaNova }
                     : word
             );
@@ -324,11 +351,11 @@ export const WordsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 handleUpdate,
                 handlePontuacao,
                 handleResetPontuacao,
+                getWordsWithErrors,
                 countPontuacaoPositive,
                 countPontuacaoNegative,
                 handleLoadCategorias,
                 countWordsByCategory,
-                // Novas funções
                 handleDeleteCategoria,
                 handleUpdateCategoria
             }}

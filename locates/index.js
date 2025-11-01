@@ -19,6 +19,7 @@ i18n.translations = {
       adicionarTitulo: "Nova Palavra",
       listaPalavrasTitulo: "Lista de Palavras",
       listaCategoriasTitulo: "Categorias",
+      resumoTitulo: "Resumo",
     },
     adicionar: {
       alerta: "Por favor, preencha todos os campos obrigatórios.",
@@ -102,6 +103,7 @@ i18n.translations = {
       adicionarTitulo: "New Word",
       listaPalavrasTitulo: "Word List",
       listaCategoriasTitulo: "Categories",
+      resumoTitulo: "Resumo",
     },
     adicionar: {
       alerta: "Please fill in all required fields.",
