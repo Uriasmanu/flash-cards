@@ -7,7 +7,7 @@ export default function DeleteConfirmation({ title, mensagem, onCancel, onConfir
         <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.iconContainer}>
-                    <Text style={styles.iconContainer}><Trash2 size={40} color={'#fff'} /></Text>
+                    <View style={styles.iconContainer}><Trash2 size={40} color={'#fff'} /></View>
 
                 </View>
 

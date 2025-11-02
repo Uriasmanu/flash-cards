@@ -8,7 +8,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -18,6 +17,8 @@ import {
   View
 } from "react-native";
 import Sucesso from './../components/layout/sucesso';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // --- Cores e Design System Consistente ---
 const COLORS = {
@@ -140,12 +141,6 @@ export default function CardsScreen() {
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            {/* Header */}
-            <View style={styles.header}>
-              <Text style={styles.headerTitle}>
-                {i18n.t('layout.adicionarTitulo')}
-              </Text>
-            </View>
 
             {/* Card Container */}
             <View style={styles.card}>
@@ -326,7 +321,6 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 20,
     paddingBottom: 40,
   },
   header: {

@@ -8,7 +8,6 @@ import {
   Animated,
   FlatList,
   Modal,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -17,6 +16,7 @@ import {
   View
 } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import DeleteConfirmation from './../components/layout/DeleteConfirmation';
 
 // --- Cores e Design System Consistente ---

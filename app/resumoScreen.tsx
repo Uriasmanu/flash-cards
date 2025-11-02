@@ -7,12 +7,13 @@ import {
     FlatList,
     ListRenderItemInfo,
     Platform,
-    SafeAreaView,
     StatusBar,
     StyleSheet,
     Text,
     View
 } from 'react-native';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // --- Cores e Configuração ---
 const BACKGROUND_WHITE = '#FFFFFF';
