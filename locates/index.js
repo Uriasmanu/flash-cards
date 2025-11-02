@@ -62,23 +62,28 @@ i18n.translations = {
       deleteSucesso: "Card excluído com sucesso",
       deleteErro: "Erro ao excluir card",
       formTexto: "Editar Card",
+      formAdicionar: "Novo Flashcard",
       totalCards: "{{count}} card",
       totalCards_plural: "{{count}} cards",
       filtrarPorCategoria: "Filtrar por categoria",
       todasCategorias: "Todas as categorias",
+      semResultado: "Nenhum resultado encontrado para a busca/filtro.",
     },
     listaDeCategorias: {
       placeholderBusca: "Buscar categorias...",
       tituloSecao: "Suas Categorias",
       deleteConfirmacaoTitulo: "Excluir Categoria",
-      deleteConfirmacaoTexto: "Ao excluir '{{categoria}}', {{count}} card será movido para 'Sem categoria'",
-      deleteConfirmacaoTexto_plural: "Ao excluir '{{categoria}}', {{count}} cards serão movidos para 'Sem categoria'",
+      deleteConfirmacaoTexto:
+        "Ao excluir '{{categoria}}', {{count}} card será movido para 'Sem categoria'",
+      deleteConfirmacaoTexto_plural:
+        "Ao excluir '{{categoria}}', {{count}} cards serão movidos para 'Sem categoria'",
       editarCategoria: "Editar Categoria",
       cancelar: "Cancelar",
       salvar: "Salvar",
       categoriaVazia: "Digite um nome para a categoria",
       categoriaExistente: "Já existe uma categoria com este nome",
-      naoDeletarSemCategoria: "A categoria 'Sem categoria' não pode ser excluída",
+      naoDeletarSemCategoria:
+        "A categoria 'Sem categoria' não pode ser excluída",
       naoEditarSemCategoria: "A categoria 'Sem categoria' não pode ser editada",
       categoriaDeletada: "Categoria excluída com sucesso",
       categoriaEditada: "Categoria atualizada com sucesso",
@@ -123,7 +128,8 @@ i18n.translations = {
       ultimaAtualizacao: "Última atualização",
       novidades: "Novidades",
       alertaPermissaoTitle: "Permissão Necessária",
-      alertaPermissaoTexto: "Para enviar lembretes, precisamos da permissão de notificações",
+      alertaPermissaoTexto:
+        "Para enviar lembretes, precisamos da permissão de notificações",
       alertaSucessoTitle: "Tudo certo!",
       alertaSucessoTextoAtivado: "Lembretes ativados com sucesso",
       alertaSucessoTextoDesativado: "Lembretes desativados",
@@ -172,7 +178,7 @@ i18n.translations = {
       todas: "Todas",
       semCategoria: "Sem categoria",
       adicionarCategoria: "Adicionar Categoria",
-    }
+    },
   },
   en: {
     mensagemSistema: {
@@ -225,23 +231,27 @@ i18n.translations = {
     listaDePalavras: {
       listaVazia: "No cards found",
       listaVaziaDescricao: "Tap + to create your first card",
-      buscarPlaceholder: "Search cards...",
+      buscarPlaceholder: "Search cards...", 
       deleteConfirmacaoTitulo: "Delete Card",
       deleteConfirmacaoTexto: "Are you sure you want to delete this card?",
       deleteSucesso: "Card deleted successfully",
       deleteErro: "Error deleting card",
-      formTexto: "Edit Card",
+      formTexto: "Edit Card", 
+      formAdicionar: "New Flashcard", 
       totalCards: "{{count}} card",
       totalCards_plural: "{{count}} cards",
       filtrarPorCategoria: "Filter by category",
       todasCategorias: "All categories",
+      semResultado: "No results found for the search/filter.", 
     },
     listaDeCategorias: {
       placeholderBusca: "Search categories...",
       tituloSecao: "Your Categories",
       deleteConfirmacaoTitulo: "Delete Category",
-      deleteConfirmacaoTexto: "By deleting '{{categoria}}', {{count}} card will be moved to 'No category'",
-      deleteConfirmacaoTexto_plural: "By deleting '{{categoria}}', {{count}} cards will be moved to 'No category'",
+      deleteConfirmacaoTexto:
+        "By deleting '{{categoria}}', {{count}} card will be moved to 'No category'",
+      deleteConfirmacaoTexto_plural:
+        "By deleting '{{categoria}}', {{count}} cards will be moved to 'No category'",
       editarCategoria: "Edit Category",
       cancelar: "Cancel",
       salvar: "Save",
@@ -292,7 +302,8 @@ i18n.translations = {
       ultimaAtualizacao: "Last update",
       novidades: "What's new",
       alertaPermissaoTitle: "Permission Required",
-      alertaPermissaoTexto: "To send reminders, we need notification permission",
+      alertaPermissaoTexto:
+        "To send reminders, we need notification permission",
       alertaSucessoTitle: "All set!",
       alertaSucessoTextoAtivado: "Reminders enabled successfully",
       alertaSucessoTextoDesativado: "Reminders disabled",
@@ -341,7 +352,7 @@ i18n.translations = {
       todas: "All",
       semCategoria: "No category",
       adicionarCategoria: "Add Category",
-    }
+    },
   },
 };
 
