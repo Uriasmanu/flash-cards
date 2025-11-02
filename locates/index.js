@@ -48,18 +48,29 @@ i18n.translations = {
       placeholderBusca: "Buscar por Categoria",
       tituloSecao: "Categorias Salvas",
       deleteConfirmacaoTitulo: "Deletar Categoria",
-      deleteConfirmacaoTexto: "Tem certeza que deseja deletar a categoria '{{categoria}}'? {{count}} palavra(s) serão movidas para 'Sem Categoria'.",
+      deleteConfirmacaoTexto:
+        "Tem certeza que deseja deletar a categoria '{{categoria}}'? {{count}} palavra(s) serão movidas para 'Sem Categoria'.",
       editarCategoria: "Editar Categoria",
       cancelar: "Cancelar",
       salvar: "Salvar",
       categoriaVazia: "O nome da categoria não pode estar vazio",
       categoriaExistente: "Já existe uma categoria com este nome",
-      naoDeletarSemCategoria: "Não é possível deletar a categoria 'Sem Categoria'",
-      naoEditarSemCategoria: "Não é possível editar a categoria 'Sem Categoria'",
+      naoDeletarSemCategoria:
+        "Não é possível deletar a categoria 'Sem Categoria'",
+      naoEditarSemCategoria:
+        "Não é possível editar a categoria 'Sem Categoria'",
       categoriaDeletada: "Categoria deletada com sucesso",
       categoriaEditada: "Categoria editada com sucesso",
       erroDeletar: "Erro ao deletar categoria",
       erroEditar: "Erro ao editar categoria",
+    },
+    resumo: {
+      titulo: "Seu Resumo de Vocabulário",
+      semErrosTitulo: "Nenhum erro registrado ainda! 🎉",
+      semErrosSubtitulo: "Continue praticando para ver seu progresso aqui.",
+      palavrasComErro: "Palavras com erro",
+      totalErros: "Total de erros",
+      frequenciaErros: "Frequência de Erros",
     },
     configuracao: {
       cabecalho: "Lembretes de Estudo",
@@ -132,7 +143,8 @@ i18n.translations = {
       placeholderBusca: "Search by Category",
       tituloSecao: "Saved Categories",
       deleteConfirmacaoTitulo: "Delete Category",
-      deleteConfirmacaoTexto: "Are you sure you want to delete the category '{{categoria}}'? {{count}} word(s) will be moved to 'No Category'.",
+      deleteConfirmacaoTexto:
+        "Are you sure you want to delete the category '{{categoria}}'? {{count}} word(s) will be moved to 'No Category'.",
       editarCategoria: "Edit Category",
       cancelar: "Cancel",
       salvar: "Save",
@@ -144,6 +156,14 @@ i18n.translations = {
       categoriaEditada: "Category edited successfully",
       erroDeletar: "Error deleting category",
       erroEditar: "Error editing category",
+    },
+    resumo: {
+      titulo: "Your Vocabulary Summary",
+      semErrosTitulo: "No errors recorded yet! 🎉",
+      semErrosSubtitulo: "Keep practicing to see your progress here.",
+      palavrasComErro: "Words with errors",
+      totalErros: "Total errors",
+      frequenciaErros: "Error Frequency",
     },
     configuracao: {
       cabecalho: "Study Reminders",
