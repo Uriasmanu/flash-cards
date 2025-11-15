@@ -10,19 +10,20 @@ import { useWords } from "../context/WordsContext";
 import DeleteConfirmation from './../components/layout/DeleteConfirmation';
 import Favoritar from './../components/layout/favoritar';
 
-// --- Cores e Design System (Consistente com a tela de Configurações) ---
+// --- Cores e Design System ---
 const COLORS = {
-    PRIMARY: '#2563EB', // Azul Principal
+    PRIMARY: '#2563EB',
     PRIMARY_DARK: '#1D4ED8',
     BACKGROUND: '#FFFFFF',
-    BACKGROUND_GRAY: '#F8FAFC', // Fundo da Tela
-    CARD_BACKGROUND: '#FFFFFF', // Cor dos Itens da Lista
+    BACKGROUND_GRAY: '#F8FAFC',
+    CARD_BACKGROUND: '#FFFFFF',
     TEXT_PRIMARY: '#1E293B',
-    TEXT_SECONDARY: '#64748B', // Cor da Tradução/Hint
+    TEXT_SECONDARY: '#64748B',
+    TEXT_DISABLED: '#94A3B8',
     BORDER: '#E2E8F0',
     SUCCESS: '#10B981',
-    WARNING: '#FFD501', // Amarelo para Edição
-    ERROR: '#EF4444', // Vermelho para Exclusão
+    WARNING: '#FFD501',
+    ERROR: '#EF4444',
 };
 
 type SwipeableRefs = {
@@ -66,7 +67,6 @@ export default function ListaDePalavrasScreen() {
 
     const swipeableRefs = useRef<SwipeableRefs>({});
 
-    // Função para fechar outros itens quando um é aberto (Melhor UX para Swipeable)
     const closeOuthers = (id: number) => {
         Object.keys(swipeableRefs.current).forEach((key) => {
             const numericKey = Number(key);
@@ -79,7 +79,7 @@ export default function ListaDePalavrasScreen() {
     const handleDeleteClick = (id: number) => {
         setSelectedItemId(id);
         setShowDeleteModal(true);
-        closeOuthers(id); // Fecha o swipeable após a ação
+        closeOuthers(id);
     };
 
     const onConfirmDelete = async () => {
@@ -98,11 +98,10 @@ export default function ListaDePalavrasScreen() {
     const handleEditClick = (item: WordsItem) => {
         setEditingWords(item);
         setShowForm(true);
-        closeOuthers(item.id); // Fecha o swipeable após a ação
+        closeOuthers(item.id);
     };
 
-
-    // --- Renderização das Ações de Swipe (Direita - Editar) ---
+    // --- Renderização das Ações de Swipe ---
     const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, item: WordsItem) => {
         const scale = dragX.interpolate({
             inputRange: [-80, -40, 0],
@@ -131,7 +130,6 @@ export default function ListaDePalavrasScreen() {
         );
     };
 
-    // --- Renderização das Ações de Swipe (Esquerda - Apagar) ---
     const renderLeftActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>, itemId: number) => {
         const scale = dragX.interpolate({
             inputRange: [0, 40, 80],
@@ -233,8 +231,8 @@ export default function ListaDePalavrasScreen() {
                                 renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, item)}
                                 renderLeftActions={(progress, dragX) => renderLeftActions(progress, dragX, item.id)}
                                 onSwipeableWillOpen={() => closeOuthers(item.id)}
-                                rightThreshold={80} 
-                                leftThreshold={80} 
+                                rightThreshold={80}
+                                leftThreshold={80}
                                 friction={2}
                             >
                                 <View style={styles.ItemsList}>
@@ -252,7 +250,7 @@ export default function ListaDePalavrasScreen() {
                         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
                     />
 
-                    {/* Modal de Confirmação de Exclusão (Overlay) */}
+                    {/* Modal de Confirmação de Exclusão */}
                     {showDeleteModal && (
                         <View style={styles.overlay}>
                             <DeleteConfirmation
@@ -266,19 +264,23 @@ export default function ListaDePalavrasScreen() {
                 </View>
             )}
 
-            {/* Formulário de Edição/Adição (Modal/Full Screen) */}
+            {/* Modal de Edição SIMPLES e FUNCIONAL */}
             {showForm && (
-                <Form
-                    onClose={() => {
-                        setShowForm(false);
-                        setEditingWords(null);
-                        setPalavra('');
-                        setTraducao('');
-                    }}
-                    tituloForm={editingWords ? i18n.t('listaDePalavras.formEditar') : i18n.t('listaDePalavras.formAdicionar')}
-                    editingWords={editingWords}
-                    allCategories={["Sem Categoria", ...categorias.filter(c => c !== "Sem Categoria")]}
-                />
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Form
+                            onClose={() => {
+                                setShowForm(false);
+                                setEditingWords(null);
+                                setPalavra('');
+                                setTraducao('');
+                            }}
+                            tituloForm={editingWords ? i18n.t('listaDePalavras.formEditar') : i18n.t('listaDePalavras.formAdicionar')}
+                            editingWords={editingWords}
+                            allCategories={["Sem Categoria", ...categorias.filter(c => c !== "Sem Categoria")]}
+                        />
+                    </View>
+                </View>
             )}
         </View>
     );
@@ -287,11 +289,11 @@ export default function ListaDePalavrasScreen() {
 const styles = StyleSheet.create({
     mainWrapper: {
         flex: 1,
-        backgroundColor: COLORS.BACKGROUND_GRAY, // Fundo cinza suave
+        backgroundColor: COLORS.BACKGROUND_GRAY,
     },
     contentContainer: {
         flex: 1,
-        paddingHorizontal: 20, // Padding lateral para a tela
+        paddingHorizontal: 20,
         paddingTop: 20,
     },
     loadingContainer: {
@@ -300,14 +302,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: COLORS.BACKGROUND_GRAY,
     },
-    // --- Título da Categoria ---
     categoryTitle: {
         fontSize: 28,
         fontWeight: '700',
         color: COLORS.PRIMARY_DARK,
         marginBottom: 15,
     },
-    // --- Header (Busca e Botão) ---
     headerControls: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         backgroundColor: COLORS.CARD_BACKGROUND,
-        paddingVertical: 14, // Padding menor para deixar mais compacto
+        paddingVertical: 14,
         paddingHorizontal: 16,
         borderRadius: 12,
         fontSize: 16,
@@ -329,12 +329,12 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOffset: { width: 0, height: 1 },
         elevation: 2,
-        marginRight: 12, // Espaço entre o input e o botão
+        marginRight: 12,
     },
     adicionar: {
-        backgroundColor: COLORS.PRIMARY, // Azul consistente
+        backgroundColor: COLORS.PRIMARY,
         padding: 12,
-        borderRadius: 50, // Completamente circular
+        borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
         width: 50,
@@ -345,21 +345,20 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 8,
     },
-    // --- Lista e Itens ---
     listContent: {
         paddingBottom: 40,
     },
     itemSeparator: {
-        height: 10, // Aumento de 5 para 10 para um visual mais clean
+        height: 10,
     },
     ItemsList: {
         backgroundColor: COLORS.CARD_BACKGROUND,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: 15, // Aumento do padding interno
+        paddingVertical: 15,
         paddingHorizontal: 15,
-        borderRadius: 12, // Borda arredondada (Card)
+        borderRadius: 12,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,
@@ -371,16 +370,15 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     textoTitle: {
-        fontSize: 20, // Ajustado para ser menos dominante
+        fontSize: 20,
         fontWeight: '700',
         color: COLORS.TEXT_PRIMARY,
         marginBottom: 2,
     },
     textoTraducao: {
         fontSize: 16,
-        color: COLORS.TEXT_SECONDARY, // Cinza consistente
+        color: COLORS.TEXT_SECONDARY,
     },
-    // --- Ações de Swipe (Redesenhadas) ---
     actionWrapperRight: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -398,10 +396,10 @@ const styles = StyleSheet.create({
     apagar: {
         backgroundColor: COLORS.ERROR,
         width: '100%',
-        height: '95%', // Ajuste para que o item "encaixe"
+        height: '95%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 12, // Consistente com os Cards
+        borderRadius: 12,
     },
     editar: {
         backgroundColor: COLORS.WARNING,
@@ -418,7 +416,6 @@ const styles = StyleSheet.create({
         marginTop: 4,
         textAlign: 'center',
     },
-    // --- Estados Vazios ---
     emptyListText: {
         fontSize: 18,
         textAlign: 'center',
@@ -453,12 +450,32 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
     },
-    // --- Modal Overlay ---
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 10,
+    },
+    // Modal SIMPLES e FUNCIONAL
+    modalOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        padding: 20,
+    },
+    modalContainer: {
+        width: '100%',
+        maxWidth: 400,
+        backgroundColor: COLORS.BACKGROUND,
+        borderRadius: 16,
+        padding: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 8,
     },
 });

@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 16,
         backgroundColor: "#fff",
-        width: 350,
+        
         borderRadius: 8,
         boxShadowColor: "#000",
         boxShadowOffset: { width: 0, height: 4 },
