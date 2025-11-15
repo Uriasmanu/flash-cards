@@ -1,7 +1,7 @@
 import i18n from "@/locates";
 import { WordsItem } from "@/types/wordsTypes";
 import { useRouter, useSearchParams } from "expo-router/build/hooks";
-import { Plus, SquarePen, Trash2 } from "lucide-react-native";
+import { Plus, SquarePen, Star, Trash2 } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
@@ -69,6 +69,9 @@ export default function ListaDePalavrasScreen() {
 
         setFilteredWords(filtered);
     }, [search, words, categoria]);
+
+    // Contador de favoritos
+    const favoriteCount = filteredWords.filter(word => word.favoritar === true).length;
 
     const swipeableRefs = useRef<SwipeableRefs>({});
 
@@ -198,6 +201,14 @@ export default function ListaDePalavrasScreen() {
                         <Text style={styles.categoryTitle}>{decodeURIComponent(categoria)}</Text>
                     )}
 
+                    {/* Contador de Favoritos */}
+                    <View style={styles.favoriteCounter}>
+                        <Star size={20} color={COLORS.WARNING} fill={COLORS.WARNING} />
+                        <Text style={styles.favoriteCounterText}>
+                            {favoriteCount} {favoriteCount === 1 ? 'favorito' : 'favoritos'}
+                        </Text>
+                    </View>
+
                     {/* Barra de Busca e Botão Adicionar */}
                     <View style={styles.headerControls}>
                         <TextInput
@@ -312,6 +323,29 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: COLORS.PRIMARY_DARK,
         marginBottom: 15,
+    },
+    favoriteCounter: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.BACKGROUND,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 20,
+        alignSelf: 'flex-start',
+        marginBottom: 15,
+        borderWidth: 1,
+        borderColor: COLORS.BORDER,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        shadowOffset: { width: 0, height: 1 },
+        elevation: 2,
+    },
+    favoriteCounterText: {
+        marginLeft: 6,
+        fontSize: 14,
+        fontWeight: '600',
+        color: COLORS.TEXT_PRIMARY,
     },
     headerControls: {
         flexDirection: 'row',
