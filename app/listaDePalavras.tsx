@@ -43,7 +43,7 @@ export default function ListaDePalavrasScreen() {
     const searchParams = useSearchParams();
     const categoria = searchParams.get("categoria");
 
-    // Efeito de Filtro
+    // Efeito de Filtro e Ordenação
     useEffect(() => {
         let filtered = words;
 
@@ -61,6 +61,11 @@ export default function ListaDePalavrasScreen() {
                 word.traducao.toLowerCase().includes(search.toLowerCase())
             );
         }
+
+        // ORDENAÇÃO ALFABÉTICA pela palavra em português (title)
+        filtered = filtered.sort((a, b) =>
+            a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' })
+        );
 
         setFilteredWords(filtered);
     }, [search, words, categoria]);
