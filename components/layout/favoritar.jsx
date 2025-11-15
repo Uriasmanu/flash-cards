@@ -29,13 +29,13 @@ export default function Favoritar({ initialChecked, onChange }) {
             >
                 <Svg
                     xmlns="http://www.w3.org/2000/svg"
-                    fill={isChecked ? '#ede275' : "none"}
+                    fill={isChecked ? '#0e0e0dff' : "none"}
                     viewBox="0 0 75 100"
                     style={styles.pin}
                 >
                     <Line
                         strokeWidth="12"
-                        stroke={isChecked ? "#b8860b" : "#b8860b"}
+                        stroke={isChecked ? "#111111ff" : "#b8860b"}
                         y2="100"
                         x2="37"
                         y1="64"
@@ -43,7 +43,7 @@ export default function Favoritar({ initialChecked, onChange }) {
                     />
                     <Path
                         strokeWidth="10"
-                        stroke={isChecked ? "#b8860b" : "#b8860b"}
+                        stroke={isChecked ? "#0a0a0aff" : "#b8860b"}
                         d="M16.5 36V4.5H58.5V36V53.75V54.9752L59.1862 55.9903L66.9674 67.5H8.03256L15.8138 55.9903L16.5 54.9752V53.75V36Z"
                     />
                 </Svg>
