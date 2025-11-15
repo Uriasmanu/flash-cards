@@ -168,8 +168,7 @@ export default function ListaDeCategoriasScreen() {
           onPress={() => handleEditClick(categoria)}
         >
           <Animated.View style={{ transform: [{ scale }] }}>
-            <SquarePen size={24} color="#FFF" />
-            <Text style={styles.actionText}>{i18n.t('configuracao.editar')}</Text>
+            <SquarePen size={30} color="#FFF" />
           </Animated.View>
         </TouchableOpacity>
       </Animated.View>
@@ -205,8 +204,7 @@ export default function ListaDeCategoriasScreen() {
           onPress={() => handleDeleteClick(categoria)}
         >
           <Animated.View style={{ transform: [{ scale }] }}>
-            <Trash2 size={24} color="#FFF" />
-            <Text style={styles.actionText}>{i18n.t('configuracao.excluir')}</Text>
+            <Trash2 size={30} color="#FFF" />
           </Animated.View>
         </TouchableOpacity>
       </Animated.View>

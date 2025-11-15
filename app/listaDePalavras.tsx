@@ -233,8 +233,8 @@ export default function ListaDePalavrasScreen() {
                                 renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, item)}
                                 renderLeftActions={(progress, dragX) => renderLeftActions(progress, dragX, item.id)}
                                 onSwipeableWillOpen={() => closeOuthers(item.id)}
-                                rightThreshold={80} // Ajustado para o novo tamanho
-                                leftThreshold={80} // Ajustado para o novo tamanho
+                                rightThreshold={80} 
+                                leftThreshold={80} 
                                 friction={2}
                             >
                                 <View style={styles.ItemsList}>
